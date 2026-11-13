@@ -2434,6 +2434,68 @@ async function extractGdplayer(provider, url, referer) {
 
 const NEKOPOI_SERVERS = ["Server 1", "Server 2", "Server 3"];
 
+/** The DoodStream clones the site serves as Server 1 / Server 2. */
+const NEKOPOI_DOOD_HOST = /playmogo\.|plamogo\.|dood[a-z0-9-]*\.|d000d\.|dsvplay\./i;
+
+/**
+ * Month names the site writes in Indonesian, for `parseDates`.
+ *
+ * The app stores `dateUpload` as milliseconds-since-epoch: it feeds the value
+ * straight to `int.parse()` and renders it with `DateTime.fromMillisecondsSinceEpoch`.
+ * The site's "20 Februari 2023" is not a number, so handing it over unconverted
+ * threw inside the episode tile and left that part of the page blank/grey.
+ */
+const NEKOPOI_MONTHS = {
+  januari: "January", februari: "February", maret: "March", april: "April",
+  mei: "May", juni: "June", juli: "July", agustus: "August",
+  september: "September", oktober: "October", november: "November",
+  desember: "December",
+};
+
+/** Convert the collected episode rows into MChapter objects. */
+function nekopoiEpisodes(rows) {
+  const out = [];
+  for (let i = 0; i < rows.length; i++) {
+    const episode = {
+      name: rows[i].name,
+      url: rows[i].url,
+      dateUpload: nekopoiTimestamp(rows[i].date),
+      scanlator: "",
+    };
+    // A non-null thumbnailUrl is what makes the app draw the 50x65 preview.
+    if (rows[i].thumb) episode.thumbnailUrl = rows[i].thumb;
+    out.push(episode);
+  }
+  return out;
+}
+
+/**
+ * "20 Februari 2023" -> milliseconds-since-epoch string, "" when unparsable.
+ *
+ * One call per row instead of one for the whole list: `parseDates` drops empty
+ * inputs, which would shift every later index in a mixed list.
+ */
+function nekopoiTimestamp(value) {
+  const text = nekopoiDate(value);
+  if (!text) return "";
+  try {
+    const parsed = parseDates([text], "d MMMM yyyy", "en");
+    return safeString(parsed && parsed[0]);
+  } catch (e) {
+    console.log("nekopoi: tanggal \"" + text + "\" gagal diurai: " + e);
+    return "";
+  }
+}
+
+/** "20 Februari 2023" -> "20 February 2023"; "" stays ""; numbers pass through. */
+function nekopoiDate(value) {
+  const text = cleanText(value);
+  if (!text || /^\d+$/.test(text)) return text;
+  return text.replace(/[A-Za-z]+/g, function (word) {
+    return NEKOPOI_MONTHS[word.toLowerCase()] || word;
+  });
+}
+
 /** Kategori menu utama, lalu genre dari /genre-list/. */
 const NEKOPOI_CATEGORIES = [
   ["Hentai", "/category/hentai/"],
@@ -2784,7 +2846,7 @@ class DefaultExtension extends IdBaseProvider {
   episodesOf(doc, seriesName) {
     const anchors = doc.select("a.nk-episode-card[href]") || [];
     const seen = {};
-    const out = [];
+    const rows = [];
     for (let i = 0; i < anchors.length; i++) {
       const href = anchors[i].attr("href") || anchors[i].getHref;
       if (!href) continue;
@@ -2794,17 +2856,18 @@ class DefaultExtension extends IdBaseProvider {
       const badge = cleanText(anchors[i].selectFirst(".nk-episode-badge").text);
       const title = cleanText(anchors[i].selectFirst(".nk-episode-card-title").text) ||
         cleanText(anchors[i].text);
-      out.push({
+      rows.push({
         name: badge ? "Episode " + badge.replace(/^ep\s*/i, "") :
           (cleanTitle(cleanEpisodeName(title, seriesName)) || "Episode"),
         url: url,
-        dateUpload: cleanText(anchors[i].selectFirst(".nk-episode-card-date").text),
-        scanlator: "",
+        date: cleanText(anchors[i].selectFirst(".nk-episode-card-date").text),
+        thumb: this.absolute(backgroundUrl(
+          anchors[i].selectFirst(".nk-episode-card-thumb").attr("style"))),
       });
     }
-    if (out.length) return out;
+    if (rows.length) return nekopoiEpisodes(rows);
 
-    // Tema lama: .episodelist ul li span.leftoff a.
+    // Tema lama: .episodelist ul.leftoff li span a — tanpa tanggal & thumbnail.
     const legacy = doc.select(".episodelist .leftoff a[href]") || [];
     for (let i = 0; i < legacy.length; i++) {
       const href = legacy[i].attr("href") || legacy[i].getHref;
@@ -2812,14 +2875,14 @@ class DefaultExtension extends IdBaseProvider {
       const url = this.relativize(this.resolve(decodeEntities(href)));
       if (seen[url]) continue;
       seen[url] = true;
-      out.push({
+      rows.push({
         name: cleanTitle(cleanEpisodeName(legacy[i].text, seriesName)) || "Episode",
         url: url,
-        dateUpload: "",
-        scanlator: "",
+        date: "",
+        thumb: "",
       });
     }
-    return out;
+    return nekopoiEpisodes(rows);
   }
 
   // --------------------------------------------------------------- videos
@@ -2829,18 +2892,27 @@ class DefaultExtension extends IdBaseProvider {
     const doc = await this.pageDoc(pageUrl);
     if (!doc) return [];
 
-    const results = [];
     const embeds = this.embedsOf(doc);
+    if (!embeds.length) {
+      throw new Error("Nekopoi: halaman episode ini tidak memuat player. " +
+        "Buka lewat tombol Tampilan Web untuk memeriksanya.");
+    }
+
+    const results = [];
+    const failed = [];
     for (let i = 0; i < embeds.length; i++) {
       const embed = embeds[i];
+      const label = embed.server + " (" + hostOf(embed.url) + ")";
       const reason = unsupportedReason(embed.url);
       if (reason) {
-        console.log("nekopoi: server " + embed.server + " tidak didukung (" + reason + ")");
+        console.log("nekopoi: server " + label + " tidak didukung (" + reason + ")");
+        failed.push(label + ": " + reason);
         continue;
       }
       if (!isSupportedHost(embed.url)) {
-        console.log("nekopoi: server " + embed.server +
+        console.log("nekopoi: server " + label +
           " tidak didukung (belum ada ekstraktor untuk " + hostOf(embed.url) + ")");
+        failed.push(label + ": belum ada ekstraktor");
         continue;
       }
       const found = await extractByHost(this, embed.url, pageUrl, "", "Sub Indo");
@@ -2851,11 +2923,86 @@ class DefaultExtension extends IdBaseProvider {
         results.push(video);
       }
       if (!found.videos.length) {
-        console.log("nekopoi: " + embed.server + " (" + hostOf(embed.url) +
-          ") tidak menghasilkan stream");
+        console.log("nekopoi: " + label + " tidak menghasilkan stream");
+        failed.push(label + ": tidak menghasilkan stream");
       }
     }
+
+    // Second pass, DoodStream only: the request that failed above may have been
+    // the one Cloudflare refused. The app's WebView already carries a solved
+    // challenge cookie, so replay the /pass_md5 handshake from inside it.
+    if (!results.length) {
+      for (let i = 0; i < embeds.length; i++) {
+        if (!NEKOPOI_DOOD_HOST.test(embeds[i].url)) continue;
+        const streams = await this.doodViaWebview(embeds[i].url);
+        if (!streams.length) {
+          failed.push(embeds[i].server + " (WebView): tantangan Cloudflare belum terlewati");
+          continue;
+        }
+        for (let s = 0; s < streams.length; s++) {
+          const stream = streams[s];
+          stream.server = embeds[i].server;
+          stream.quality = qualityLabel(resolutionOf(stream.quality), "Sub Indo", embeds[i].server);
+          results.push(stream);
+        }
+      }
+    }
+
+    if (!results.length) {
+      // An empty list renders as "Daftar video kosong", which hides the reason.
+      throw new Error("Nekopoi: tidak ada server yang bisa diputar. " +
+        failed.join("; ") +
+        ". Server 1/2 memakai DoodStream yang sering menantang Cloudflare — " +
+        "buka episode ini sekali di Tampilan Web supaya tantangannya lewat, " +
+        "atau pakai Server 3 (streampoi) bila ada.");
+    }
     return sortVideos(results, this.preferredQualities(), this.preferredServers());
+  }
+
+  /**
+   * DoodStream handshake replayed inside the app's WebView.
+   *
+   * `/e/<id>` names a `/pass_md5/<path>` whose body is the CDN prefix; the file
+   * name is random characters plus the page's `token`. In the WebView the
+   * challenge cookie of the shared session is sent along, which is exactly what
+   * the plain request in extractDoodJs is missing.
+   */
+  async doodViaWebview(embedUrl) {
+    const script =
+      "(function(){" +
+      "var chars=\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\";" +
+      "function done(v){try{window.flutter_inappwebview.callHandler(\"setResponse\",v)}catch(e){}}" +
+      "function rnd(n){var s=\"\";for(var i=0;i<n;i++){s+=chars.charAt(Math.floor(Math.random()*chars.length))}return s}" +
+      "var n=0;" +
+      "function go(){fetch(location.href,{credentials:\"include\"})" +
+      ".then(function(r){return r.text()})" +
+      ".then(function(h){" +
+      "var p=/\\/pass_md5\\/[A-Za-z0-9_\\/-]+/.exec(h);" +
+      "var t=/token=([A-Za-z0-9]+)/.exec(h);" +
+      "if(!p||!t){if(n<15){n++;setTimeout(go,2000)}else{done(\"\")}return}" +
+      "fetch(location.origin+p[0],{credentials:\"include\"})" +
+      ".then(function(r){return r.text()})" +
+      ".then(function(b){b=b.replace(/\\s+/g,\"\");" +
+      "if(b.indexOf(\"http\")!==0){done(\"\");return}" +
+      "done(b+rnd(10)+\".mp4?token=\"+t[1]+\"&expiry=\"+Date.now())})" +
+      ".catch(function(){done(\"\")})})" +
+      ".catch(function(){if(n<15){n++;setTimeout(go,2000)}else{done(\"\")}})}" +
+      "go();" +
+      "})();";
+    let stream = "";
+    try {
+      stream = safeString(await evaluateJavascriptViaWebview(embedUrl, {}, [script], 40));
+    } catch (e) {
+      console.log("nekopoi: WebView Dood gagal: " + e);
+      return [];
+    }
+    if (!/^https?:\/\/\S+$/i.test(stream)) return [];
+    return [{
+      url: stream,
+      originalUrl: embedUrl,
+      quality: "",
+      headers: this.headersFor(embedUrl),
+    }];
   }
 
   /**

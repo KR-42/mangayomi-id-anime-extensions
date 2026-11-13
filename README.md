@@ -96,17 +96,34 @@
 
 | 🎬 Sumber | 🏷️ Versi | 📺 Kualitas | 🕒 Terakhir Update |
 |:---|:---:|:---:|:---:|
-| **Nekopoi** 🔞 | `0.1.0` | 🟡 720p | 13 Nov 2026 |
+| **Nekopoi** 🔞 | `0.2.0` | 🟡 720p | 13 Nov 2026 |
 
 - **Domain:** `https://nekopoi.care` — bisa diganti di _Pengaturan sumber_ kalau situsnya pindah.
 - **Wajib VPN.** Situsnya memblokir IP Indonesia. Mengganti DNS ke Cloudflare **tidak menolong**:
-  DNS-nya memang sudah lewat Cloudflare, blokirnya di level TLS (nama domain), bukan di level DNS.
-- **Server 1 dan 2** (playmogo/plamogo) kadang kena tantangan Cloudflare. Kalau kosong, pilih
-  **Server 3** (streampoi) — server inilah yang paling sering berhasil.
+  yang diblokir adalah nama domainnya di level HTTPS (TLS/SNI), bukan alamat IP-nya. Resolver
+  mana pun (termasuk DoH Cloudflare) tetap menghasilkan IP Cloudflare yang sama, dan handshake-nya
+  tetap diputus di tengah jalan.
+- **Server 1 dan 2** (playmogo/plamogo) dikelola pihak situs dan sering mati di sana (playmogo
+  membalas **503**, plamogo sudah tidak punya DNS). Kalau kosong, pilih **Server 3** (streampoi) —
+  server inilah yang paling sering berhasil.
+- Kalau semua server gagal, aplikasi sekarang **menyebutkan server mana yang gagal beserta
+  alasannya**, bukan sekadar "Daftar video kosong". Buka episode itu sekali di **Tampilan Web**
+  supaya tantangan Cloudflare lewat, lalu putar ulang — ekstensi akan mencoba mengambil video
+  lewat sesi WebView yang sudah punya cookie tantangan itu.
 - **Mirror unduhan** di halaman episode (Mp4Upload, Pixeldrain, KrakenFiles lewat ouo.io) adalah
   tautan **unduh**, bukan stream, jadi tidak ditampilkan sebagai video.
 - Di Mangayomi, sumber ini otomatis ditandai **`NSFW`** dan baru muncul setelah mode NSFW
   diaktifkan di pengaturan aplikasi.
+
+<details>
+<summary>🕘 Riwayat versi Nekopoi</summary>
+
+| Versi | Tanggal | Perubahan |
+|:---:|:---:|:---|
+| `0.2.0` | 13 Nov 2026 | **Kotak abu-abu di daftar episode hilang.** Tanggal episode ("20 Februari 2023") dikonversi ke format waktu yang dibaca aplikasi, dan thumbnail episode kini ikut terkirim. **Pesan gagal putar jadi jelas**: ekstensi menyebut server yang gagal + alasannya, plus fallback mengambil video Dood lewat sesi WebView. |
+| `0.1.0` | 12 Nov 2026 | Rilis pertama: beranda, pencarian, detail seri, daftar episode, Server 1–3 (DoodStream + streampoi). |
+
+</details>
 
 </details>
 
@@ -125,6 +142,7 @@
 | **Nonton Anime ID** | ±9 episode paling awal hanya ada di Dailymotion terlindungi → tanpa video. |
 | **Anibatch** | Saat scroll **Populer/Terbaru** ke halaman berikutnya, kadang **macet di loading** di HP. |
 | **Oploverz** | Server **upbolt** kadang minta verifikasi Cloudflare — tekan **WebView** di layar error sekali, lalu buka episode lagi. |
+| **Nekopoi** | Server **1 dan 2** (playmogo/plamogo) mati di sisi situs — bukan bug ekstensi. Pakai **Server 3** (streampoi) kalau ada. Situs juga memblokir IP Indonesia di level TLS, jadi **wajib VPN**; ganti DNS tidak menolong. |
 
 </div>
 

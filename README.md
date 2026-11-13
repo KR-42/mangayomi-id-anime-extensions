@@ -114,6 +114,13 @@
   tautan **unduh**, bukan stream, jadi tidak ditampilkan sebagai video.
 - Di Mangayomi, sumber ini otomatis ditandai **`NSFW`** dan baru muncul setelah mode NSFW
   diaktifkan di pengaturan aplikasi.
+- **⏳ Video/episode di Nekopoi memang sangat lambat dibuka — ini normal, bukan error.**
+  Tekan putar, lalu **diamkan dan tunggu sekitar 1–2 menit**. Layar yang terlihat "menggantung"
+  di menit pertama biasanya masih bekerja di belakang: halaman embed-nya harus lewat tantangan
+  Cloudflare dulu sebelum URL video keluar. Selama belum lewat **2 menit**, jangan tutup episode
+  dan jangan ganti server. Kalau **sudah lebih dari 2 menit** videonya tetap tidak bisa diputar
+  (baru di menit itu boleh dianggap gagal), silakan [laporkan bug](#-feedback--lapor-bug) —
+  sertakan judul, nomor episode, dan server yang dipakai.
 
 <details>
 <summary>🕘 Riwayat versi Nekopoi</summary>
@@ -142,7 +149,7 @@
 | **Nonton Anime ID** | ±9 episode paling awal hanya ada di Dailymotion terlindungi → tanpa video. |
 | **Anibatch** | Saat scroll **Populer/Terbaru** ke halaman berikutnya, kadang **macet di loading** di HP. |
 | **Oploverz** | Server **upbolt** kadang minta verifikasi Cloudflare — tekan **WebView** di layar error sekali, lalu buka episode lagi. |
-| **Nekopoi** | Server **1 dan 2** (playmogo/plamogo) mati di sisi situs — bukan bug ekstensi. Pakai **Server 3** (streampoi) kalau ada. Situs juga memblokir IP Indonesia di level TLS, jadi **wajib VPN**; ganti DNS tidak menolong. |
+| **Nekopoi** | Video/episode **memang sangat lambat** dibuka — tunggu **1–2 menit** dulu, jangan tutup dan jangan ganti server. Kalau lewat **2 menit** masih tidak bisa, baru laporkan bug. Server **1 dan 2** (playmogo/plamogo) mati di sisi situs — bukan bug ekstensi, pakai **Server 3** (streampoi) kalau ada. Situs juga memblokir IP Indonesia di level TLS, jadi **wajib VPN**; ganti DNS tidak menolong. |
 
 </div>
 

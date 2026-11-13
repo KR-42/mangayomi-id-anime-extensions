@@ -86,7 +86,7 @@
 > [!CAUTION]
 > **🔞 NSFW — DEWASA, 18 TAHUN KE ATAS.**
 > Blok ini berisi sumber konten **seksual eksplisit (hentai/porno)**. Jangan buka kalau kamu
-> **belum 18 tahun**, atau kalau konten dewasa **melanggar hukum di wilayahmu**.
+> **belum 18 tahun**.
 > Buka **atas kesadaran dan tanggung jawab sendiri**. Kamu bisa menutupnya lagi kapan saja
 > dengan mengklik judul di atas.
 
@@ -121,16 +121,6 @@
   dan jangan ganti server. Kalau **sudah lebih dari 2 menit** videonya tetap tidak bisa diputar
   (baru di menit itu boleh dianggap gagal), silakan [laporkan bug](#-feedback--lapor-bug) —
   sertakan judul, nomor episode, dan server yang dipakai.
-
-<details>
-<summary>🕘 Riwayat versi Nekopoi</summary>
-
-| Versi | Tanggal | Perubahan |
-|:---:|:---:|:---|
-| `0.2.0` | 13 Nov 2026 | **Kotak abu-abu di daftar episode hilang.** Tanggal episode ("20 Februari 2023") dikonversi ke format waktu yang dibaca aplikasi, dan thumbnail episode kini ikut terkirim. **Pesan gagal putar jadi jelas**: ekstensi menyebut server yang gagal + alasannya, plus fallback mengambil video Dood lewat sesi WebView. |
-| `0.1.0` | 12 Nov 2026 | Rilis pertama: beranda, pencarian, detail seri, daftar episode, Server 1–3 (DoodStream + streampoi). |
-
-</details>
 
 </details>
 

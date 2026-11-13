@@ -1,0 +1,41 @@
+{
+  "source": "Oploverz",
+  "captured": "2026-11-11",
+  "note": "API answers captured from backapi.oploverz.ac. episodes.json and episode.json are trimmed to the one episode whose upbolt player page was captured (upbolt_player.html, the answer to the play-button form). Every series slug is served by that series. master.m3u8 is a hand-written stand-in with the real variant layout.",
+  "responses": [
+    {
+      "url": "https://backapi.oploverz.ac/api/series?page=1&pageSize=24&hot=true&sortBy=createdAt-desc",
+      "file": "popular.json"
+    },
+    {
+      "url": "https://backapi.oploverz.ac/api/episodes?page=1&pageSize=48&sort=latest",
+      "file": "latest.json"
+    },
+    {
+      "url": "https://backapi.oploverz.ac/api/series?page=1&pageSize=24&q=naruto&sortBy=createdAt-desc",
+      "file": "search.json"
+    },
+    {
+      "match": "oploverz\\.ac/api/series/[^/?]+/episodes\\?",
+      "file": "episodes.json"
+    },
+    {
+      "match": "oploverz\\.ac/api/series/[^/?]+/episodes/[^/?]+$",
+      "file": "episode.json"
+    },
+    {
+      "match": "oploverz\\.ac/api/series/[^/?]+$",
+      "file": "series.json"
+    },
+    {
+      "method": "POST",
+      "url": "https://upbolt.to/dl",
+      "body": "file_code=lwstudk5nky6",
+      "file": "upbolt_player.html"
+    },
+    {
+      "match": "upbolt\\.to/hls2/.*master\\.m3u8",
+      "file": "master.m3u8"
+    }
+  ]
+}

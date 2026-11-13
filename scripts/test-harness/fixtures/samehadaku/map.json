@@ -1,0 +1,35 @@
+{
+  "source": "Samehadaku",
+  "captured": "2026-11-10",
+  "note": "HTML as served to a desktop Chrome UA. /anime/one-piece/ is served by the detail capture of another series because only its link is exercised. The two embed files are hand-written minimal stand-ins, not captures.",
+  "responses": [
+    {
+      "match": "/daftar-anime-2/\\?title=naruto",
+      "file": "search.html"
+    },
+    {
+      "match": "/daftar-anime-2/\\?title=&status=&type=&order=popular",
+      "file": "popular.html"
+    },
+    {
+      "url": "https://v2.samehadaku.how/anime-terbaru/",
+      "file": "latest.html"
+    },
+    {
+      "url": "https://v2.samehadaku.how/anime/one-piece/",
+      "file": "detail.html"
+    },
+    {
+      "url": "https://v2.samehadaku.how/kyouran-reijou-nia-liston-episode-6/",
+      "file": "episode.html"
+    },
+    {
+      "match": "blogger\\.com/video\\.g\\?token=AD6v5dxx57EgVS-o2WHgnY6UI85m4Vv80EK4mkLNTqoFi36McTuwz6LH1OmFWCycGY1VGwOBCVHDoD8Ha8gk6nDtH3cihuvtxOBm1rQWWlxaMIQwdV5FrJyu0t9O1ioGufElFi-EnBw",
+      "file": "embed_blogger.html"
+    },
+    {
+      "url": "https://filedon.co/embed/L5sEVzy2xn",
+      "file": "embed_filedon.html"
+    }
+  ]
+}

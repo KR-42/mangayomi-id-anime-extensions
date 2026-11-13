@@ -1,0 +1,175 @@
+{
+  "source": "Animangahub",
+  "captured": "2026-11-12",
+  "note": "Public JSON API responses from animeindo.cloud/api/anime-indo. link.desustream.com answers a plain 302 to the real mirror host (captured live); the Filedon embed pages are trimmed copies of the real Inertia props.",
+  "responses": [
+    {
+      "url": "https://animeindo.cloud/api/anime-indo/ongoing?page=1",
+      "file": "ongoing.json"
+    },
+    {
+      "url": "https://animeindo.cloud/api/anime-indo/home",
+      "file": "home.json"
+    },
+    {
+      "url": "https://animeindo.cloud/api/anime-indo/search?q=naruto&page=1",
+      "file": "search.json"
+    },
+    {
+      "url": "https://animeindo.cloud/api/anime-indo/search?q=one&page=1",
+      "file": "search_one.json"
+    },
+    {
+      "match": "api/anime-indo/detail/",
+      "file": "detail.json"
+    },
+    {
+      "match": "api/anime-indo/sources/",
+      "file": "sources.json"
+    },
+    {
+      "match": "^https://link\\.desustream\\.com/\\?id=d2JkL0hDRWxReWpxYUpLaDJYRFJLWXhKbFlCZU5NNEZORTFXNVZHSHR2RFhEdz09$",
+      "file": "bounce.txt",
+      "status": 302,
+      "headers": {
+        "location": "https://filedon.co/view/SXHTzuE3yl"
+      }
+    },
+    {
+      "match": "^https://link\\.desustream\\.com/\\?id=d2JkL0hDRWxReWo4YUlhaDBYdk5ab1pJbEpWWVBKWmZTRkJOLzNLQ3Q0TFA=$",
+      "file": "bounce.txt",
+      "status": 302,
+      "headers": {
+        "location": "https://pixeldrain.com/u/ESNYpDAa"
+      }
+    },
+    {
+      "match": "^https://link\\.desustream\\.com/\\?id=d2JkL0hDRWxReWpxYUpLaDJYRFJLWXhKbFlCZU5NNEZIeU5OKzF1OG1ydmdJQT09$",
+      "file": "bounce.txt",
+      "status": 302,
+      "headers": {
+        "location": "https://filedon.co/view/x6SJpNixNC"
+      }
+    },
+    {
+      "match": "^https://link\\.desustream\\.com/\\?id=d2JkL0hDRWxReWo4YUlhaDBYdk5ab1pJbEpWWVBKWmZTSDltMXg2cmtZWDg=$",
+      "file": "bounce.txt",
+      "status": 302,
+      "headers": {
+        "location": "https://pixeldrain.com/u/jxf5YbFR"
+      }
+    },
+    {
+      "match": "^https://link\\.desustream\\.com/\\?id=d2JkL0hDRWxReWpxYUpLaDJYRFJLWXhKbFlCZU5NNEZLMUV0MldLRng2YkFCQT09$",
+      "file": "bounce.txt",
+      "status": 302,
+      "headers": {
+        "location": "https://filedon.co/view/LD3hIw4eng"
+      }
+    },
+    {
+      "match": "^https://link\\.desustream\\.com/\\?id=d2JkL0hDRWxReWo4YUlhaDBYdk5ab1pJbEpWWVBKWmZTR0J2MkcyYW9aSGE=$",
+      "file": "bounce.txt",
+      "status": 302,
+      "headers": {
+        "location": "https://pixeldrain.com/u/uqiFhRRt"
+      }
+    },
+    {
+      "match": "^https://link\\.desustream\\.com/\\?id=d2JkL0hDRWxReWpxYUpLaDJYRFJLWXhKbFlCZU5NNEZYMDFIOTEyeHd2SHNNQT09$",
+      "file": "bounce.txt",
+      "status": 302,
+      "headers": {
+        "location": "https://filedon.co/view/8XYFvC12BS"
+      }
+    },
+    {
+      "match": "^https://link\\.desustream\\.com/\\?id=d2JkL0hDRWxReWo4YUlhaDBYdk5ab1pJbEpWWVBKWmZTRjl0ZzJHNm1vVHY=$",
+      "file": "bounce.txt",
+      "status": 302,
+      "headers": {
+        "location": "https://pixeldrain.com/u/Js2JHiGA"
+      }
+    },
+    {
+      "match": "^https://link\\.desustream\\.com/\\?id=d2JkL0hDRWxReWpxYUpLaDJYRFJLWXhKbFlCZU5NNEZBbU52MG1PN2c3ZmdLQT09$",
+      "file": "bounce.txt",
+      "status": 302,
+      "headers": {
+        "location": "https://filedon.co/view/evqcHIptNK"
+      }
+    },
+    {
+      "match": "^https://link\\.desustream\\.com/\\?id=d2JkL0hDRWxReWo4YUlhaDBYdk5ab1pJbEpWWVBKWmZTRTk5d0VhMWxhYi8=$",
+      "file": "bounce.txt",
+      "status": 302,
+      "headers": {
+        "location": "https://pixeldrain.com/u/ZcqmGfeQ"
+      }
+    },
+    {
+      "match": "^https://link\\.desustream\\.com/\\?id=d2JkL0hDRWxReWpxYUpLaDJYRFJLWXhKbFlCZU5NNEZDbkJNMjJxTGlxRGpVUT09$",
+      "file": "bounce.txt",
+      "status": 302,
+      "headers": {
+        "location": "https://filedon.co/view/meRjAyycM2"
+      }
+    },
+    {
+      "match": "^https://link\\.desustream\\.com/\\?id=d2JkL0hDRWxReWo4YUlhaDBYdk5ab1pJbEpWWVBKWmZTQ0JhNUZLNW5MRFg=$",
+      "file": "bounce.txt",
+      "status": 302,
+      "headers": {
+        "location": "https://pixeldrain.com/u/5DUyKosy"
+      }
+    },
+    {
+      "match": "^https://link\\.desustream\\.com/\\?id=d2JkL0hDRWxReWpxYUpLaDJYRFJLWXhKbFlCZU5NNEZJU0phL2s3SGlZVFlHUT09$",
+      "file": "bounce.txt",
+      "status": 302,
+      "headers": {
+        "location": "https://filedon.co/view/F7DOe5zGvz"
+      }
+    },
+    {
+      "match": "^https://link\\.desustream\\.com/\\?id=d2JkL0hDRWxReWo4YUlhaDBYdk5ab1pJbEpWWVBKWmZTQ05OK3h5aHRZYVg=$",
+      "file": "bounce.txt",
+      "status": 302,
+      "headers": {
+        "location": "https://pixeldrain.com/u/6SJ7SFE9"
+      }
+    },
+    {
+      "match": "desustream\\.net/",
+      "file": "desustream.html"
+    },
+    {
+      "match": "^https://filedon\\.co/(?:embed|view)/SXHTzuE3yl$",
+      "file": "filedon_SXHTzuE3yl.html"
+    },
+    {
+      "match": "^https://filedon\\.co/(?:embed|view)/x6SJpNixNC$",
+      "file": "filedon_x6SJpNixNC.html"
+    },
+    {
+      "match": "^https://filedon\\.co/(?:embed|view)/LD3hIw4eng$",
+      "file": "filedon_LD3hIw4eng.html"
+    },
+    {
+      "match": "^https://filedon\\.co/(?:embed|view)/8XYFvC12BS$",
+      "file": "filedon_8XYFvC12BS.html"
+    },
+    {
+      "match": "^https://filedon\\.co/(?:embed|view)/evqcHIptNK$",
+      "file": "filedon_evqcHIptNK.html"
+    },
+    {
+      "match": "^https://filedon\\.co/(?:embed|view)/meRjAyycM2$",
+      "file": "filedon_meRjAyycM2.html"
+    },
+    {
+      "match": "^https://filedon\\.co/(?:embed|view)/F7DOe5zGvz$",
+      "file": "filedon_F7DOe5zGvz.html"
+    }
+  ]
+}

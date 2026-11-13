@@ -1,0 +1,11 @@
+# The build inlines src-shared/ byte-for-byte into javascript/, and CI checks
+# that the committed output matches a fresh build. Keep the line endings in the
+# repository identical on every platform or that check fails on Windows clones.
+* text=auto eol=lf
+
+# Fixtures are captured bytes from real sites; do not touch them.
+scripts/test-harness/fixtures/** -text
+
+*.png binary
+*.jpg binary
+*.ico binary

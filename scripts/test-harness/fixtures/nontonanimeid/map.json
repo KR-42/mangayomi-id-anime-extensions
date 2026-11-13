@@ -1,0 +1,19 @@
+{
+  "source": "Nonton Anime ID",
+  "captured": "2026-11-10",
+  "note": "Every post URL is served by one captured post, because only the first link of each listing is exercised.",
+  "responses": [
+    {
+      "match": "firebaseio\\.com/views/",
+      "file": "firebase.json"
+    },
+    {
+      "match": "/feeds/posts/summary",
+      "file": "feed.json"
+    },
+    {
+      "match": "nontonanimeid\\.my\\.id/\\d{4}/\\d{2}/[^/]+\\.html",
+      "file": "detail.html"
+    }
+  ]
+}

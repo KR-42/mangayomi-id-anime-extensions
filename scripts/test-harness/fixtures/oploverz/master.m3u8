@@ -1,0 +1,5 @@
+#EXTM3U
+#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=461507,RESOLUTION=636x360
+https://s019.upbolt.to/hls2/01/00043/lwstudk5nky6_l/index-v1-a1.m3u8?t=fixture
+#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=741227,RESOLUTION=848x480
+https://s019.upbolt.to/hls2/01/00043/lwstudk5nky6_n/index-v1-a1.m3u8?t=fixture

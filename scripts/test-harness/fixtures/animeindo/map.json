@@ -1,0 +1,39 @@
+{
+  "source": "AnimeIndo",
+  "captured": "2026-11-10",
+  "note": "HTML as served to a desktop Chrome UA. /anime/boruto-naruto-next-generations/ is served by the detail capture of another series because only its link is exercised. embed_*.html and master.m3u8 are hand-written minimal stand-ins, not captures.",
+  "responses": [
+    {
+      "url": "https://anime-indo.lol/",
+      "file": "home.html"
+    },
+    {
+      "url": "https://anime-indo.lol/search/naruto/",
+      "file": "search.html"
+    },
+    {
+      "url": "https://anime-indo.lol/search/naruto/page/2/",
+      "file": "search2.html"
+    },
+    {
+      "url": "https://anime-indo.lol/anime/boruto-naruto-next-generations/",
+      "file": "detail.html"
+    },
+    {
+      "url": "https://anime-indo.lol/black-clover-2nd-season-episode-6/",
+      "file": "episode.html"
+    },
+    {
+      "match": "play\\.xtwap\\.top/cepat2\\.php",
+      "file": "embed_cepat.html"
+    },
+    {
+      "match": "play\\.xtwap\\.top/btube3\\.php",
+      "file": "embed_btube.html"
+    },
+    {
+      "url": "https://hls.xtwap.top/video/fixture/index.m3u8",
+      "file": "master.m3u8"
+    }
+  ]
+}

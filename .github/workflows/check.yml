@@ -1,0 +1,48 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      # The built files under javascript/ are committed, so a stale build is a
+      # real defect: users would install code that no longer matches src/.
+      - run: npm run build
+      - run: git diff --exit-code -- javascript anime_index.json repo.json
+
+      - run: npm run lint
+      - run: npm run generate
+      - run: git diff --exit-code -- anime_index.json repo.json
+      - run: npm run validate
+      - run: npm test
+
+  # Live scraping is informational: sites change their markup without warning,
+  # so a red live run signals drift to investigate, not a broken commit.
+  live:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run test:live

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Lazy Load Video Player</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+        }
+
+        body {
+            overflow: hidden;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            overflow: hidden;
+        }
+
+        video {
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            display: block;
+
+            background: #000;
+
+            /*
+             * contain = seluruh video terlihat
+             * cover = video memenuhi layar
+             */
+            object-fit: contain;
+        }
+
+        /* 
+         * Overlay sebelum video diload
+         */
+        .lazy-play {
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            cursor: pointer;
+
+            background: #000;
+
+            z-index: 10;
+        }
+
+        /*
+         * Poster
+         */
+        .lazy-play img {
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: contain;
+
+            background: #000;
+        }
+
+        /*
+         * Tombol Play
+         */
+        .play-button {
+            position: relative;
+
+            z-index: 20;
+
+            width: 80px;
+            height: 80px;
+
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, 0.95);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            transition: transform 0.2s ease;
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+        }
+
+        /*
+         * Icon Play
+         */
+        .play-button::after {
+            content: "";
+
+            margin-left: 7px;
+
+            width: 0;
+            height: 0;
+
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 23px solid #000;
+        }
+
+        /*
+         * Mobile
+         */
+        @media (max-width: 600px) {
+
+            .play-button {
+                width: 65px;
+                height: 65px;
+            }
+
+            .play-button::after {
+                border-top-width: 12px;
+                border-bottom-width: 12px;
+                border-left-width: 19px;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="video-container">
+
+    <!--
+        Video belum memiliki src.
+        MP4 baru akan dimuat setelah Play ditekan.
+    -->
+
+    <video
+        id="videoPlayer"
+        controls
+        preload="none"
+        playsinline
+        poster="https://1.bp.blogspot.com/-_hry8Jf4-rE/YUFwSer_GmI/AAAAAAAAJzQ/x3FebfvoOmcpwVGyUmkDqx5a7t8-GmN8ACLcBGAsYHQ/s960/Otakudesu%2BStreaming.png">
+    </video>
+
+
+    <!--
+        Overlay Play
+    -->
+
+    <div
+        class="lazy-play"
+        id="lazyPlay">
+
+        <img
+            src="https://1.bp.blogspot.com/-_hry8Jf4-rE/YUFwSer_GmI/AAAAAAAAJzQ/x3FebfvoOmcpwVGyUmkDqx5a7t8-GmN8ACLcBGAsYHQ/s960/Otakudesu%2BStreaming.png"
+            alt="Video">
+
+        <div class="play-button"></div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const video = document.getElementById("videoPlayer");
+const lazyPlay = document.getElementById("lazyPlay");
+
+
+/*
+|--------------------------------------------------------------------------
+| URL VIDEO
+|--------------------------------------------------------------------------
+*/
+
+const videoURL =
+    "https://cdn.odcloud.net/anime/Otakudesu.io_TSKD--01_720p.mp4";
+
+
+/*
+|--------------------------------------------------------------------------
+| LOAD VIDEO KETIKA PLAY
+|--------------------------------------------------------------------------
+*/
+
+lazyPlay.addEventListener("click", function () {
+
+    /*
+     * Hilangkan overlay
+     */
+    lazyPlay.style.display = "none";
+
+
+    /*
+     * Pastikan video belum pernah diload
+     */
+    if (!video.src) {
+
+        /*
+         * Masukkan URL MP4
+         */
+        video.src = videoURL;
+
+        /*
+         * Mulai loading
+         */
+        video.load();
+
+    }
+
+
+    /*
+     * Play video
+     */
+    video.play().catch(function (error) {
+
+        console.log("Play error:", error);
+
+    });
+
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| FALLBACK
+|--------------------------------------------------------------------------
+*/
+
+video.addEventListener("play", function () {
+
+    if (!video.src) {
+
+        video.src = videoURL;
+
+        video.load();
+
+        video.play().catch(function (error) {
+
+            console.log(error);
+
+        });
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>

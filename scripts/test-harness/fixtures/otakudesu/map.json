@@ -1,0 +1,85 @@
+{
+  "source": "Otaku Desu",
+  "captured": "2026-11-10",
+  "note": "HTML as served to a desktop Chrome UA. The admin-ajax nonce is stale-proof (the site does not bind it to cookies) but the iframe ids inside ajax_mirror_*.json are the ones from the capture; the embed pages referenced here were fetched from those same ids.",
+  "responses": [
+    { "url": "https://otakudesu.blog/complete-anime/", "file": "complete-anime.html" },
+    { "url": "https://otakudesu.blog/ongoing-anime/", "file": "ongoing-anime.html" },
+    {
+      "url": "https://otakudesu.blog/?s=naruto&post_type=anime",
+      "file": "search.html"
+    },
+    {
+      "url": "https://otakudesu.blog/anime/super-yani-suu-futari-sub-indo/",
+      "file": "detail.html"
+    },
+    {
+      "url": "https://otakudesu.blog/episode/snudysf-episode-12-sub-indo/",
+      "file": "episode.html"
+    },
+    { "url": "https://otakudesu.blog/genres/action/", "file": "genre.html" },
+    { "url": "https://otakudesu.blog/genres/action/page/2/", "file": "genre-page2.html" },
+
+    {
+      "method": "POST",
+      "match": "admin-ajax\\.php$",
+      "body": "action=aa1208d27f29ca340c92c66d1926f13f",
+      "file": "ajax_nonce.json"
+    },
+    {
+      "method": "POST",
+      "match": "admin-ajax\\.php$",
+      "body": "id=206810&i=0&q=480p&",
+      "file": "ajax_mirror_otakuwatch7.json"
+    },
+    {
+      "method": "POST",
+      "match": "admin-ajax\\.php$",
+      "body": "id=206810&i=1&q=480p&",
+      "file": "ajax_mirror_odstream.json"
+    },
+    {
+      "method": "POST",
+      "match": "admin-ajax\\.php$",
+      "body": "id=206810&i=2&q=480p&",
+      "file": "ajax_mirror_vidhide.json"
+    },
+    {
+      "method": "POST",
+      "match": "admin-ajax\\.php$",
+      "body": "id=206810&i=0&q=720p&",
+      "file": "ajax_mirror_otakuwatch7hd.json"
+    },
+    {
+      "method": "POST",
+      "match": "admin-ajax\\.php$",
+      "body": "id=206810&i=1&q=720p&",
+      "file": "ajax_mirror_odstreamhd.json"
+    },
+    {
+      "method": "POST",
+      "match": "admin-ajax\\.php$",
+      "body": "id=206810&i=2&q=720p&",
+      "file": "ajax_mirror_vidhide2.json"
+    },
+
+    {
+      "url": "https://desustream.com/dstream/otakuwatch7/new/index.php?id=b29abHB4RkxVWmtBMGhmQXVRUGZ5SUE4VFIrOE5RSjFzU2lwZzRjZitqUT0=",
+      "file": "embed_otakuwatch7.html"
+    },
+    {
+      "url": "https://desustream.com/dstream/otakuwatch7/new/hd/index.php?id=b29abHB4RkxVWmtBMGhmQXVRUGZ5SUE4VFIrOE5RSjFzU2lwZzRjZitqUT0=",
+      "file": "embed_otakuwatch7hd.html"
+    },
+    {
+      "url": "https://desustream.net/dstream/arcg/?id=YVQ4RXNpWHJOZmVDdVdkSWF6djZiYUpnZ3FLakhMOXB6WG5hcXBZNmNhMzB6SmlaVzZQZXdIZ2xFeWVtNW1rWQ==",
+      "file": "embed_arcg_480.html"
+    },
+    {
+      "url": "https://desustream.net/dstream/arcg/?id=YVQ4RXNpWHJOZmVDdVdkSWF6djZiYUpnZ3FLakhMOXB6WG5hcXBZNmNhMHFVQTBUb3ArbjJqVmRpUjFuK0ZqZQ==",
+      "file": "embed_arcg_720.html"
+    },
+    { "url": "https://odvidhide.com/embed/bd9w7oi1lrqj", "file": "embed_vidhide.html" },
+    { "url": "https://odvidhide.com/embed/i4mr8c9kpn1k", "file": "embed_vidhide2.html" }
+  ]
+}

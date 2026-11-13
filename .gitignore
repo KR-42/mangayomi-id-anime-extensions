@@ -1,0 +1,12 @@
+# Dependencies
+node_modules/
+
+# Reference clones and raw site samples (large, not needed to build or run)
+research/
+
+# Local overrides
+.env
+.env.*
+npm-debug.log*
+.DS_Store
+Thumbs.db

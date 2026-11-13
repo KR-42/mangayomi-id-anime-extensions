@@ -1,0 +1,20 @@
+{
+  "name": "mangayomi-id-anime-extensions",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Extension anime subtitle Indonesia untuk Mangayomi",
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "generate": "node scripts/generate-index.js",
+    "validate": "node scripts/validate.js",
+    "lint": "node scripts/lint.js",
+    "test": "node scripts/test-shared.js && node scripts/test-harness/run.js",
+    "test:shared": "node scripts/test-shared.js",
+    "test:live": "node scripts/test-harness/run.js --live",
+    "check": "npm run lint && npm run validate && npm run test"
+  },
+  "devDependencies": {
+    "linkedom": "^0.18.15"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "source": "Nekopoi",
+  "captured": "2026-11-13",
+  "note": "Halaman diambil dari situs aslinya (beranda, satu seri, satu episode, hasil pencarian). streampoi_embed.html juga asli. master.m3u8 ditulis tangan sebagai pengganti playlist CDN, dan streampoi.com memakai match supaya id embed yang berganti tidak memutus fixture. playmogo/plamogo sengaja tidak dipetakan: host itu menjawab tantangan Cloudflare dari jaringan ini, dan di perangkat keras ekstraktor Dart-nya yang menangani, jadi jalur streampoi inilah yang harus terbukti jalan di JS murni.",
+  "responses": [
+    {
+      "url": "https://nekopoi.care/",
+      "file": "home.html"
+    },
+    {
+      "url": "https://nekopoi.care/search/naruto/",
+      "file": "search.html"
+    },
+    {
+      "url": "https://nekopoi.care/hentai/boku-misaki-sensei/",
+      "file": "detail.html"
+    },
+    {
+      "url": "https://nekopoi.care/new-release-boku-misaki-sensei-episode-1-subtitle-indonesia/",
+      "file": "episode.html"
+    },
+    {
+      "match": "streampoi\\.com/embed-[a-z0-9]+\\.html",
+      "file": "streampoi_embed.html"
+    },
+    {
+      "match": "streamruby\\.net/hls2/.*master\\.m3u8",
+      "file": "master.m3u8"
+    }
+  ]
+}

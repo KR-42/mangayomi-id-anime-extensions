@@ -1,0 +1,12 @@
+{
+  "source": "Anibatch",
+  "captured": "2026-11-11",
+  "note": "HTML as served to a desktop Chrome UA. Every series path is served by the capture of one movie post (Digimon Adventure tri. 1), because only the first link of each listing is exercised. player.html is a hand-written minimal stand-in for the BerkasDrive player endpoint, not a capture.",
+  "responses": [
+    { "url": "https://www.animebatch.id/?view=all&sort=popular", "file": "popular.html" },
+    { "url": "https://www.animebatch.id/?view=all&sort=newest", "file": "latest.html" },
+    { "url": "https://www.animebatch.id/?q=naruto", "file": "search.html" },
+    { "match": "animebatch\\.id/api/v1/player/", "file": "player.html" },
+    { "match": "animebatch\\.id/[a-z0-9-]+/$", "file": "detail.html" }
+  ]
+}

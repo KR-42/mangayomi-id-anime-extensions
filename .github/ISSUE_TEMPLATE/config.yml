@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "💬 Ide, Feedback & Tanya-Jawab"
+    url: https://github.com/KR-42/mangayomi-id-anime-extensions/discussions
+    about: "Diskusi santai, ide fitur, dan pertanyaan umum (bukan laporan bug)."
+  - name: "📖 Panduan Pasang (README)"
+    url: https://github.com/KR-42/mangayomi-id-anime-extensions#-pasang-sekali-ketuk
+    about: "Cara memasang repo ke Mangayomi — QR, tautan, atau manual."

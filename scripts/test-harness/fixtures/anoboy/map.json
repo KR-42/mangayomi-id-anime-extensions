@@ -1,0 +1,31 @@
+{
+  "source": "Anoboy",
+  "captured": "2026-11-11",
+  "note": "HTML as served to a desktop Chrome UA. Every dated series post is served by one captured series, every episode by one captured episode, and blogger.com/video.g by that episode's captured player. Streaming tops at 720p (Blogger/YourUpload); YourUpload is an app-native extractor, so only Blogger yields videos in-harness.",
+  "responses": [
+    {
+      "match": "anoboy\\.at/\\d{4}/\\d{2}/[^/]*episode[^/]*/$",
+      "file": "episode.html"
+    },
+    {
+      "match": "anoboy\\.at/\\d{4}/\\d{2}/[^/]+/$",
+      "file": "detail.html"
+    },
+    {
+      "match": "blogger\\.com/video\\.g",
+      "file": "blogger.html"
+    },
+    {
+      "url": "https://anoboy.at/anime/ongoing/",
+      "file": "ongoing.html"
+    },
+    {
+      "url": "https://anoboy.at/",
+      "file": "home.html"
+    },
+    {
+      "url": "https://anoboy.at/?s=naruto",
+      "file": "search.html"
+    }
+  ]
+}

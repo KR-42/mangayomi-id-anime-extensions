@@ -1,0 +1,43 @@
+name: "➕ Request / Lapor Sumber"
+description: "Usulkan situs anime baru, atau laporkan sumber yang mati total."
+title: "[Sumber]: "
+labels: ["source-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Punya situs anime sub Indo yang bagus, atau ada sumber yang **mati total**? Ceritakan di sini. 🙌
+        > Untuk sekadar ide/obrolan santai, lebih cocok lewat **Discussions**.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: "Jenis"
+      options:
+        - "Usulan sumber baru"
+        - "Sumber yang sudah ada tapi mati / pindah domain"
+    validations:
+      required: true
+  - type: input
+    id: site
+    attributes:
+      label: "Nama & URL situs"
+      placeholder: "ContohAnime — https://contohanime.xyz"
+    validations:
+      required: true
+  - type: textarea
+    id: detail
+    attributes:
+      label: "Detail"
+      description: "Kenapa situs ini layak? Katalognya lengkap? Ada 1080p?"
+      placeholder: "Situs ini update cepat, punya 1080p, servernya ..."
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: "Konfirmasi"
+      options:
+        - label: "Situs ini menyediakan **streaming** (bukan hanya unduhan Google Drive/Mega)."
+          required: false
+        - label: "Saya paham sumber ditambahkan bila memungkinkan secara teknis & sesuai aturan proyek."
+          required: false

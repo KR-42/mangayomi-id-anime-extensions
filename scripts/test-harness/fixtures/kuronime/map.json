@@ -1,0 +1,41 @@
+{
+  "source": "Kuronime",
+  "captured": "2026-11-11",
+  "note": "HTML as served to a desktop Chrome UA. Every series path is served by the capture of one series (Chitose-kun wa Ramune Bin no Naka Part 2) and every episode path by its episode 1, because only the first link of each listing is exercised. api.json is the player API's real (encrypted) answer for that episode. mp4upload.html is a hand-written minimal stand-in; the other mirror hosts answer 404.",
+  "responses": [
+    {
+      "url": "https://kuronime.sbs/anime/?order=popular",
+      "file": "popular.html"
+    },
+    {
+      "url": "https://kuronime.sbs/anime/?order=update",
+      "file": "latest.html"
+    },
+    {
+      "url": "https://kuronime.sbs/?s=naruto",
+      "file": "search.html"
+    },
+    {
+      "match": "kuronime\\.sbs/anime/[^/?]+/$",
+      "file": "detail.html"
+    },
+    {
+      "match": "kuronime\\.sbs/nonton-[^/?]+/$",
+      "file": "episode.html"
+    },
+    {
+      "method": "POST",
+      "url": "https://animeku.org/api/v9/sources",
+      "file": "api.json"
+    },
+    {
+      "match": "mp4upload\\.com/embed-",
+      "file": "mp4upload.html"
+    },
+    {
+      "match": "pixeldrain\\.com|vidhide|dsvplay|dood|krakenfiles",
+      "file": "empty.html",
+      "status": 404
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+name: "🐛 Lapor Bug / Error"
+description: "Ekstensi error, atau video tidak bisa diputar."
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Terima kasih sudah melapor! 🙏
+        Makin lengkap infonya, makin cepat diperbaiki. Lampirkan **screenshot/rekaman** kalau bisa.
+  - type: dropdown
+    id: source
+    attributes:
+      label: "Sumber ekstensi"
+      options:
+        - Otaku Desu
+        - Samehadaku
+        - AnimeIndo
+        - Nonton Anime ID
+        - Anibatch
+        - Kuronime
+        - Oploverz
+        - Anoboy
+        - Animangahub
+        - Lainnya / tidak yakin
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: "Versi sumber"
+      description: "Lihat di Ekstensi → Anime (mis. 0.1.1)."
+      placeholder: "0.1.1"
+    validations:
+      required: false
+  - type: dropdown
+    id: area
+    attributes:
+      label: "Bagian yang bermasalah"
+      options:
+        - "Video tidak bisa diputar"
+        - "Populer / Terbaru error atau macet"
+        - "Pencarian / filter error"
+        - "Detail / daftar episode error"
+        - "Instalasi / update sumber"
+        - "Lainnya"
+    validations:
+      required: true
+  - type: input
+    id: episode
+    attributes:
+      label: "Judul & nomor episode"
+      description: "Isi kalau masalahnya di sebuah episode."
+      placeholder: "One Piece — Episode 1180"
+    validations:
+      required: false
+  - type: input
+    id: server
+    attributes:
+      label: "Server yang dipilih (jika soal video)"
+      placeholder: "BerkasDrive / Blogger / HiAnime / Desustream / ..."
+    validations:
+      required: false
+  - type: textarea
+    id: what
+    attributes:
+      label: "Apa yang terjadi?"
+      description: "Ceritakan masalahnya dan salin **pesan error** persis (kalau ada)."
+      placeholder: "Saat menekan episode, muncul: 'Error: ...'"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Langkah reproduksi"
+      description: "Langkah agar kami bisa mengulang masalahnya."
+      placeholder: |
+        1. Buka sumber ...
+        2. Tekan episode ...
+        3. Pilih server ...
+        4. Muncul error ...
+    validations:
+      required: false
+  - type: textarea
+    id: media
+    attributes:
+      label: "Screenshot / rekaman layar"
+      description: "Seret-jatuhkan gambar atau video ke kotak ini. Sangat membantu! 📎"
+    validations:
+      required: false
+  - type: input
+    id: app
+    attributes:
+      label: "Versi Mangayomi & HP/OS"
+      placeholder: "Mangayomi 0.x.x — Android 14"
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: "Sebelum mengirim"
+      options:
+        - label: "Saya sudah meng-update ekstensi ke versi terbaru."
+          required: true
+        - label: "Saya sudah cek domain situs masih aktif (dan mencoba ganti domain di Pengaturan bila perlu)."
+          required: false
+        - label: "Masalah ini belum ada di Issues yang masih terbuka."
+          required: true

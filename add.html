@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Tambah ke Mangayomi</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; display: grid; place-items: center;
+      background: radial-gradient(1200px 600px at 50% -10%, #2a0a4a, #0b0710 60%);
+      color: #ECE8F6; font: 16px/1.6 -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      padding: 24px;
+    }
+    .card {
+      width: 100%; max-width: 460px; text-align: center;
+      background: #140c22cc; border: 1px solid #ffffff1a; border-radius: 20px;
+      padding: 28px 24px; box-shadow: 0 20px 60px #0008; backdrop-filter: blur(6px);
+    }
+    h1 { font-size: 22px; margin: 6px 0 4px; }
+    p { margin: 10px 0; color: #C9C2E0; }
+    .btn {
+      display: inline-block; margin: 14px 0 6px; padding: 14px 26px; border-radius: 999px;
+      background: linear-gradient(90deg, #7F00FF, #E100FF); color: #fff; font-weight: 700;
+      text-decoration: none; border: none; cursor: pointer; font-size: 16px;
+    }
+    .btn:active { transform: translateY(1px); }
+    .spin { width: 42px; height: 42px; margin: 6px auto 4px; border-radius: 50%;
+      border: 4px solid #ffffff22; border-top-color: #E100FF; animation: s 0.9s linear infinite; }
+    @keyframes s { to { transform: rotate(360deg); } }
+    hr { border: none; border-top: 1px solid #ffffff1a; margin: 22px 0 16px; }
+    code {
+      display: block; word-break: break-all; background: #0c0816; border: 1px solid #ffffff14;
+      border-radius: 10px; padding: 12px; font-size: 13px; color: #B9F; margin: 8px 0;
+    }
+    .mini { font-size: 13px; color: #9A90B8; }
+    .tip { font-size: 13.5px; color: #FFE9A8; background: #3a2a0a66; border: 1px solid #FFD93D33;
+      border-radius: 12px; padding: 12px 14px; text-align: left; }
+    a.link { color: #C77DFF; }
+    .ok { color: #7CF29C; height: 18px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="spin" aria-hidden="true"></div>
+    <h1>Membuka Mangayomi…</h1>
+    <p>Repo <b>ID Anime Extensions</b> sedang ditambahkan. Jika aplikasi tidak terbuka, ketuk tombol di bawah.</p>
+
+    <p class="tip">⚠️ <b>Penting:</b> <b>tutup dulu</b> aplikasi <b>Mangayomi</b> — pastikan tidak berjalan di background (geser tutup dari recent apps) — baru ketuk tombol ini, supaya dialog <b>"Add Repository?"</b> muncul. Kalau aplikasi masih berjalan, link hanya membuka halaman utama.</p>
+
+    <a class="btn" id="open" href="#">➕ Buka Mangayomi</a>
+    <p class="mini">Belum punya aplikasinya? <a class="link" href="https://github.com/kodjodevf/mangayomi" rel="noopener">Unduh Mangayomi</a>.</p>
+
+    <hr />
+    <p class="mini">Atau pasang manual — salin URL ini ke <b>Ekstensi → Anime → ➕</b>:</p>
+    <code id="url">https://raw.githubusercontent.com/KR-42/mangayomi-id-anime-extensions/main/anime_index.json</code>
+    <button class="btn" style="background:#2a1b45;font-size:14px;padding:10px 20px" onclick="copyUrl()">📋 Salin URL</button>
+    <p class="ok" id="ok"></p>
+  </main>
+
+  <script>
+    var deeplink = "mangayomi://add-repo?repo_name=ID%20Anime%20Extensions&anime_url=https%3A%2F%2Fraw.githubusercontent.com%2FKR-42%2Fmangayomi-id-anime-extensions%2Fmain%2Fanime_index.json";
+    document.getElementById("open").setAttribute("href", deeplink);
+    // Coba buka aplikasi otomatis sesaat setelah halaman dimuat.
+    setTimeout(function () { try { window.location.href = deeplink; } catch (e) {} }, 500);
+    function copyUrl() {
+      var url = document.getElementById("url").textContent.trim();
+      var done = function () { document.getElementById("ok").textContent = "✓ URL tersalin"; };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(done, function () { fallback(url, done); });
+      } else { fallback(url, done); }
+    }
+    function fallback(text, done) {
+      var t = document.createElement("textarea");
+      t.value = text; document.body.appendChild(t); t.select();
+      try { document.execCommand("copy"); done(); } catch (e) {}
+      document.body.removeChild(t);
+    }
+  </script>
+</body>
+</html>

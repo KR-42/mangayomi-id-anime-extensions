@@ -23,7 +23,7 @@ const mangayomiSources = [{
   "typeSource": "single",
   "itemType": 1,
   "isNsfw": false,
-  "version": "0.1.2",
+  "version": "0.1.3",
   "pkgPath": "anime/src/id/animangahub.js",
   "hasCloudflare": true,
   "notes": "Video utama Blogger (kualitas seadanya). Mirror Filedon/Pixeldrain membawa 1080p MP4 maupun MKV; keduanya diambil lewat redirector link.desustream.com yang membalas 302 ke host aslinya, jadi tidak ada gerbang yang perlu ditembus. Domain bisa berpindah; atur di Pengaturan."
@@ -2434,6 +2434,11 @@ const AMH_PER_PAGE = 24;
 // lists these under is tried (1080p MP4 and MKV both), so the highest quality
 // the site holds is what the user sees.
 const AMH_STREAM_MIRRORS = ["Filedon", "Pdrain", "KFiles"];
+// Each mirror is resolved through link.desustream.com, which the app can only
+// reach via a WebView hop (its HTTP client gets bounced). WebView hops are slow,
+// so only this many are taken per episode — enough for a few qualities/servers
+// without a long wait. The primary Desustream/Blogger server is always included.
+const AMH_MIRROR_BUDGET = 6;
 const AMH_SERVERS = ["Blogger", "Filedon", "Pixeldrain", "Krakenfiles"];
 
 class DefaultExtension extends IdBaseProvider {
@@ -2617,18 +2622,24 @@ class DefaultExtension extends IdBaseProvider {
       videos.forEach(function (v) { results.push(v); });
     }
 
-    // Mirror tiers, highest resolution first, so 1080p leads every list. Each
-    // hop is independent: one mirror that a host cannot play is skipped, the
-    // rest of the tier is still tried, and the next tier still runs.
+    // Mirror tiers, highest resolution first, so 1080p leads every list. The
+    // WebView hop is rationed (AMH_MIRROR_BUDGET) and the host order is honoured,
+    // so the budget is spent on the best qualities/servers first.
+    this._desuWebview = false;
+    this._webviewBudget = AMH_MIRROR_BUDGET;
     const tiers = this.orderedTiers(data.resolutions || []);
+    const resolvedSeen = {};
     for (let t = 0; t < tiers.length; t++) {
       const tier = tiers[t];
       const mirrors = (tier.mirrors || []).filter(function (m) {
         return AMH_STREAM_MIRRORS.indexOf(safeString(m.label)) !== -1;
+      }).sort(function (a, b) {
+        return AMH_STREAM_MIRRORS.indexOf(safeString(a.label)) - AMH_STREAM_MIRRORS.indexOf(safeString(b.label));
       });
       for (let m = 0; m < mirrors.length; m++) {
         const real = await this.resolveDesustream(mirrors[m].url);
-        if (!real) continue;
+        if (!real || resolvedSeen[real]) continue;
+        resolvedSeen[real] = true;
         const videos = await this.resolveEmbed(real, cleanText(mirrors[m].label), tier.resolution);
         videos.forEach(function (v) { results.push(v); });
       }
@@ -2652,21 +2663,51 @@ class DefaultExtension extends IdBaseProvider {
   async resolveDesustream(mirrorUrl) {
     const url = safeString(mirrorUrl);
     if (!/link\.desustream\./i.test(url)) return url;
+    // Fast path: the HTTP client reads the 302 Location directly. This works on
+    // some networks; where `link.desustream.com` bounces the app's client (by
+    // its TLS fingerprint), the Location points back to a landing page instead.
+    if (!this._desuWebview) {
+      const viaHttp = await this.desustreamHttp(url);
+      if (viaHttp) return viaHttp;
+      // Bounced once — a real browser is accepted, so switch to the WebView and
+      // stay there for the rest of this episode.
+      this._desuWebview = true;
+    }
+    return this.desustreamWebview(url);
+  }
+
+  async desustreamHttp(url) {
     try {
       const client = new Client({ followRedirects: false });
       const res = await client.get(url, this.headersFor(this.getBaseUrl() + "/"));
       const loc = safeString(res && res.headers && (res.headers.location || res.headers.Location));
-      if (!loc) return "";
-      const host = hostOf(loc);
-      if (/otakudesu\.|animeindo\.cloud|animangahub\./i.test(host)) {
-        console.log("animangahub: hop desustream mendarat di " + host + "; mirror dilewati");
-        return "";
-      }
-      return loc;
+      return desustreamReal(loc) ? loc : "";
     } catch (e) {
-      console.log("animangahub: hop desustream gagal: " + e);
+      console.log("animangahub: hop desustream (http) gagal: " + e);
       return "";
     }
+  }
+
+  /**
+   * link.desustream.com hands the real mirror host to a browser but bounces the
+   * app's HTTP client. Loading it in the app WebView (a real browser) follows
+   * the 302 to filedon/pixeldrain; the final URL is read back. Hops are rationed
+   * by `_webviewBudget` because each one is a full page load.
+   */
+  async desustreamWebview(url) {
+    if (!this._webviewBudget || this._webviewBudget <= 0) return "";
+    this._webviewBudget--;
+    const script = "(function(){var n=0;var t=setInterval(function(){n++;" +
+      "if(!/link\\.desustream/i.test(location.href)||n>=80){clearInterval(t);" +
+      "window.flutter_inappwebview.callHandler('setResponse',location.href);}},250);})();";
+    try {
+      const href = safeString(await evaluateJavascriptViaWebview(url, {}, [script], 25));
+      if (desustreamReal(href)) return href;
+      console.log("animangahub: WebView desustream mendarat di " + hostOf(href) + "; dilewati");
+    } catch (e) {
+      console.log("animangahub: WebView desustream gagal: " + e);
+    }
+    return "";
   }
 
   async resolveEmbed(embedUrl, serverLabel, siteQuality) {
@@ -2749,6 +2790,13 @@ function amhSlug(url) {
 function amhDate(text) {
   const t = Date.parse(safeString(text).replace(",", " "));
   return t > 0 ? String(t) : "";
+}
+
+/** A desustream hop that reached a real file host (not a landing/bounce). */
+function desustreamReal(loc) {
+  const url = safeString(loc);
+  if (!/^https?:\/\//i.test(url)) return false;
+  return !/link\.desustream|otakudesu\.|animeindo\.cloud|animangahub\./i.test(hostOf(url));
 }
 
 function amhServer(url, label) {

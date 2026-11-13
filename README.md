@@ -68,7 +68,7 @@
 | **Kuronime** | `0.1.3` | ⏳ Belum | 🟢 1080p | 12 Nov 2026 |
 | **Oploverz** | `0.2.1` | ⏳ Belum | 🟢 1080p | 12 Nov 2026 |
 | **Anoboy** | `0.1.1` | ⏳ Belum | 🟡 720p | 12 Nov 2026 |
-| **Animangahub** | `0.1.2` | ⏳ Belum | 🟢 1080p | 12 Nov 2026 |
+| **Animangahub** | `0.1.3` | ⏳ Belum | 🟢 1080p | 13 Nov 2026 |
 
 <sub>🟢 = tersedia hingga 1080p · 🟡 = maksimal 720p.</sub>
 

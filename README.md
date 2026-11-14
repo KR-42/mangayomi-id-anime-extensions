@@ -96,7 +96,7 @@
 
 | 🎬 Sumber | 🏷️ Versi | 📺 Kualitas | 🕒 Terakhir Update |
 |:---|:---:|:---:|:---:|
-| **Nekopoi** 🔞 | `0.2.5` | 🟡 720p | 14 Nov 2026 |
+| **Nekopoi** 🔞 | `0.2.6` | 🟡 720p | 15 Nov 2026 |
 
 - **Domain:** `https://nekopoi.care` — bisa diganti di _Pengaturan sumber_ kalau situsnya pindah.
 - **Wajib VPN.** Situsnya memblokir IP Indonesia. Mengganti DNS ke Cloudflare **tidak menolong**:
@@ -143,7 +143,7 @@
 | **Nonton Anime ID** | ±9 episode paling awal hanya ada di Dailymotion terlindungi → tanpa video. |
 | **Anibatch** | Saat scroll **Populer/Terbaru** ke halaman berikutnya, kadang **macet di loading** di HP. |
 | **Oploverz** | Server **upbolt** kadang minta verifikasi Cloudflare — tekan **WebView** di layar error sekali, lalu buka episode lagi. |
-| **Nekopoi** | Video/episode **memang sangat lambat** dibuka — tunggu **1–2 menit** dulu, jangan tutup dan jangan ganti server. Kalau lewat **2 menit** masih tidak bisa, baru laporkan bug. Sejak **`0.2.5`** server mirror yang sudah mati dilewati seketika (tes `HEAD`) dan jalur cadangan WebView dibatasi **20 detik** yang berhenti di stream pertama, jadi gagalnya cepat kelihatan. Server **1 dan 2** (playmogo/plamogo) mati di sisi situs — bukan bug ekstensi, pakai **Server 3** (streampoi) kalau ada. Situs juga memblokir IP Indonesia di level TLS, jadi **wajib VPN**; ganti DNS tidak menolong. |
+| **Nekopoi** | Video/episode **memang sangat lambat** dibuka — tunggu **1–2 menit** dulu, jangan tutup dan jangan ganti server. Kalau lewat **2 menit** masih tidak bisa, baru laporkan bug. Sejak **`0.2.5`** server mirror yang sudah mati dilewati seketika (tes `HEAD`) dan jalur cadangan WebView dibatasi **20 detik** yang berhenti di stream pertama, jadi gagalnya cepat kelihatan. Sejak **`0.2.6`** iframe yang masih menunjuk domain mati **plamogo.com** otomatis dialihkan ke **playmogo.com** yang hidup (id embed sama), jadi **Server 1 dan 2 kembali bisa diputar**. Situs juga memblokir IP Indonesia di level TLS, jadi **wajib VPN**; ganti DNS tidak menolong. |
 
 </div>
 

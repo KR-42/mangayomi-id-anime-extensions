@@ -26,10 +26,10 @@ const mangayomiSources = [{
   "typeSource": "single",
   "itemType": 1,
   "isNsfw": true,
-  "version": "0.2.5",
+  "version": "0.2.6",
   "pkgPath": "anime/src/id/nekopoi.js",
   "hasCloudflare": true,
-  "notes": "Konten 18+. Situs memblokir IP Indonesia di level TLS, jadi sumber ini hanya jalan lewat VPN — mengganti DNS ke Cloudflare tidak menolong. Domain bisa berpindah; atur di Pengaturan sumber. Video/episode memang lambat dibuka: tunggu 1-2 menit dulu sebelum menganggapnya gagal. v0.2.5: pemutar tidak lagi menggantung lama — host mirror yang sudah mati dilewati dalam sekejap (tes HEAD dulu), jatah coba di WebView dipotong jadi 20 detik dan berhenti di stream pertama, stream DoodStream dibekali User-Agent + Referer aslinya supaya CDN mengirim video (bukan pengalihan kosong), dan posting [NEW Release] sekarang bisa dibuka kembali ke folder serinya. Server 1/2 (playmogo/plamogo) sering mati di sisi situs — pakai Server 3 (streampoi) bila ada."
+  "notes": "Konten 18+. Situs memblokir IP Indonesia di level TLS, jadi sumber ini hanya jalan lewat VPN — mengganti DNS ke Cloudflare tidak menolong. Domain bisa berpindah; atur di Pengaturan sumber. Video/episode memang lambat dibuka: tunggu 1-2 menit dulu sebelum menganggapnya gagal. v0.2.5: pemutar tidak lagi menggantung lama — host mirror yang sudah mati dilewati dalam sekejap (tes HEAD dulu), jatah coba di WebView dipotong jadi 20 detik dan berhenti di stream pertama, stream DoodStream dibekali User-Agent + Referer aslinya supaya CDN mengirim video (bukan pengalihan kosong), dan posting [NEW Release] sekarang bisa dibuka kembali ke folder serinya. Server 1/2 (playmogo/plamogo) sering mati di sisi situs — pakai Server 3 (streampoi) bila ada. v0.2.6: iframe yang masih menunjuk domain mirror mati plamogo.com kini otomatis dialihkan ke playmogo.com yang hidup (id embed-nya sama), jadi Server 1/2 kembali bisa diputar tanpa menunggu Server 3."
 }];
 
 // The shared helpers are inlined here, before the extension class: a class
@@ -2438,6 +2438,30 @@ const NEKOPOI_SERVERS = ["Server 1", "Server 2", "Server 3"];
 const NEKOPOI_DOOD_HOST = /playmogo\.|plamogo\.|dood[a-z0-9-]*\.|d000d\.|dsvplay\./i;
 
 /**
+ * Retired DoodStream mirror domains, each mapped to the operator's live
+ * sibling. DoodStream rotates its embed domains and pulls the old ones out of
+ * DNS, but the embed id is shared across siblings, so an iframe still pointing
+ * at a dead mirror plays once its host is swapped for the live one.
+ *
+ * Verified 15 Nov 2026: plamogo.com is NXDOMAIN, yet playmogo.com serves the
+ * same /e/<id> with a working /pass_md5 handshake and a real cloudatacdn.com
+ * stream. (stmpoi.com -> streampoi.com was tested too and does NOT carry the
+ * same player, so it is deliberately left out.)
+ */
+const NEKOPOI_DEAD_MIRRORS = { "plamogo.com": "playmogo.com" };
+
+/** Swap a dead mirror host for its live sibling; other URLs pass through. */
+function reviveMirror(url) {
+  const s = String(url || "");
+  const m = /^(https?:\/\/)([^/?#]+)/i.exec(s);
+  if (!m) return s;
+  const host = m[2].toLowerCase().replace(/^www\./, "");
+  const live = NEKOPOI_DEAD_MIRRORS[host];
+  if (!live) return s;
+  return m[1] + live + s.slice(m[1].length + m[2].length);
+}
+
+/**
  * Budget for the last-resort WebView replay, in seconds.
  *
  * The handshake itself answers in well under a second; the wait only exists so
@@ -3103,7 +3127,7 @@ class DefaultExtension extends IdBaseProvider {
       const src = safeString(frames[i].selectFirst("iframe").attr("src"));
       if (!src) continue;
       out.push({
-        url: this.resolve(decodeEntities(src)),
+        url: reviveMirror(this.resolve(decodeEntities(src))),
         server: labels[id] || ("Server " + (i + 1)),
       });
     }
@@ -3114,7 +3138,7 @@ class DefaultExtension extends IdBaseProvider {
     for (let i = 0; i < legacy.length; i++) {
       const src = safeString(legacy[i].attr("src"));
       if (!src) continue;
-      out.push({ url: this.resolve(decodeEntities(src)), server: "Server " + (i + 1) });
+      out.push({ url: reviveMirror(this.resolve(decodeEntities(src))), server: "Server " + (i + 1) });
     }
     return out;
   }

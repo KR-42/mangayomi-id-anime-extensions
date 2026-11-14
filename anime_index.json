@@ -122,14 +122,14 @@
     "hasCloudflare": true,
     "sourceCodeUrl": "https://raw.githubusercontent.com/KR-42/mangayomi-id-anime-extensions/main/javascript/anime/src/id/nekopoi.js",
     "apiUrl": "",
-    "version": "0.2.5",
+    "version": "0.2.6",
     "isManga": false,
     "itemType": 1,
     "isFullData": false,
     "appMinVerReq": "0.5.0",
     "additionalParams": "",
     "sourceCodeLanguage": 1,
-    "notes": "Konten 18+. Situs memblokir IP Indonesia di level TLS, jadi sumber ini hanya jalan lewat VPN — mengganti DNS ke Cloudflare tidak menolong. Domain bisa berpindah; atur di Pengaturan sumber. Video/episode memang lambat dibuka: tunggu 1-2 menit dulu sebelum menganggapnya gagal. v0.2.5: pemutar tidak lagi menggantung lama — host mirror yang sudah mati dilewati dalam sekejap (tes HEAD dulu), jatah coba di WebView dipotong jadi 20 detik dan berhenti di stream pertama, stream DoodStream dibekali User-Agent + Referer aslinya supaya CDN mengirim video (bukan pengalihan kosong), dan posting [NEW Release] sekarang bisa dibuka kembali ke folder serinya. Server 1/2 (playmogo/plamogo) sering mati di sisi situs — pakai Server 3 (streampoi) bila ada."
+    "notes": "Konten 18+. Situs memblokir IP Indonesia di level TLS, jadi sumber ini hanya jalan lewat VPN — mengganti DNS ke Cloudflare tidak menolong. Domain bisa berpindah; atur di Pengaturan sumber. Video/episode memang lambat dibuka: tunggu 1-2 menit dulu sebelum menganggapnya gagal. v0.2.5: pemutar tidak lagi menggantung lama — host mirror yang sudah mati dilewati dalam sekejap (tes HEAD dulu), jatah coba di WebView dipotong jadi 20 detik dan berhenti di stream pertama, stream DoodStream dibekali User-Agent + Referer aslinya supaya CDN mengirim video (bukan pengalihan kosong), dan posting [NEW Release] sekarang bisa dibuka kembali ke folder serinya. Server 1/2 (playmogo/plamogo) sering mati di sisi situs — pakai Server 3 (streampoi) bila ada. v0.2.6: iframe yang masih menunjuk domain mirror mati plamogo.com kini otomatis dialihkan ke playmogo.com yang hidup (id embed-nya sama), jadi Server 1/2 kembali bisa diputar tanpa menunggu Server 3."
   },
   {
     "name": "Nonton Anime ID",

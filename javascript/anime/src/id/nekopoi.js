@@ -26,7 +26,7 @@ const mangayomiSources = [{
   "typeSource": "single",
   "itemType": 1,
   "isNsfw": true,
-  "version": "0.2.0",
+  "version": "0.2.1",
   "pkgPath": "anime/src/id/nekopoi.js",
   "hasCloudflare": true,
   "notes": "Konten 18+. Situs memblokir IP Indonesia di level TLS, jadi sumber ini hanya jalan lewat VPN — mengganti DNS ke Cloudflare tidak menolong. Domain bisa berpindah; atur di Pengaturan sumber. v0.2.0: tanggal & thumbnail episode diperbaiki (tidak ada lagi kotak abu-abu), dan kalau tidak ada server yang bisa diputar, aplikasi menyebut server mana yang gagal beserta alasannya, bukan halaman kosong. Server 1/2 (playmogo/plamogo) sering mati di sisi situs — pakai Server 3 (streampoi) bila ada."

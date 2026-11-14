@@ -122,7 +122,7 @@
     "hasCloudflare": true,
     "sourceCodeUrl": "https://raw.githubusercontent.com/KR-42/mangayomi-id-anime-extensions/main/javascript/anime/src/id/nekopoi.js",
     "apiUrl": "",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "isManga": false,
     "itemType": 1,
     "isFullData": false,

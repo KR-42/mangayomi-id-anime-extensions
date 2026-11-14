@@ -26,10 +26,10 @@ const mangayomiSources = [{
   "typeSource": "single",
   "itemType": 1,
   "isNsfw": true,
-  "version": "0.2.2",
+  "version": "0.2.3",
   "pkgPath": "anime/src/id/nekopoi.js",
   "hasCloudflare": true,
-  "notes": "Konten 18+. Situs diblokir DNS ISP Indonesia — aktifkan DNS-over-HTTPS (DoH) = Cloudflare di Pengaturan Mangayomi > Umum > Jaringan supaya bisa diakses. Domain bisa berpindah; atur di Pengaturan sumber. v0.2.2: entri '[NEW Release] … Episode N' di tab Terbaru kini membuka folder anime lengkap dengan semua episode (dulu keliru jadi 1 episode standalone yang sering gagal diputar) — sama persis dengan membuka folder serinya. v0.2.0: tanggal & thumbnail episode diperbaiki, dan kalau tidak ada server yang bisa diputar, aplikasi menyebut server mana yang gagal beserta alasannya. Server 1/2 (playmogo/plamogo) memakai DoodStream yang kadang menantang Cloudflare — buka sekali lewat Tampilan Web supaya tantangannya lewat, atau pakai Server 3 bila ada."
+  "notes": "Konten 18+. Situs memblokir IP Indonesia di level TLS, jadi sumber ini hanya jalan lewat VPN — mengganti DNS ke Cloudflare tidak menolong. Domain bisa berpindah; atur di Pengaturan sumber. v0.2.0: tanggal & thumbnail episode diperbaiki (tidak ada lagi kotak abu-abu), dan kalau tidak ada server yang bisa diputar, aplikasi menyebut server mana yang gagal beserta alasannya, bukan halaman kosong. Server 1/2 (playmogo/plamogo) sering mati di sisi situs — pakai Server 3 (streampoi) bila ada."
 }];
 
 // The shared helpers are inlined here, before the extension class: a class
@@ -2769,12 +2769,7 @@ class DefaultExtension extends IdBaseProvider {
     // links back to its series, which is where the full episode list lives.
     let seriesDoc = doc;
     let seriesUrl = pageUrl;
-    // NOTE: the app's `selectFirst` never returns null — it wraps a missing node
-    // in an Element whose getters answer "". So `!selectFirst(x)` is ALWAYS false;
-    // existence must be tested with `select(x).length`. Using the truthy form here
-    // meant the "[NEW Release] … Episode N" post pages never followed their link
-    // back to the series folder, so each showed only itself as a lone episode.
-    if (!doc.select(".nk-series-info").length) {
+    if (!doc.selectFirst(".nk-series-info")) {
       const back = doc.selectFirst("a.nk-player-series").attr("href");
       if (back) {
         const candidate = this.resolve(decodeEntities(back));
@@ -2788,7 +2783,7 @@ class DefaultExtension extends IdBaseProvider {
       }
     }
 
-    const hasSeries = seriesDoc.select(".nk-series-info").length > 0;
+    const hasSeries = !!seriesDoc.selectFirst(".nk-series-info");
     const name = cleanTitle(firstNonEmpty(
       metaContent(seriesDoc, "og:title"),
       hasSeries ? seriesDoc.selectFirst(".nk-series-synopsis b").text : "",

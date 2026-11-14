@@ -24,10 +24,10 @@ const mangayomiSources = [{
   "typeSource": "single",
   "itemType": 1,
   "isNsfw": true,
-  "version": "0.2.4",
+  "version": "0.2.5",
   "pkgPath": "anime/src/id/nekopoi.js",
   "hasCloudflare": true,
-  "notes": "Konten 18+. Situs memblokir IP Indonesia di level TLS, jadi sumber ini hanya jalan lewat VPN — mengganti DNS ke Cloudflare tidak menolong. Domain bisa berpindah; atur di Pengaturan sumber. Video/episode memang lambat dibuka: tunggu 1-2 menit dulu sebelum menganggapnya gagal. v0.2.4: kode dikembalikan ke versi stabil (tanggal & thumbnail episode benar, pesan gagal putar menyebut server yang bermasalah). Server 1/2 (playmogo/plamogo) sering mati di sisi situs — pakai Server 3 (streampoi) bila ada."
+  "notes": "Konten 18+. Situs memblokir IP Indonesia di level TLS, jadi sumber ini hanya jalan lewat VPN — mengganti DNS ke Cloudflare tidak menolong. Domain bisa berpindah; atur di Pengaturan sumber. Video/episode memang lambat dibuka: tunggu 1-2 menit dulu sebelum menganggapnya gagal. v0.2.5: pemutar tidak lagi menggantung lama — host mirror yang sudah mati dilewati dalam sekejap (tes HEAD dulu), jatah coba di WebView dipotong jadi 20 detik dan berhenti di stream pertama, stream DoodStream dibekali User-Agent + Referer aslinya supaya CDN mengirim video (bukan pengalihan kosong), dan posting [NEW Release] sekarang bisa dibuka kembali ke folder serinya. Server 1/2 (playmogo/plamogo) sering mati di sisi situs — pakai Server 3 (streampoi) bila ada."
 }];
 
 // The shared helpers are inlined here, before the extension class: a class
@@ -39,6 +39,19 @@ const NEKOPOI_SERVERS = ["Server 1", "Server 2", "Server 3"];
 
 /** The DoodStream clones the site serves as Server 1 / Server 2. */
 const NEKOPOI_DOOD_HOST = /playmogo\.|plamogo\.|dood[a-z0-9-]*\.|d000d\.|dsvplay\./i;
+
+/**
+ * Budget for the last-resort WebView replay, in seconds.
+ *
+ * The handshake itself answers in well under a second; the wait only exists so
+ * a Cloudflare interstitial has time to clear. Anything longer is the app
+ * showing a spinner, so it is kept short and the failure message arrives.
+ */
+const NEKOPOI_WEBVIEW_SECONDS = 20;
+
+/** Attempts (and their spacing, ms) inside that budget. */
+const NEKOPOI_WEBVIEW_TRIES = 8;
+const NEKOPOI_WEBVIEW_GAP_MS = 1500;
 
 /**
  * Month names the site writes in Indonesian, for `parseDates`.
@@ -372,7 +385,9 @@ class DefaultExtension extends IdBaseProvider {
     // links back to its series, which is where the full episode list lives.
     let seriesDoc = doc;
     let seriesUrl = pageUrl;
-    if (!doc.selectFirst(".nk-series-info")) {
+    // `selectFirst` never returns null (it returns an empty element), so the
+    // presence test has to count the matches.
+    if (doc.select(".nk-series-info").length === 0) {
       const back = doc.selectFirst("a.nk-player-series").attr("href");
       if (back) {
         const candidate = this.resolve(decodeEntities(back));
@@ -386,7 +401,7 @@ class DefaultExtension extends IdBaseProvider {
       }
     }
 
-    const hasSeries = !!seriesDoc.selectFirst(".nk-series-info");
+    const hasSeries = seriesDoc.select(".nk-series-info").length > 0;
     const name = cleanTitle(firstNonEmpty(
       metaContent(seriesDoc, "og:title"),
       hasSeries ? seriesDoc.selectFirst(".nk-series-synopsis b").text : "",
@@ -493,7 +508,12 @@ class DefaultExtension extends IdBaseProvider {
   async getVideoList(url) {
     const pageUrl = this.resolve(url);
     const doc = await this.pageDoc(pageUrl);
-    if (!doc) return [];
+    // An empty list renders as "Daftar video kosong" with no reason attached;
+    // a thrown message reaches the player's error card instead.
+    if (!doc) {
+      throw new Error("Nekopoi: halaman episode gagal dimuat (" + hostOf(pageUrl) + "). " +
+        "Sumber ini butuh VPN; buka Tampilan Web lalu coba lagi.");
+    }
 
     const embeds = this.embedsOf(doc);
     if (!embeds.length) {
@@ -503,6 +523,9 @@ class DefaultExtension extends IdBaseProvider {
 
     const results = [];
     const failed = [];
+    // Mirrors that did not answer the probe, so the WebView pass below does not
+    // spend a second probe (and a headless WebView budget) on the same dead host.
+    const dead = [];
     for (let i = 0; i < embeds.length; i++) {
       const embed = embeds[i];
       const label = embed.server + " (" + hostOf(embed.url) + ")";
@@ -516,6 +539,15 @@ class DefaultExtension extends IdBaseProvider {
         console.log("nekopoi: server " + label +
           " tidak didukung (belum ada ekstraktor untuk " + hostOf(embed.url) + ")");
         failed.push(label + ": belum ada ekstraktor");
+        continue;
+      }
+      // A mirror that cannot answer is skipped before its GET is attempted:
+      // an unreachable host holds the socket open until the client gives up,
+      // which is the "keeps loading" the player shows.
+      if (NEKOPOI_DOOD_HOST.test(embed.url) && !(await this.embedReachable(embed.url))) {
+        console.log("nekopoi: " + label + " tidak menjawab, dilewati");
+        failed.push(label + ": host tidak menjawab");
+        dead.push(embed.url);
         continue;
       }
       const found = await extractByHost(this, embed.url, pageUrl, "", "Sub Indo");
@@ -534,18 +566,31 @@ class DefaultExtension extends IdBaseProvider {
     // Second pass, DoodStream only: the request that failed above may have been
     // the one Cloudflare refused. The app's WebView already carries a solved
     // challenge cookie, so replay the /pass_md5 handshake from inside it.
+    //
+    // Two guards keep this pass from turning into a spinner: a mirror is only
+    // replayed after it answers a plain HEAD (plamogo.com has been pulled from
+    // DNS, and a headless WebView pointed at a dead host sits still until its
+    // whole budget expires), and the loop stops at the first stream found.
     if (!results.length) {
-      for (let i = 0; i < embeds.length; i++) {
-        if (!NEKOPOI_DOOD_HOST.test(embeds[i].url)) continue;
-        const streams = await this.doodViaWebview(embeds[i].url);
+      for (let i = 0; i < embeds.length && !results.length; i++) {
+        const embed = embeds[i];
+        if (!NEKOPOI_DOOD_HOST.test(embed.url)) continue;
+        if (dead.indexOf(embed.url) !== -1) continue;
+        const host = hostOf(embed.url);
+        if (!(await this.embedReachable(embed.url))) {
+          console.log("nekopoi: " + embed.server + " tidak menjawab (" + host + ")");
+          failed.push(embed.server + ": host tidak menjawab (" + host + ")");
+          continue;
+        }
+        const streams = await this.doodViaWebview(embed.url, NEKOPOI_WEBVIEW_SECONDS);
         if (!streams.length) {
-          failed.push(embeds[i].server + " (WebView): tantangan Cloudflare belum terlewati");
+          failed.push(embed.server + " (WebView): tantangan Cloudflare belum terlewati");
           continue;
         }
         for (let s = 0; s < streams.length; s++) {
           const stream = streams[s];
-          stream.server = embeds[i].server;
-          stream.quality = qualityLabel(resolutionOf(stream.quality), "Sub Indo", embeds[i].server);
+          stream.server = embed.server;
+          stream.quality = qualityLabel(resolutionOf(stream.quality), "Sub Indo", embed.server);
           results.push(stream);
         }
       }
@@ -555,11 +600,33 @@ class DefaultExtension extends IdBaseProvider {
       // An empty list renders as "Daftar video kosong", which hides the reason.
       throw new Error("Nekopoi: tidak ada server yang bisa diputar. " +
         failed.join("; ") +
-        ". Server 1/2 memakai DoodStream yang sering menantang Cloudflare — " +
+        ". Server 1/2 memakai DoodStream yang sering mati atau menantang Cloudflare — " +
         "buka episode ini sekali di Tampilan Web supaya tantangannya lewat, " +
         "atau pakai Server 3 (streampoi) bila ada.");
     }
     return sortVideos(results, this.preferredQualities(), this.preferredServers());
+  }
+
+  /**
+   * Whether the embed host answers at all.
+   *
+   * DoodStream clones come and go: when one drops out of DNS every request to
+   * it fails without a response, and the app can only sit there. One HEAD
+   * settles it in a moment — the handshake needs the same host to be alive.
+   */
+  async embedReachable(embedUrl) {
+    let res = null;
+    try {
+      res = await this.client.head(embedUrl, this.headersFor(embedUrl));
+    } catch (e) {
+      console.log("nekopoi: HEAD " + hostOf(embedUrl) + " gagal: " + e);
+      return false;
+    }
+    if (!res || !res.statusCode) return false;
+    // 405 is a live host that dislikes HEAD; 403 is Cloudflare, which the
+    // WebView may still get past. Only a dead host (5xx/404) is dropped here.
+    if (res.statusCode === 404 || res.statusCode >= 500) return false;
+    return true;
   }
 
   /**
@@ -570,41 +637,52 @@ class DefaultExtension extends IdBaseProvider {
    * challenge cookie of the shared session is sent along, which is exactly what
    * the plain request in extractDoodJs is missing.
    */
-  async doodViaWebview(embedUrl) {
+  async doodViaWebview(embedUrl, budgetSeconds) {
+    const tries = NEKOPOI_WEBVIEW_TRIES;
+    const gap = NEKOPOI_WEBVIEW_GAP_MS;
+    const budget = budgetSeconds || NEKOPOI_WEBVIEW_SECONDS;
     const script =
       "(function(){" +
       "var chars=\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\";" +
       "function done(v){try{window.flutter_inappwebview.callHandler(\"setResponse\",v)}catch(e){}}" +
       "function rnd(n){var s=\"\";for(var i=0;i<n;i++){s+=chars.charAt(Math.floor(Math.random()*chars.length))}return s}" +
       "var n=0;" +
+      "function retry(){if(n<" + tries + "){n++;setTimeout(go," + gap + ")}else{done(\"\")}}" +
       "function go(){fetch(location.href,{credentials:\"include\"})" +
       ".then(function(r){return r.text()})" +
       ".then(function(h){" +
       "var p=/\\/pass_md5\\/[A-Za-z0-9_\\/-]+/.exec(h);" +
       "var t=/token=([A-Za-z0-9]+)/.exec(h);" +
-      "if(!p||!t){if(n<15){n++;setTimeout(go,2000)}else{done(\"\")}return}" +
+      "if(!p||!t){retry();return}" +
       "fetch(location.origin+p[0],{credentials:\"include\"})" +
       ".then(function(r){return r.text()})" +
       ".then(function(b){b=b.replace(/\\s+/g,\"\");" +
       "if(b.indexOf(\"http\")!==0){done(\"\");return}" +
       "done(b+rnd(10)+\".mp4?token=\"+t[1]+\"&expiry=\"+Date.now())})" +
       ".catch(function(){done(\"\")})})" +
-      ".catch(function(){if(n<15){n++;setTimeout(go,2000)}else{done(\"\")}})}" +
+      ".catch(function(){retry()})}" +
       "go();" +
       "})();";
     let stream = "";
     try {
-      stream = safeString(await evaluateJavascriptViaWebview(embedUrl, {}, [script], 40));
+      stream = safeString(await evaluateJavascriptViaWebview(embedUrl, {}, [script], budget));
     } catch (e) {
       console.log("nekopoi: WebView Dood gagal: " + e);
       return [];
     }
     if (!/^https?:\/\/\S+$/i.test(stream)) return [];
+    const origin = /^(https?:\/\/[^/]+)/i.exec(embedUrl);
     return [{
       url: stream,
       originalUrl: embedUrl,
       quality: "",
-      headers: this.headersFor(embedUrl),
+      // The CDN answers 302 (not the video) when the request carries no
+      // Referer, so both headers ride along to the player explicitly instead
+      // of relying on whichever referer the episode page happened to be.
+      headers: {
+        "User-Agent": this.userAgent(),
+        Referer: (origin ? origin[1] : this.getBaseUrl()) + "/",
+      },
     }];
   }
 

@@ -96,7 +96,7 @@
 
 | 🎬 Sumber | 🏷️ Versi | 📺 Kualitas | 🕒 Terakhir Update |
 |:---|:---:|:---:|:---:|
-| **Nekopoi** 🔞 | `0.2.4` | 🟡 720p | 14 Nov 2026 |
+| **Nekopoi** 🔞 | `0.2.5` | 🟡 720p | 14 Nov 2026 |
 
 - **Domain:** `https://nekopoi.care` — bisa diganti di _Pengaturan sumber_ kalau situsnya pindah.
 - **Wajib VPN.** Situsnya memblokir IP Indonesia. Mengganti DNS ke Cloudflare **tidak menolong**:
@@ -105,7 +105,9 @@
   tetap diputus di tengah jalan.
 - **Server 1 dan 2** (playmogo/plamogo) dikelola pihak situs dan sering mati di sana (playmogo
   membalas **503**, plamogo sudah tidak punya DNS). Kalau kosong, pilih **Server 3** (streampoi) —
-  server inilah yang paling sering berhasil.
+  server inilah yang paling sering berhasil. Mulai **`0.2.5`** ekstensi mengetes dulu host
+  mirror-nya dengan satu permintaan `HEAD`: server yang sudah mati dilewati seketika, jadi layar
+  tidak lagi menggantung lama pada server yang tidak mungkin menjawab.
 - Kalau semua server gagal, aplikasi sekarang **menyebutkan server mana yang gagal beserta
   alasannya**, bukan sekadar "Daftar video kosong". Buka episode itu sekali di **Tampilan Web**
   supaya tantangan Cloudflare lewat, lalu putar ulang — ekstensi akan mencoba mengambil video
@@ -120,7 +122,9 @@
   Cloudflare dulu sebelum URL video keluar. Selama belum lewat **2 menit**, jangan tutup episode
   dan jangan ganti server. Kalau **sudah lebih dari 2 menit** videonya tetap tidak bisa diputar
   (baru di menit itu boleh dianggap gagal), silakan [laporkan bug](#-feedback--lapor-bug) —
-  sertakan judul, nomor episode, dan server yang dipakai.
+  sertakan judul, nomor episode, dan server yang dipakai. Di **`0.2.5`** jatah tunggu jalur
+  cadangan dipotong jadi **20 detik** dan berhenti begitu satu stream ketemu, jadi kalau server
+  itu memang tidak bisa dipakai pesan gagalnya muncul cepat, bukan menggantung.
 
 </details>
 
@@ -139,7 +143,7 @@
 | **Nonton Anime ID** | ±9 episode paling awal hanya ada di Dailymotion terlindungi → tanpa video. |
 | **Anibatch** | Saat scroll **Populer/Terbaru** ke halaman berikutnya, kadang **macet di loading** di HP. |
 | **Oploverz** | Server **upbolt** kadang minta verifikasi Cloudflare — tekan **WebView** di layar error sekali, lalu buka episode lagi. |
-| **Nekopoi** | Video/episode **memang sangat lambat** dibuka — tunggu **1–2 menit** dulu, jangan tutup dan jangan ganti server. Kalau lewat **2 menit** masih tidak bisa, baru laporkan bug. Server **1 dan 2** (playmogo/plamogo) mati di sisi situs — bukan bug ekstensi, pakai **Server 3** (streampoi) kalau ada. Situs juga memblokir IP Indonesia di level TLS, jadi **wajib VPN**; ganti DNS tidak menolong. |
+| **Nekopoi** | Video/episode **memang sangat lambat** dibuka — tunggu **1–2 menit** dulu, jangan tutup dan jangan ganti server. Kalau lewat **2 menit** masih tidak bisa, baru laporkan bug. Sejak **`0.2.5`** server mirror yang sudah mati dilewati seketika (tes `HEAD`) dan jalur cadangan WebView dibatasi **20 detik** yang berhenti di stream pertama, jadi gagalnya cepat kelihatan. Server **1 dan 2** (playmogo/plamogo) mati di sisi situs — bukan bug ekstensi, pakai **Server 3** (streampoi) kalau ada. Situs juga memblokir IP Indonesia di level TLS, jadi **wajib VPN**; ganti DNS tidak menolong. |
 
 </div>
 

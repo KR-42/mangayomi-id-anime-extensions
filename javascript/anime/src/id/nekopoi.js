@@ -26,10 +26,10 @@ const mangayomiSources = [{
   "typeSource": "single",
   "itemType": 1,
   "isNsfw": true,
-  "version": "0.2.6",
+  "version": "0.2.7",
   "pkgPath": "anime/src/id/nekopoi.js",
   "hasCloudflare": true,
-  "notes": "Konten 18+. Situs memblokir IP Indonesia di level TLS, jadi sumber ini hanya jalan lewat VPN — mengganti DNS ke Cloudflare tidak menolong. Domain bisa berpindah; atur di Pengaturan sumber. Video/episode memang lambat dibuka: tunggu 1-2 menit dulu sebelum menganggapnya gagal. v0.2.5: pemutar tidak lagi menggantung lama — host mirror yang sudah mati dilewati dalam sekejap (tes HEAD dulu), jatah coba di WebView dipotong jadi 20 detik dan berhenti di stream pertama, stream DoodStream dibekali User-Agent + Referer aslinya supaya CDN mengirim video (bukan pengalihan kosong), dan posting [NEW Release] sekarang bisa dibuka kembali ke folder serinya. Server 1/2 (playmogo/plamogo) sering mati di sisi situs — pakai Server 3 (streampoi) bila ada. v0.2.6: iframe yang masih menunjuk domain mirror mati plamogo.com kini otomatis dialihkan ke playmogo.com yang hidup (id embed-nya sama), jadi Server 1/2 kembali bisa diputar tanpa menunggu Server 3."
+  "notes": "Konten 18+. Situs memblokir IP Indonesia di level TLS, jadi sumber ini hanya jalan lewat VPN — mengganti DNS ke Cloudflare tidak menolong. Domain bisa berpindah; atur di Pengaturan sumber. Video/episode memang lambat dibuka: tunggu 1-2 menit dulu sebelum menganggapnya gagal. v0.2.5: pemutar tidak lagi menggantung lama — host mirror yang sudah mati dilewati dalam sekejap (tes HEAD dulu), jatah coba di WebView dipotong jadi 20 detik dan berhenti di stream pertama, stream DoodStream dibekali User-Agent + Referer aslinya supaya CDN mengirim video (bukan pengalihan kosong), dan posting [NEW Release] sekarang bisa dibuka kembali ke folder serinya. Server 1/2 (playmogo/plamogo) sering mati di sisi situs — pakai Server 3 (streampoi) bila ada. v0.2.6: iframe yang masih menunjuk domain mirror mati plamogo.com kini otomatis dialihkan ke playmogo.com yang hidup (id embed-nya sama), jadi Server 1/2 kembali bisa diputar tanpa menunggu Server 3. v0.2.7: jalur WebView dikebalkan terhadap iklan popunder DoodStream (intent://rm358.com) yang tadinya membajak handshake, dan pesan error mengarahkan ke solusi nyata. CATATAN PENTING: kalau player tetap gagal, penyebabnya Cloudflare menantang playmogo.com dari IP Indonesia (403 cf-mitigated) — ini TIDAK bisa ditembus kode ekstensi; aktifkan VPN atau isi FlareSolverr/Byparr di Pengaturan > Umum."
 }];
 
 // The shared helpers are inlined here, before the extension class: a class
@@ -3021,9 +3021,11 @@ class DefaultExtension extends IdBaseProvider {
       // An empty list renders as "Daftar video kosong", which hides the reason.
       throw new Error("Nekopoi: tidak ada server yang bisa diputar. " +
         failed.join("; ") +
-        ". Server 1/2 memakai DoodStream yang sering mati atau menantang Cloudflare — " +
-        "buka episode ini sekali di Tampilan Web supaya tantangannya lewat, " +
-        "atau pakai Server 3 (streampoi) bila ada.");
+        ". Server 1/2 (DoodStream/playmogo) menantang Cloudflare dari IP Indonesia " +
+        "(403 cf-mitigated), dan itu tidak bisa ditembus dari dalam ekstensi. " +
+        "Solusi: aktifkan VPN (paling ampuh), atau isi URL FlareSolverr/Byparr di " +
+        "Pengaturan > Umum, atau buka episode ini sekali di Tampilan Web agar " +
+        "tantangan Cloudflare-nya lewat lalu putar ulang.");
     }
     return sortVideos(results, this.preferredQualities(), this.preferredServers());
   }
@@ -3064,6 +3066,12 @@ class DefaultExtension extends IdBaseProvider {
     const budget = budgetSeconds || NEKOPOI_WEBVIEW_SECONDS;
     const script =
       "(function(){" +
+      // DoodStream's embed page fires a popunder ad on load (e.g. a window.open
+      // to intent://rm358.com/afu.php, which the WebView cannot resolve and which
+      // otherwise hijacks the frame before the handshake finishes). Neutralise the
+      // common vectors first: window.open, and location.assign/replace to the ad.
+      "try{window.open=function(){return null};}catch(e){}" +
+      "try{['assign','replace'].forEach(function(m){var o=window.location[m]&&window.location[m].bind(window.location);if(o)window.location[m]=function(u){if(/^intent:|rm358|afu\\.php/i.test(String(u)))return;return o(u)};});}catch(e){}" +
       "var chars=\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\";" +
       "function done(v){try{window.flutter_inappwebview.callHandler(\"setResponse\",v)}catch(e){}}" +
       "function rnd(n){var s=\"\";for(var i=0;i<n;i++){s+=chars.charAt(Math.floor(Math.random()*chars.length))}return s}" +

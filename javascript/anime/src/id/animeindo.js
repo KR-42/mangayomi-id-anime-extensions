@@ -16,7 +16,7 @@ const mangayomiSources = [{
   "typeSource": "single",
   "itemType": 1,
   "isNsfw": false,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "pkgPath": "anime/src/id/animeindo.js",
   "hasCloudflare": true,
   "notes": "Domain bisa berpindah; atur di Pengaturan sumber. Tab Popular hanya satu halaman, sesuai daftar populer di situs."

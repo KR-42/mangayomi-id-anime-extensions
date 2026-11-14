@@ -26,10 +26,10 @@ const mangayomiSources = [{
   "typeSource": "single",
   "itemType": 1,
   "isNsfw": true,
-  "version": "0.2.3",
+  "version": "0.2.4",
   "pkgPath": "anime/src/id/nekopoi.js",
   "hasCloudflare": true,
-  "notes": "Konten 18+. Situs memblokir IP Indonesia di level TLS, jadi sumber ini hanya jalan lewat VPN — mengganti DNS ke Cloudflare tidak menolong. Domain bisa berpindah; atur di Pengaturan sumber. v0.2.0: tanggal & thumbnail episode diperbaiki (tidak ada lagi kotak abu-abu), dan kalau tidak ada server yang bisa diputar, aplikasi menyebut server mana yang gagal beserta alasannya, bukan halaman kosong. Server 1/2 (playmogo/plamogo) sering mati di sisi situs — pakai Server 3 (streampoi) bila ada."
+  "notes": "Konten 18+. Situs memblokir IP Indonesia di level TLS, jadi sumber ini hanya jalan lewat VPN — mengganti DNS ke Cloudflare tidak menolong. Domain bisa berpindah; atur di Pengaturan sumber. Video/episode memang lambat dibuka: tunggu 1-2 menit dulu sebelum menganggapnya gagal. v0.2.4: kode dikembalikan ke versi stabil (tanggal & thumbnail episode benar, pesan gagal putar menyebut server yang bermasalah). Server 1/2 (playmogo/plamogo) sering mati di sisi situs — pakai Server 3 (streampoi) bila ada."
 }];
 
 // The shared helpers are inlined here, before the extension class: a class

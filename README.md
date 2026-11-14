@@ -96,7 +96,7 @@
 
 | 🎬 Sumber | 🏷️ Versi | 📺 Kualitas | 🕒 Terakhir Update |
 |:---|:---:|:---:|:---:|
-| **Nekopoi** 🔞 | `0.2.3` | 🟡 720p | 14 Nov 2026 |
+| **Nekopoi** 🔞 | `0.2.4` | 🟡 720p | 14 Nov 2026 |
 
 - **Domain:** `https://nekopoi.care` — bisa diganti di _Pengaturan sumber_ kalau situsnya pindah.
 - **Wajib VPN.** Situsnya memblokir IP Indonesia. Mengganti DNS ke Cloudflare **tidak menolong**:

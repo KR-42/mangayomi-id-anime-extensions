@@ -24,10 +24,10 @@ const mangayomiSources = [{
   "typeSource": "single",
   "itemType": 1,
   "isNsfw": true,
-  "version": "0.2.7",
+  "version": "0.2.8",
   "pkgPath": "anime/src/id/nekopoi.js",
   "hasCloudflare": true,
-  "notes": "Konten 18+. Situs memblokir IP Indonesia di level TLS, jadi sumber ini hanya jalan lewat VPN — mengganti DNS ke Cloudflare tidak menolong. Domain bisa berpindah; atur di Pengaturan sumber. Video/episode memang lambat dibuka: tunggu 1-2 menit dulu sebelum menganggapnya gagal. v0.2.5: pemutar tidak lagi menggantung lama — host mirror yang sudah mati dilewati dalam sekejap (tes HEAD dulu), jatah coba di WebView dipotong jadi 20 detik dan berhenti di stream pertama, stream DoodStream dibekali User-Agent + Referer aslinya supaya CDN mengirim video (bukan pengalihan kosong), dan posting [NEW Release] sekarang bisa dibuka kembali ke folder serinya. Server 1/2 (playmogo/plamogo) sering mati di sisi situs — pakai Server 3 (streampoi) bila ada. v0.2.6: iframe yang masih menunjuk domain mirror mati plamogo.com kini otomatis dialihkan ke playmogo.com yang hidup (id embed-nya sama), jadi Server 1/2 kembali bisa diputar tanpa menunggu Server 3. v0.2.7: jalur WebView dikebalkan terhadap iklan popunder DoodStream (intent://rm358.com) yang tadinya membajak handshake, dan pesan error mengarahkan ke solusi nyata. CATATAN PENTING: kalau player tetap gagal, penyebabnya Cloudflare menantang playmogo.com dari IP Indonesia (403 cf-mitigated) — ini TIDAK bisa ditembus kode ekstensi; aktifkan VPN atau isi FlareSolverr/Byparr di Pengaturan > Umum."
+  "notes": "Konten 18+. Situs memblokir IP Indonesia di level TLS, jadi sumber ini hanya jalan lewat VPN — mengganti DNS ke Cloudflare tidak menolong. Domain bisa berpindah; atur di Pengaturan sumber. Video/episode memang lambat dibuka: tunggu 1-2 menit dulu sebelum menganggapnya gagal. v0.2.5: pemutar tidak lagi menggantung lama — host mirror yang sudah mati dilewati dalam sekejap (tes HEAD dulu), jatah coba di WebView dipotong jadi 20 detik dan berhenti di stream pertama, stream DoodStream dibekali User-Agent + Referer aslinya supaya CDN mengirim video (bukan pengalihan kosong), dan posting [NEW Release] sekarang bisa dibuka kembali ke folder serinya. Server 1/2 (playmogo/plamogo) sering mati di sisi situs — pakai Server 3 (streampoi) bila ada. v0.2.6: iframe yang masih menunjuk domain mirror mati plamogo.com kini otomatis dialihkan ke playmogo.com yang hidup (id embed-nya sama), jadi Server 1/2 kembali bisa diputar tanpa menunggu Server 3. v0.2.7: jalur WebView dikebalkan terhadap iklan popunder DoodStream (intent://rm358.com) yang tadinya membajak handshake, dan pesan error mengarahkan ke solusi nyata. CATATAN PENTING: kalau player tetap gagal, penyebabnya Cloudflare menantang playmogo.com dari IP Indonesia (403 cf-mitigated) — ini TIDAK bisa ditembus kode ekstensi; aktifkan VPN atau isi FlareSolverr/Byparr di Pengaturan > Umum. v0.2.8: jalur WebView kini membiarkan Managed Challenge Cloudflare terpecah sendiri lalu membaca handshake langsung dari DOM (tahan terhadap reload pasca-challenge), dan diberi waktu lebih (35 detik). Pakai DNS AdGuard (dns.adguard-dns.com) untuk memblokir iklan popunder rm358.com sekaligus membuka blokir situs — ini membuat challenge auto-solve tanpa VPN."
 }];
 
 // The shared helpers are inlined here, before the extension class: a class
@@ -65,16 +65,19 @@ function reviveMirror(url) {
 }
 
 /**
- * Budget for the last-resort WebView replay, in seconds.
+ * Budget for the WebView replay, in seconds.
  *
- * The handshake itself answers in well under a second; the wait only exists so
- * a Cloudflare interstitial has time to clear. Anything longer is the app
- * showing a spinner, so it is kept short and the failure message arrives.
+ * The handshake itself answers in well under a second; the wait exists so
+ * Cloudflare's managed challenge ("Just a moment...") can auto-solve in this
+ * real WebView and reload to the embed. That solve-and-reload takes a few
+ * seconds on mobile, so the budget is generous — dead mirror hosts are already
+ * filtered out earlier (reviveMirror + the HEAD probe), so the wait is only
+ * ever spent on a live host that is genuinely clearing a challenge.
  */
-const NEKOPOI_WEBVIEW_SECONDS = 20;
+const NEKOPOI_WEBVIEW_SECONDS = 35;
 
 /** Attempts (and their spacing, ms) inside that budget. */
-const NEKOPOI_WEBVIEW_TRIES = 8;
+const NEKOPOI_WEBVIEW_TRIES = 16;
 const NEKOPOI_WEBVIEW_GAP_MS = 1500;
 
 /**
@@ -678,11 +681,19 @@ class DefaultExtension extends IdBaseProvider {
       "var chars=\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\";" +
       "function done(v){try{window.flutter_inappwebview.callHandler(\"setResponse\",v)}catch(e){}}" +
       "function rnd(n){var s=\"\";for(var i=0;i<n;i++){s+=chars.charAt(Math.floor(Math.random()*chars.length))}return s}" +
+      // Source of the handshake markers. Cloudflare's managed challenge auto-
+      // solves in this real WebView and then reloads to the real embed, so the
+      // live DOM is the most reliable place to read /pass_md5 + token from; only
+      // fall back to a fetch when the DOM does not carry them yet (still on the
+      // "Just a moment" page). This way a solve+reload does not lose the handshake.
+      "function pageHtml(){" +
+      "var h='';try{h=document.documentElement?document.documentElement.innerHTML:'';}catch(e){h='';}" +
+      "if(/\\/pass_md5\\//.test(h)&&/token=[A-Za-z0-9]+/.test(h))return Promise.resolve(h);" +
+      "return fetch(location.href,{credentials:\"include\"}).then(function(r){return r.text()}).catch(function(){return h});" +
+      "}" +
       "var n=0;" +
       "function retry(){if(n<" + tries + "){n++;setTimeout(go," + gap + ")}else{done(\"\")}}" +
-      "function go(){fetch(location.href,{credentials:\"include\"})" +
-      ".then(function(r){return r.text()})" +
-      ".then(function(h){" +
+      "function go(){pageHtml().then(function(h){" +
       "var p=/\\/pass_md5\\/[A-Za-z0-9_\\/-]+/.exec(h);" +
       "var t=/token=([A-Za-z0-9]+)/.exec(h);" +
       "if(!p||!t){retry();return}" +
@@ -691,8 +702,8 @@ class DefaultExtension extends IdBaseProvider {
       ".then(function(b){b=b.replace(/\\s+/g,\"\");" +
       "if(b.indexOf(\"http\")!==0){done(\"\");return}" +
       "done(b+rnd(10)+\".mp4?token=\"+t[1]+\"&expiry=\"+Date.now())})" +
-      ".catch(function(){done(\"\")})})" +
-      ".catch(function(){retry()})}" +
+      ".catch(function(){done(\"\")})" +
+      "}).catch(function(){retry()})}" +
       "go();" +
       "})();";
     let stream = "";

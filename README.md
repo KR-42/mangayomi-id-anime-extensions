@@ -96,7 +96,7 @@
 
 | 🎬 Sumber | 🏷️ Versi | 📺 Kualitas | 🕒 Terakhir Update |
 |:---|:---:|:---:|:---:|
-| **Nekopoi** 🔞 | `0.2.7` | 🟡 720p | 15 Nov 2026 |
+| **Nekopoi** 🔞 | `0.2.8` | 🟡 720p | 15 Nov 2026 |
 
 - **Domain:** `https://nekopoi.care` — bisa diganti di _Pengaturan sumber_ kalau situsnya pindah.
 - **Wajib VPN.** Situsnya memblokir IP Indonesia. Mengganti DNS ke Cloudflare **tidak menolong**:
@@ -143,7 +143,7 @@
 | **Nonton Anime ID** | ±9 episode paling awal hanya ada di Dailymotion terlindungi → tanpa video. |
 | **Anibatch** | Saat scroll **Populer/Terbaru** ke halaman berikutnya, kadang **macet di loading** di HP. |
 | **Oploverz** | Server **upbolt** kadang minta verifikasi Cloudflare — tekan **WebView** di layar error sekali, lalu buka episode lagi. |
-| **Nekopoi** | Video/episode **memang sangat lambat** dibuka — tunggu **1–2 menit** dulu, jangan tutup dan jangan ganti server. Kalau lewat **2 menit** masih tidak bisa, baru laporkan bug. Sejak **`0.2.5`** server mirror yang sudah mati dilewati seketika (tes `HEAD`) dan jalur cadangan WebView dibatasi **20 detik** yang berhenti di stream pertama, jadi gagalnya cepat kelihatan. Sejak **`0.2.6`** iframe yang masih menunjuk domain mati **plamogo.com** otomatis dialihkan ke **playmogo.com** yang hidup (id embed sama). Sejak **`0.2.7`** jalur WebView dikebalkan terhadap iklan popunder DoodStream (`intent://rm358.com`). **Penyebab utama kalau masih gagal:** `playmogo.com` dilindungi **tantangan Cloudflare** (`403 cf-mitigated`) yang menolak IP Indonesia — ini **tidak bisa ditembus kode ekstensi**. Obatnya: **VPN** (paling ampuh), **FlareSolverr/Byparr** di Pengaturan → Umum, atau buka embed sekali di **WebView** agar `cf_clearance` tersimpan. Situs utama juga memblokir IP Indonesia di level TLS, jadi **wajib VPN**. |
+| **Nekopoi** | Video/episode **memang sangat lambat** dibuka — tunggu **1–2 menit** dulu, jangan tutup dan jangan ganti server. Kalau lewat **2 menit** masih tidak bisa, baru laporkan bug. Sejak **`0.2.5`** server mirror yang sudah mati dilewati seketika (tes `HEAD`) dan jalur cadangan WebView dibatasi **20 detik** yang berhenti di stream pertama, jadi gagalnya cepat kelihatan. Sejak **`0.2.6`** iframe yang masih menunjuk domain mati **plamogo.com** otomatis dialihkan ke **playmogo.com** yang hidup (id embed sama). Sejak **`0.2.7`** jalur WebView dikebalkan terhadap iklan popunder DoodStream (`intent://rm358.com`). Sejak **`0.2.8`** jalur WebView membiarkan **tantangan Cloudflare auto-solve** (ini *Managed Challenge* non-interaktif, bukan Turnstile) lalu membaca handshake langsung dari DOM, dengan waktu 35 detik. **Resep tanpa VPN:** set **DNS Pribadi Android → `dns.adguard-dns.com`** — sekali jalan ia (a) membuka blokir `nekopoi.care` dan (b) **memblokir domain iklan `rm358.com`** (terverifikasi disinkhole), sehingga challenge bisa diselesaikan resolver WebView bawaan app tanpa VPN. Kalau masih kurang andal: isi **FlareSolverr/Byparr** di Pengaturan → Umum (tetap tanpa VPN). Catatan: memalsukan `cf_clearance` dari kode ekstensi **tidak mungkin** (QuickJS tak punya mesin browser) — yang dilakukan hanya membiarkan WebView asli menyelesaikannya. |
 
 </div>
 

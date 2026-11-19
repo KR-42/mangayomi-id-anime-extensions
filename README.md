@@ -60,12 +60,12 @@
 
 | 🎬 Sumber | 🏷️ Versi | ⬇️ Download | 📺 Kualitas | 🕒 Terakhir Update |
 |:---|:---:|:---:|:---:|:---:|
-| **Otaku Desu** | `0.3.3` | ⏳ Belum | 🟡 720p | 12 Nov 2026 |
+| **Otaku Desu** | `0.3.4` | ✅ 720p | 🟡 720p | 19 Nov 2026 |
 | **Samehadaku** | `0.1.6` | ⏳ Belum | 🟢 1080p | 12 Nov 2026 |
 | **AnimeIndo** | `0.1.2` | ⏳ Belum | 🟢 1080p | 14 Nov 2026 |
-| **Nonton Anime ID** | `0.1.2` | ⏳ Belum | 🟢 1080p | 12 Nov 2026 |
+| **Nonton Anime ID** | `0.1.2` | ✅ Bisa | 🟢 1080p | 12 Nov 2026 |
 | **Anibatch** | `0.1.2` | ⏳ Belum | 🟢 1080p | 12 Nov 2026 |
-| **Kuronime** | `0.1.3` | ⏳ Belum | 🟢 1080p | 12 Nov 2026 |
+| **Kuronime** | `0.1.3` | ✅ Bisa | 🟢 1080p | 12 Nov 2026 |
 | **Oploverz** | `0.2.1` | ⏳ Belum | 🟢 1080p | 12 Nov 2026 |
 | **Anoboy** | `0.1.1` | ⏳ Belum | 🟡 720p | 12 Nov 2026 |
 | **Animangahub** | `0.1.3` | ⏳ Belum | 🟢 1080p | 13 Nov 2026 |
@@ -188,12 +188,14 @@ Link di perpustakaan disimpan **relatif**, jadi ganti domain **tidak** menghilan
 
 ---
 
-## ⬇️ Fitur Download — Belum Tersedia
+## ⬇️ Fitur Download — Bertahap
 
 > [!NOTE]
-> **Unduh episode belum bisa digunakan untuk saat ini.** Semua sumber masih untuk **streaming** saja (kolom _Download_ di tabel = ⏳ Belum). Dukungan unduhan **baru akan dikembangkan ke depannya** — pantau rilis berikutnya. 🚧
+> Unduhan memakai **tombol unduh bawaan Mangayomi** di daftar episode. Sumber dengan ✅ di kolom _Download_ sudah bisa diunduh; yang ⏳ masih streaming saja dan menyusul satu per satu. 🚧
 
----
+- **Kualitas mana yang diunduh?** Mangayomi tidak menanyakan kualitas saat mengunduh; ia mengambil video **teratas** di daftar. Urutan itu mengikuti **Pengaturan sumber → Kualitas yang diutamakan** (bawaan: tertinggi dulu). Mau unduhan lebih hemat kuota? Hilangkan centang 1080p/720p sebelum mengunduh.
+- Mangayomi selalu mendahulukan file **.mp4** daripada stream HLS. Di **Otaku Desu** mirror .mp4 umumnya 720p (sebagian episode juga punya 480p), jadi unduhan biasanya **720p** walau kamu memilih 360p.
+- Ganti pengaturan berlaku untuk **semua** episode dan juga kualitas saat menonton.
 
 ## 💬 Feedback & Lapor Bug
 

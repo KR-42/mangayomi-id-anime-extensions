@@ -188,14 +188,14 @@
     "hasCloudflare": false,
     "sourceCodeUrl": "https://raw.githubusercontent.com/KR-42/mangayomi-id-anime-extensions/main/javascript/anime/src/id/otakudesu.js",
     "apiUrl": "",
-    "version": "0.3.3",
+    "version": "0.3.4",
     "isManga": false,
     "itemType": 1,
     "isFullData": false,
     "appMinVerReq": "0.5.0",
     "additionalParams": "",
     "sourceCodeLanguage": 1,
-    "notes": "Domain bisa berpindah; atur di Pengaturan sumber. Tidak ada rute popularitas, jadi tab Popular memakai daftar anime tamat."
+    "notes": "Domain bisa berpindah; atur di Pengaturan sumber. Tidak ada rute popularitas, jadi tab Popular memakai daftar anime tamat. v0.3.4: episode bisa diunduh (tombol unduh Mangayomi). Mangayomi mengunduh file .mp4 (server odstream/odcdn) teratas sesuai Kualitas yang diutamakan: umumnya 720p, 480p bila episode punya file 480p asli. Bila tak ada .mp4, dipakai server vidhide (HLS) yang kini juga bisa diunduh. Server odcdn yang dilabeli 480p oleh situs sebenarnya file 720p, jadi labelnya diperbaiki."
   },
   {
     "name": "Samehadaku",

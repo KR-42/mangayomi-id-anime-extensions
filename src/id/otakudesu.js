@@ -25,10 +25,10 @@ const mangayomiSources = [{
   "typeSource": "single",
   "itemType": 1,
   "isNsfw": false,
-  "version": "0.3.3",
+  "version": "0.3.4",
   "pkgPath": "anime/src/id/otakudesu.js",
   "hasCloudflare": false,
-  "notes": "Domain bisa berpindah; atur di Pengaturan sumber. Tidak ada rute popularitas, jadi tab Popular memakai daftar anime tamat."
+  "notes": "Domain bisa berpindah; atur di Pengaturan sumber. Tidak ada rute popularitas, jadi tab Popular memakai daftar anime tamat. v0.3.4: episode bisa diunduh (tombol unduh Mangayomi). Mangayomi mengunduh file .mp4 (server odstream/odcdn) teratas sesuai Kualitas yang diutamakan: umumnya 720p, 480p bila episode punya file 480p asli. Bila tak ada .mp4, dipakai server vidhide (HLS) yang kini juga bisa diunduh. Server odcdn yang dilabeli 480p oleh situs sebenarnya file 720p, jadi labelnya diperbaiki."
 }];
 
 // The shared helpers are inlined here, before the extension class: a class
@@ -57,6 +57,26 @@ const OTAKU_GENRES = [
   ["Space", "space"], ["Sports", "sports"], ["Super Power", "super-power"],
   ["Supernatural", "supernatural"], ["Thriller", "thriller"], ["Vampire", "vampire"],
 ];
+
+/** "720p" from a media file name such as `Otakudesu.io_TSKD--01_720p.mp4`, else "". */
+function otakuFileResolution(url) {
+  const match = /[_-](\d{3,4})p\.(?:mp4|mkv|webm)(?:[?#]|$)/i.exec(safeString(url));
+  return match ? match[1] + "p" : "";
+}
+
+/**
+ * Mangayomi's downloader only accepts an HLS URL whose whole string ends in
+ * ".m3u8"; vidhide's signed `master.m3u8?t=...` is rejected with "No
+ * downloadable URL". A trailing dummy parameter makes it end in ".m3u8". The
+ * CDN ignores it and still answers the playlist and segments (verified
+ * 2026-11-19). A query parameter rather than `#.m3u8`, because the player
+ * (mpv/ffmpeg) may send a fragment to the server verbatim.
+ */
+function otakuDownloadableHls(url) {
+  const value = safeString(url);
+  if (!/\.m3u8\?/i.test(value) || /\.m3u8$/i.test(value)) return value;
+  return value + "&_=.m3u8";
+}
 
 const OTAKU_MONTHS = {
   januari: "January", februari: "February", maret: "March", april: "April",
@@ -479,14 +499,19 @@ class DefaultExtension extends IdBaseProvider {
         const video = found.videos[v];
         if (embed.server && embed.server !== "Otakudesu") {
           // Label with the mirror the user actually clicked, not the extractor
-          // family, so preferred_server can match it.
+          // family, so preferred_server can match it. The file name wins over
+          // the mirror list: the site files `odcdn`'s `..._720p.mp4` under 480p
+          // (byte-identical to odstream's 720p file, checked 2026-11-19).
           video.server = embed.server;
           video.quality = qualityLabel(
-            resolutionOf(video.quality) || resolutionOf(embed.quality),
+            otakuFileResolution(video.url) ||
+              resolutionOf(video.quality) ||
+              resolutionOf(embed.quality),
             embed.server,
             "Hardsub ID",
           );
         }
+        video.url = otakuDownloadableHls(video.url);
         results.push(video);
       }
       if (!found.videos.length) {

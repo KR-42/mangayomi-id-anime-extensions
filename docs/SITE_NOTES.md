@@ -200,6 +200,22 @@ dengan memotong query, karena hasilnya jadi tidak terduga.
   `/anime-list/` (1861 judul) memang tidak memuatnya dan REST search ditutup
   (`401 rest_login_required`).
 
+**Unduhan (0.3.4, diverifikasi 19 Nov 2026)**
+- Pengunduh Mangayomi (`download_provider.dart`) hanya menerima URL yang path-nya berakhiran
+  ekstensi video (`.mp4`, `.mkv`, …) atau yang **seluruh string**-nya berakhiran `.m3u8`.
+  Ia selalu mendahulukan file biasa daripada HLS, lalu mengambil yang **pertama** di daftar.
+- `odstream` (archive.org) dan `odcdn` (`cdn.odcloud.net`) memberi `.mp4`, umumnya 720p. Episode
+  tamat kadang punya `odstream` 480p asli (`…-12.mp4` 94 MB vs `…-vd-12.mp4` 147 MB); yang lain
+  praktis 720p saja. Pilihan 360p tetap mengunduh .mp4, karena vidhide 360p adalah HLS. `odcdn` diletakkan situs di daftar 480p, padahal file-nya
+  `..._720p.mp4` dan byte-identik dengan file 720p odstream (Content-Length sama). Label kini
+  diambil dari nama file lebih dulu (`otakuFileResolution`).
+- `vidhide` memberi `master.m3u8?t=…` (satu varian, tanpa kunci AES), yang ditolak pengunduh.
+  `otakuDownloadableHls` menambahkan `&_=.m3u8`. CDN mengabaikan parameter itu, dan playlist,
+  varian, serta segmen `.ts` tetap 200. Dipakai parameter query, bukan `#.m3u8`, karena
+  mpv/ffmpeg bisa mengirim fragmen apa adanya.
+- `otakuwatch7`/`ondesuhd` berakhir di Blogger `googlevideo.com/videoplayback?…`, yang tidak
+  bisa diunduh (path tanpa ekstensi).
+
 ---
 
 ## 2. Samehadaku — `https://v2.samehadaku.how/`

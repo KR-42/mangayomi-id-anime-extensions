@@ -240,6 +240,19 @@ setelah permintaan biasa ditolak. Halaman daftar sejak 0.1.4: halaman 2 dan sete
 lebih dulu, halaman 1 hanya setelah ditolak. Ini pengecualian yang disetujui
 pemilik repo. Ekstensi tidak mengeklik atau memecahkan verifikasi: bila Cloudflare meminta tindakan
 orang, tombol verifikasi aplikasi tetap diperlukan.
+**Ingatan penolakan (0.1.7):** permintaan biasa yang kena `cf-mitigated: challenge` memicu
+`ResolveCloudFlareChallenge` di klien app (maks. 2 putaran `/resolve_cf`, masing-masing headless
+WebView hingga 15 detik) sebelum 403 sampai ke ekstensi. `cf_clearance` yang didapat tetap ditolak
+untuk klien HTTP app, jadi tiap halaman membayar resolver sia-sia lalu WebView ekstensi (≤30 detik):
+lebih dari 60 detik per halaman. `JsHttpClient` tidak bisa mematikan resolver (`showCloudFlareError`
+tidak diteruskan dari opsi `Client`). Karena itu `pageDoc` menandai penolakan di string store sumber
+(`SharedPreferences().setString("cf_refused_until", <epoch ms + 1 jam>)`, tanpa deklarasi
+preferensi). Selama tanda aktif, `webviewAfterRefusalDoc` langsung ke WebView. Permintaan biasa yang
+berhasil menghapus tanda. Bila WebView gagal saat tanda aktif, HTTP tetap dicoba sebagai cadangan.
+`evaluateJavascriptViaWebview` tidak menyalin cookie WebView ke klien HTTP (beda dengan
+`/resolve_cf`), tetapi cookie jar WebView dipakai bersama, jadi WebView berikutnya tidak perlu
+menantang ulang.
+
 `samehadaku.care` hanya halaman placeholder statis, bukan mirror.
 
 **Listing**

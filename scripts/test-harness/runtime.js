@@ -262,9 +262,23 @@ class Client {
 // ----------------------------------------------------------- preferences
 
 class SharedPreferences {
-  constructor(values, declared) {
+  constructor(values, declared, strings) {
     this.values = values || {};
     this.declared = declared || [];
+    this.strings = strings || {};
+  }
+
+  // The app's free-form per-source string store (no declaration needed).
+  // getString writes the default back when the key is missing, like the app.
+  getString(key, defaultValue) {
+    if (!Object.prototype.hasOwnProperty.call(this.strings, key)) {
+      this.strings[key] = defaultValue;
+    }
+    return this.strings[key];
+  }
+
+  setString(key, value) {
+    this.strings[key] = value;
   }
 
   get(key) {
@@ -408,10 +422,12 @@ function createRuntime(options) {
   // Preference lookups need the declared defaults, which only exist after the
   // extension object is built. Keep a shared reference and fill it below.
   const declared = { list: [] };
+  // One string store per runtime, shared by every `new SharedPreferences()`.
+  const strings = opts.strings || {};
 
   const Prefs = class extends SharedPreferences {
     constructor() {
-      super(opts.preferences || {}, declared.list);
+      super(opts.preferences || {}, declared.list, strings);
     }
   };
   const ClientClass = class extends Client {
@@ -435,6 +451,8 @@ function createRuntime(options) {
     },
     ...nativeHelpers,
     ...nativeExtractors,
+    // Tests may stub app globals (e.g. evaluateJavascriptViaWebview).
+    ...(opts.globals || {}),
     // Node globals must not leak into extension code, exactly like QuickJS.
     require: undefined,
     process: undefined,

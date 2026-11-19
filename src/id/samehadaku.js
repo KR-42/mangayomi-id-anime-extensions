@@ -5,7 +5,7 @@
 // solves a challenge: it opens those pages in the app's own WebView, as a normal
 // browser does, because the app's HTTP client is refused there even when the
 // WebView is not. First listing pages and episode pages use that WebView only
-// after a refusal. A check that needs a person to tick a box still needs the
+// after a refusal, or while an earlier refusal is still remembered (0.1.7). A check that needs a person to tick a box still needs the
 // person; it then surfaces as an error with the app's button.
 //
 // Every stream option is already on the episode page as `data-embed`, an
@@ -21,16 +21,22 @@ const mangayomiSources = [{
   "typeSource": "single",
   "itemType": 1,
   "isNsfw": false,
-  "version": "0.1.6",
+  "version": "0.1.7",
   "pkgPath": "anime/src/id/samehadaku.js",
   "hasCloudflare": true,
-  "notes": "Domain bisa berpindah; atur di Pengaturan sumber. Bila muncul error Cloudflare, buka WebView dari layar error lalu coba lagi."
+  "notes": "Domain bisa berpindah; atur di Pengaturan sumber. Bila muncul error Cloudflare, buka WebView dari layar error lalu coba lagi. v0.1.7: jauh lebih cepat saat Cloudflare sedang menantang. Begitu permintaan biasa ditolak sekali, selama 1 jam berikutnya halaman langsung dibuka lewat WebView, tanpa menunggu resolver Cloudflare aplikasi yang lama dan sering gagal. Pembukaan pertama tetap bisa lambat; berikutnya cepat."
 }];
 
 // The shared helpers are inlined here, before the extension class: a class
 // declaration reads its superclass when it is evaluated, so IdBaseProvider has
 // to exist first. `npm run build` replaces this line.
 // @@INLINE_SHARED@@
+
+// Until when (epoch ms) plain requests are assumed refused; see markRefused().
+// An hour: Cloudflare keeps an address in the challenge regime for a long time,
+// and every probe that finds it still there costs the app's resolver rounds.
+const SAME_REFUSED_KEY = "cf_refused_until";
+const SAME_REFUSED_MS = 60 * 60 * 1000;
 
 const SAME_GENRES = [
   ["Action", "action"], ["Adult Cast", "adult-cast"], ["Adventure", "adventure"],
@@ -114,6 +120,7 @@ class DefaultExtension extends IdBaseProvider {
   async pageDoc(url) {
     const res = await this.client.get(url, this.getHeaders(url));
     if (res && (res.statusCode === 403 || res.statusCode === 503)) {
+      this.markRefused();
       throw new Error("Cloudflare menolak permintaan (HTTP " + res.statusCode +
         "). Buka WebView lalu coba lagi.");
     }
@@ -121,7 +128,40 @@ class DefaultExtension extends IdBaseProvider {
       console.log("samehadaku: gagal memuat " + url);
       return null;
     }
+    this.clearRefused();
     return new Document(res.body);
+  }
+
+  // A refused plain request is the expensive path: the app runs its Cloudflare
+  // resolver on it (up to two rounds of ~15 s) before the 403 even reaches us,
+  // and the clearance it stores is still refused to the app's HTTP client
+  // (SITE_NOTES §2). Once that happened, keep going straight to the WebView for
+  // a while instead of paying for it again on every page. The mark lives in the
+  // source's string store, so it survives between app calls.
+
+  refusedRecently() {
+    try {
+      const until = parseInt(new SharedPreferences().getString(SAME_REFUSED_KEY, "0"), 10) || 0;
+      return Date.now() < until;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  markRefused() {
+    try {
+      new SharedPreferences().setString(SAME_REFUSED_KEY, String(Date.now() + SAME_REFUSED_MS));
+    } catch (e) {
+      console.log("samehadaku: tidak bisa menyimpan status Cloudflare: " + e);
+    }
+  }
+
+  clearRefused() {
+    try {
+      if (this.refusedRecently()) new SharedPreferences().setString(SAME_REFUSED_KEY, "0");
+    } catch (e) {
+      // Nothing to undo when the store is unavailable.
+    }
   }
 
   /**
@@ -135,6 +175,7 @@ class DefaultExtension extends IdBaseProvider {
   }
 
   async webviewAfterRefusalDoc(url, selector, marker) {
+    if (this.refusedRecently()) return this.webviewFirstDoc(url, selector, marker);
     try {
       return await this.pageDoc(url);
     } catch (refused) {

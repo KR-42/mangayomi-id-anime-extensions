@@ -496,6 +496,17 @@ redirect, sehingga 403. Node/Python tetap 200, jadi masalah ini tidak terlihat d
 menyerahkan URL edge. HEAD dibalas 200 tanpa redirect, jadi harus GET (302 tanpa body). Uji live:
 6 video (ep 6 dan 8) dibalas 200 langsung tanpa redirect.
 
+**0.2.4 tidak bekerja di HP → 0.2.5:** HP tetap 403 (Hyouken S2 ep 7). Klien default app
+(`RhttpCompatibleClient.send`) **tidak membaca `request.followRedirects`**. Opsi
+`new Client({ followRedirects: false })` hanya dihormati klien Dart (`useDartHttpClient: true` →
+`IOClient`), dan `download_provider.dart:108` di app sendiri memasangkan keduanya. Harness PC
+menghormati `followRedirects`, jadi uji live 0.2.4 tampak lolos. 0.2.5 memakai
+`{ useDartHttpClient: true, followRedirects: false }` plus `Range: bytes=0-0`, supaya redirect
+yang tetap diikuti tidak menarik seluruh video ke memori. Uji live: tiga probe 302 (body 168–191 B),
+dan tiga URL edge dibalas 200 langsung.
+**Catatan untuk sumber lain:** `animangahub.js` (`desustreamHttp`) juga memakai
+`followRedirects: false` tanpa `useDartHttpClient`, jadi di HP opsi itu kemungkinan diabaikan juga.
+
 ---
 
 ## 5. Nonton Anime ID — `https://www.nontonanimeid.my.id`

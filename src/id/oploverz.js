@@ -24,10 +24,10 @@ const mangayomiSources = [{
   "typeSource": "single",
   "itemType": 1,
   "isNsfw": false,
-  "version": "0.2.4",
+  "version": "0.2.5",
   "pkgPath": "anime/src/id/oploverz.js",
   "hasCloudflare": true,
-  "notes": "Data dari API situs. Episode di upbolt dan abyssplayer bisa diputar langsung; bila upbolt menampilkan tantangan Cloudflare, selesaikan lewat tombol WebView atau atur FlareSolverr. Tab Popular berisi seri berlabel hot. v0.2.2: episode bisa diunduh (tombol unduh Mangayomi). Server Abyss memberi file .mp4 per resolusi (1080p/720p/480p), jadi unduhan mengikuti Kualitas yang diutamakan. v0.2.3: memperbaiki error \"tidak ada server yang bisa diputar (player.abyssplayer.com)\" yang muncul di sebagian episode (kira-kira 1 dari 20), karena data terenkripsi Abyss terpotong satu byte. v0.2.4: memperbaiki unduhan yang gagal dengan \"status 403\". Server Abyss mengalihkan video ke server lain yang hanya menerima permintaan dari halaman player, dan pengunduh aplikasi kehilangan informasi itu saat dialihkan. Ekstensi kini langsung memberi alamat tujuan akhirnya."
+  "notes": "Data dari API situs. Episode di upbolt dan abyssplayer bisa diputar langsung; bila upbolt menampilkan tantangan Cloudflare, selesaikan lewat tombol WebView atau atur FlareSolverr. Tab Popular berisi seri berlabel hot. v0.2.2: episode bisa diunduh (tombol unduh Mangayomi). Server Abyss memberi file .mp4 per resolusi (1080p/720p/480p), jadi unduhan mengikuti Kualitas yang diutamakan. v0.2.3: memperbaiki error \"tidak ada server yang bisa diputar (player.abyssplayer.com)\" yang muncul di sebagian episode (kira-kira 1 dari 20), karena data terenkripsi Abyss terpotong satu byte. v0.2.4: memperbaiki unduhan yang gagal dengan \"status 403\". Server Abyss mengalihkan video ke server lain yang hanya menerima permintaan dari halaman player, dan pengunduh aplikasi kehilangan informasi itu saat dialihkan. Ekstensi kini langsung memberi alamat tujuan akhirnya. v0.2.5: perbaikan v0.2.4 ternyata tidak berjalan di HP karena klien HTTP bawaan aplikasi selalu mengikuti pengalihan. Kini memakai klien yang bisa berhenti di pengalihan, jadi unduhan tidak lagi gagal 403."
 }];
 
 // The shared helpers are inlined here, before the extension class: a class
@@ -237,12 +237,19 @@ class DefaultExtension extends IdBaseProvider {
    * itself, so neither the player nor the downloader has a redirect to follow.
    * HEAD is answered 200 without the redirect, so this has to be a GET; the
    * 302 carries no body. Any failure keeps the original URL.
+   *
+   * `useDartHttpClient` is required: the app's default rhttp client ignores
+   * `followRedirects: false` (its send() never reads it), so 0.2.4 followed the
+   * hop on the phone, saw the edge's 403 and never got the Location. The app's
+   * own downloader pairs the two options the same way. `Range: bytes=0-0` keeps
+   * a followed redirect from pulling the whole video into memory.
    */
   async followAbyssRedirect(video) {
     if (!/\/sora\/\d+\//.test(safeString(video.url))) return;
     try {
-      const client = new Client({ followRedirects: false });
-      const res = await client.get(video.url, video.headers || {});
+      const client = new Client({ useDartHttpClient: true, followRedirects: false });
+      const headers = mergeHeaders(video.headers || {}, { Range: "bytes=0-0" });
+      const res = await client.get(video.url, headers);
       const loc = safeString(res && res.headers && (res.headers.location || res.headers.Location));
       if (res && res.statusCode >= 300 && res.statusCode < 400 && loc) {
         video.url = oploDownloadableAbyss(resolveUrl(video.url, loc));

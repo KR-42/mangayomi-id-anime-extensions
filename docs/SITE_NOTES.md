@@ -470,6 +470,14 @@ Blogger/Filedon tetap bisa diputar.
 
 Lihat `docs/OPLOVERZ_HANDOFF.md` untuk rincian teknis.
 
+**Unduhan (0.2.2, diverifikasi 20 Nov 2026):** di 6 episode terbaru, semua stream berasal dari
+Abyss: `https://<sub>.sssrr.org/sora/<ukuran>/<token>`. Upbolt tidak muncul. File di baliknya MP4
+utuh (`ftypmp42`, 206 Range) dan butuh `Referer` halaman player (tanpa itu 403). Path tanpa
+ekstensi ditolak pengunduh Mangayomi. CDN melayani file yang sama di `<token>.mp4` (byte length
+sama), sedangkan `<token>/video.mp4` 404. `oploDownloadableAbyss` menambahkan `.mp4` pada path.
+Dekripsi Abyss (AES-CTR + MD5 JS murni) hanya 94 ms di QuickJS asli untuk satu episode, jadi tidak
+berisiko ANR seperti gdplayer di AnimeIndo.
+
 ---
 
 ## 5. Nonton Anime ID — `https://www.nontonanimeid.my.id`

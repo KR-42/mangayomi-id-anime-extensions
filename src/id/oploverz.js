@@ -24,10 +24,10 @@ const mangayomiSources = [{
   "typeSource": "single",
   "itemType": 1,
   "isNsfw": false,
-  "version": "0.2.1",
+  "version": "0.2.2",
   "pkgPath": "anime/src/id/oploverz.js",
   "hasCloudflare": true,
-  "notes": "Data dari API situs. Episode di upbolt dan abyssplayer bisa diputar langsung; bila upbolt menampilkan tantangan Cloudflare, selesaikan lewat tombol WebView atau atur FlareSolverr. Tab Popular berisi seri berlabel hot."
+  "notes": "Data dari API situs. Episode di upbolt dan abyssplayer bisa diputar langsung; bila upbolt menampilkan tantangan Cloudflare, selesaikan lewat tombol WebView atau atur FlareSolverr. Tab Popular berisi seri berlabel hot. v0.2.2: episode bisa diunduh (tombol unduh Mangayomi). Server Abyss memberi file .mp4 per resolusi (1080p/720p/480p), jadi unduhan mengikuti Kualitas yang diutamakan."
 }];
 
 // The shared helpers are inlined here, before the extension class: a class
@@ -207,7 +207,10 @@ class DefaultExtension extends IdBaseProvider {
     });
     const results = [];
     found.forEach(function (videos) {
-      (videos || []).forEach(function (video) { results.push(video); });
+      (videos || []).forEach(function (video) {
+        video.url = oploDownloadableAbyss(video.url);
+        results.push(video);
+      });
     });
     if (!results.length) {
       if (this.upboltChallenged) {
@@ -371,6 +374,21 @@ function oploSelected(filters) {
     if (option) out[filter.type] = safeString(option.value);
   });
   return out;
+}
+
+/**
+ * Mangayomi's downloader only takes a URL whose path ends in a video extension;
+ * Abyss's `/sora/<size>/<token>` has none, so every episode answered "No
+ * downloadable URL". The CDN serves the identical file at `<token>.mp4` (206,
+ * video/mp4, same byte length; verified 2026-11-20), which the downloader
+ * accepts. A trailing `/video.mp4` would 404, and a query or fragment would not
+ * count, since only the path is checked.
+ */
+function oploDownloadableAbyss(url) {
+  const value = safeString(url);
+  const m = /^(https?:\/\/[^/?#]+\/sora\/\d+\/[^/?#]+?)((?:[?#].*)?)$/i.exec(value);
+  if (!m || /\.mp4$/i.test(m[1])) return value;
+  return m[1] + ".mp4" + m[2];
 }
 
 function oploHasNext(meta) {

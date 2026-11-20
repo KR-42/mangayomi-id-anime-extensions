@@ -1953,7 +1953,11 @@ async function extractAbyss(provider, url, referer, siteQuality) {
   var userId = safeString(datas.user_id);
   var slug = safeString(datas.slug);
   var md5Id = safeString(datas.md5_id);
-  var mediaCipher = safeString(datas.media);
+  // Raw bytes, never trimmed: safeString() trims, and a ciphertext that starts
+  // or ends in 0x09-0x0d, 0x20 or 0xa0 lost that byte, so the decrypted JSON
+  // came out one byte short ("Expected ',' or '}' at position 854" on Oploverz
+  // FX Fighter Kurumi-chan ep 7, 20 Nov 2026), roughly one episode in twenty.
+  var mediaCipher = datas.media === undefined || datas.media === null ? "" : String(datas.media);
   if (!slug || !md5Id || !mediaCipher) {
     console.log("abyssplayer: field datas tidak lengkap");
     return [];

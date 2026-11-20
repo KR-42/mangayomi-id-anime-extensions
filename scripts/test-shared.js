@@ -81,7 +81,8 @@ function loadShared() {
        extractStreampoi, extractDoodJs, streampoiQuality,
        cryptBytesOf, cryptStrOf, cryptHex, cryptSha256Hex, cryptHmacSha256,
        cryptPbkdf2Sha256, cryptAesCbcDecrypt,
-       gdUnseal, gdConfigOf, aaConfigValue, aaDecodeConfig
+       gdUnseal, gdConfigOf, aaConfigValue, aaDecodeConfig,
+       abyssMd5, abyssAesCtr, b64Encode
      };`,
   );
   return factory(...names.map((name) => values[name]));
@@ -665,6 +666,42 @@ function testForbiddenGlobals() {
   }
 }
 
+/**
+ * Abyss `media` is raw ciphertext. A payload whose first or last byte is one
+ * String.prototype.trim() strips (0x09-0x0d, 0x20, 0xa0) used to lose that byte
+ * and decrypt to JSON one byte short (Oploverz, 20 Nov 2026). Build such a
+ * payload with the extractor's own cipher and make sure it still resolves.
+ */
+async function testAbyssUntrimmedMedia(api) {
+  const ids = { user_id: 426806, md5_id: "32418728" };
+  const trimmed = (c) => /\s/.test(c);
+  let datas = null;
+  for (let n = 0; n < 5000 && !datas; n++) {
+    const slug = "Ab" + n;
+    const key = api.abyssMd5(ids.user_id + ":" + slug + ":" + ids.md5_id);
+    const plain = JSON.stringify({
+      mp4: {
+        domains: ["x1.sssrr.org"],
+        sources: [{ status: true, sub: "x1", res_id: 3, size: 122881672, label: "720p", codec: "h264" }],
+      },
+    });
+    const media = api.abyssAesCtr(key, key.substring(0, 16), plain);
+    if (trimmed(media.charAt(media.length - 1))) datas = { ...ids, slug, media };
+  }
+  ok(!!datas, "abyss fixture: found a ciphertext ending in a trimmable byte");
+  if (!datas) return;
+  const html = 'var datas = "' + api.b64Encode(JSON.stringify(datas)) + '";';
+  const videos = await api.extractAbyss(
+    { fetch: () => Promise.resolve(html), headersFor: () => ({}) },
+    "https://player.abyssplayer.com/" + datas.slug,
+    "",
+    "",
+  );
+  eq(videos.length, 1, "extractAbyss keeps a trailing whitespace byte of the ciphertext");
+  ok(videos.length === 1 && /^https:\/\/x1\.sssrr\.org\/sora\/122881672\//.test(videos[0].url),
+    "extractAbyss builds the /sora/ url from the decrypted media");
+}
+
 async function main() {
   const api = loadShared();
   const groups = {
@@ -680,6 +717,7 @@ async function main() {
     crypto: () => testCrypto(api),
     gdplayerDecode: () => testGdplayerDecode(api),
     gdplayerOffline: () => testGdplayerOffline(api),
+    abyssUntrimmedMedia: () => testAbyssUntrimmedMedia(api),
     forbiddenGlobals: () => testForbiddenGlobals(),
   };
 

@@ -26,10 +26,10 @@ const mangayomiSources = [{
   "typeSource": "single",
   "itemType": 1,
   "isNsfw": false,
-  "version": "0.2.2",
+  "version": "0.2.3",
   "pkgPath": "anime/src/id/oploverz.js",
   "hasCloudflare": true,
-  "notes": "Data dari API situs. Episode di upbolt dan abyssplayer bisa diputar langsung; bila upbolt menampilkan tantangan Cloudflare, selesaikan lewat tombol WebView atau atur FlareSolverr. Tab Popular berisi seri berlabel hot. v0.2.2: episode bisa diunduh (tombol unduh Mangayomi). Server Abyss memberi file .mp4 per resolusi (1080p/720p/480p), jadi unduhan mengikuti Kualitas yang diutamakan."
+  "notes": "Data dari API situs. Episode di upbolt dan abyssplayer bisa diputar langsung; bila upbolt menampilkan tantangan Cloudflare, selesaikan lewat tombol WebView atau atur FlareSolverr. Tab Popular berisi seri berlabel hot. v0.2.2: episode bisa diunduh (tombol unduh Mangayomi). Server Abyss memberi file .mp4 per resolusi (1080p/720p/480p), jadi unduhan mengikuti Kualitas yang diutamakan. v0.2.3: memperbaiki error \"tidak ada server yang bisa diputar (player.abyssplayer.com)\" yang muncul di sebagian episode (kira-kira 1 dari 20), karena data terenkripsi Abyss terpotong satu byte."
 }];
 
 // The shared helpers are inlined here, before the extension class: a class
@@ -1963,7 +1963,11 @@ async function extractAbyss(provider, url, referer, siteQuality) {
   var userId = safeString(datas.user_id);
   var slug = safeString(datas.slug);
   var md5Id = safeString(datas.md5_id);
-  var mediaCipher = safeString(datas.media);
+  // Raw bytes, never trimmed: safeString() trims, and a ciphertext that starts
+  // or ends in 0x09-0x0d, 0x20 or 0xa0 lost that byte, so the decrypted JSON
+  // came out one byte short ("Expected ',' or '}' at position 854" on Oploverz
+  // FX Fighter Kurumi-chan ep 7, 20 Nov 2026), roughly one episode in twenty.
+  var mediaCipher = datas.media === undefined || datas.media === null ? "" : String(datas.media);
   if (!slug || !md5Id || !mediaCipher) {
     console.log("abyssplayer: field datas tidak lengkap");
     return [];

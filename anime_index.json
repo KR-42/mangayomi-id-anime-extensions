@@ -166,14 +166,14 @@
     "hasCloudflare": true,
     "sourceCodeUrl": "https://raw.githubusercontent.com/KR-42/mangayomi-id-anime-extensions/main/javascript/anime/src/id/oploverz.js",
     "apiUrl": "https://backapi.oploverz.ac/api",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "isManga": false,
     "itemType": 1,
     "isFullData": false,
     "appMinVerReq": "0.5.0",
     "additionalParams": "",
     "sourceCodeLanguage": 1,
-    "notes": "Data dari API situs. Episode di upbolt dan abyssplayer bisa diputar langsung; bila upbolt menampilkan tantangan Cloudflare, selesaikan lewat tombol WebView atau atur FlareSolverr. Tab Popular berisi seri berlabel hot. v0.2.2: episode bisa diunduh (tombol unduh Mangayomi). Server Abyss memberi file .mp4 per resolusi (1080p/720p/480p), jadi unduhan mengikuti Kualitas yang diutamakan."
+    "notes": "Data dari API situs. Episode di upbolt dan abyssplayer bisa diputar langsung; bila upbolt menampilkan tantangan Cloudflare, selesaikan lewat tombol WebView atau atur FlareSolverr. Tab Popular berisi seri berlabel hot. v0.2.2: episode bisa diunduh (tombol unduh Mangayomi). Server Abyss memberi file .mp4 per resolusi (1080p/720p/480p), jadi unduhan mengikuti Kualitas yang diutamakan. v0.2.3: memperbaiki error \"tidak ada server yang bisa diputar (player.abyssplayer.com)\" yang muncul di sebagian episode (kira-kira 1 dari 20), karena data terenkripsi Abyss terpotong satu byte."
   },
   {
     "name": "Otaku Desu",

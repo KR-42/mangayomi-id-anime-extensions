@@ -478,6 +478,14 @@ sama), sedangkan `<token>/video.mp4` 404. `oploDownloadableAbyss` menambahkan `.
 Dekripsi Abyss (AES-CTR + MD5 JS murni) hanya 94 ms di QuickJS asli untuk satu episode, jadi tidak
 berisiko ANR seperti gdplayer di AnimeIndo.
 
+**Abyss gagal di sebagian episode (0.2.3):** FX Fighter Kurumi-chan ep 7 → "tidak ada server yang bisa
+diputar", log `decrypt media gagal … position 854`. `datas.media` panjangnya 855 byte, tetapi
+`safeString()` memanggil `.trim()` dan membuang byte terakhir ciphertext (byte yang dianggap
+whitespace: 0x09–0x0d, 0x20, 0xa0), sehingga JSON hasil dekripsi kurang `}` penutup. Ini terjadi
+kira-kira di 1 dari 20 episode. Ciphertext kini dibaca tanpa trim. Uji regresinya
+`abyssUntrimmedMedia` di `scripts/test-shared.js`. Pelajaran: **jangan pakai `safeString()` untuk
+data biner**.
+
 ---
 
 ## 5. Nonton Anime ID — `https://www.nontonanimeid.my.id`

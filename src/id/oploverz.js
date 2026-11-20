@@ -24,10 +24,10 @@ const mangayomiSources = [{
   "typeSource": "single",
   "itemType": 1,
   "isNsfw": false,
-  "version": "0.2.2",
+  "version": "0.2.3",
   "pkgPath": "anime/src/id/oploverz.js",
   "hasCloudflare": true,
-  "notes": "Data dari API situs. Episode di upbolt dan abyssplayer bisa diputar langsung; bila upbolt menampilkan tantangan Cloudflare, selesaikan lewat tombol WebView atau atur FlareSolverr. Tab Popular berisi seri berlabel hot. v0.2.2: episode bisa diunduh (tombol unduh Mangayomi). Server Abyss memberi file .mp4 per resolusi (1080p/720p/480p), jadi unduhan mengikuti Kualitas yang diutamakan."
+  "notes": "Data dari API situs. Episode di upbolt dan abyssplayer bisa diputar langsung; bila upbolt menampilkan tantangan Cloudflare, selesaikan lewat tombol WebView atau atur FlareSolverr. Tab Popular berisi seri berlabel hot. v0.2.2: episode bisa diunduh (tombol unduh Mangayomi). Server Abyss memberi file .mp4 per resolusi (1080p/720p/480p), jadi unduhan mengikuti Kualitas yang diutamakan. v0.2.3: memperbaiki error \"tidak ada server yang bisa diputar (player.abyssplayer.com)\" yang muncul di sebagian episode (kira-kira 1 dari 20), karena data terenkripsi Abyss terpotong satu byte."
 }];
 
 // The shared helpers are inlined here, before the extension class: a class

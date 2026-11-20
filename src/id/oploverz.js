@@ -24,10 +24,10 @@ const mangayomiSources = [{
   "typeSource": "single",
   "itemType": 1,
   "isNsfw": false,
-  "version": "0.2.3",
+  "version": "0.2.4",
   "pkgPath": "anime/src/id/oploverz.js",
   "hasCloudflare": true,
-  "notes": "Data dari API situs. Episode di upbolt dan abyssplayer bisa diputar langsung; bila upbolt menampilkan tantangan Cloudflare, selesaikan lewat tombol WebView atau atur FlareSolverr. Tab Popular berisi seri berlabel hot. v0.2.2: episode bisa diunduh (tombol unduh Mangayomi). Server Abyss memberi file .mp4 per resolusi (1080p/720p/480p), jadi unduhan mengikuti Kualitas yang diutamakan. v0.2.3: memperbaiki error \"tidak ada server yang bisa diputar (player.abyssplayer.com)\" yang muncul di sebagian episode (kira-kira 1 dari 20), karena data terenkripsi Abyss terpotong satu byte."
+  "notes": "Data dari API situs. Episode di upbolt dan abyssplayer bisa diputar langsung; bila upbolt menampilkan tantangan Cloudflare, selesaikan lewat tombol WebView atau atur FlareSolverr. Tab Popular berisi seri berlabel hot. v0.2.2: episode bisa diunduh (tombol unduh Mangayomi). Server Abyss memberi file .mp4 per resolusi (1080p/720p/480p), jadi unduhan mengikuti Kualitas yang diutamakan. v0.2.3: memperbaiki error \"tidak ada server yang bisa diputar (player.abyssplayer.com)\" yang muncul di sebagian episode (kira-kira 1 dari 20), karena data terenkripsi Abyss terpotong satu byte. v0.2.4: memperbaiki unduhan yang gagal dengan \"status 403\". Server Abyss mengalihkan video ke server lain yang hanya menerima permintaan dari halaman player, dan pengunduh aplikasi kehilangan informasi itu saat dialihkan. Ekstensi kini langsung memberi alamat tujuan akhirnya."
 }];
 
 // The shared helpers are inlined here, before the extension class: a class
@@ -222,7 +222,34 @@ class DefaultExtension extends IdBaseProvider {
       throw new Error("Oploverz: tidak ada server yang bisa diputar" +
         (hosts.length ? " (" + hosts.filter(function (h, i) { return hosts.indexOf(h) === i; }).join(", ") + ")" : "") + ".");
     }
+    await this.mapLimit(results, 3, function (video) {
+      return self.followAbyssRedirect(video);
+    });
     return sortVideos(results, this.preferredQualities(), this.preferredServers());
+  }
+
+  /**
+   * An Abyss `/sora/` URL answers GET with a 302 to an edge host that only
+   * serves the file when Referer is the player page. The player keeps our
+   * headers across that hop, but the app's downloader (reqwest) rewrites
+   * Referer to the URL it is redirecting from, and the edge answers 403
+   * ("Download failed … status 403", 20 Nov 2026). Hand over the edge URL
+   * itself, so neither the player nor the downloader has a redirect to follow.
+   * HEAD is answered 200 without the redirect, so this has to be a GET; the
+   * 302 carries no body. Any failure keeps the original URL.
+   */
+  async followAbyssRedirect(video) {
+    if (!/\/sora\/\d+\//.test(safeString(video.url))) return;
+    try {
+      const client = new Client({ followRedirects: false });
+      const res = await client.get(video.url, video.headers || {});
+      const loc = safeString(res && res.headers && (res.headers.location || res.headers.Location));
+      if (res && res.statusCode >= 300 && res.statusCode < 400 && loc) {
+        video.url = oploDownloadableAbyss(resolveUrl(video.url, loc));
+      }
+    } catch (e) {
+      console.log("oploverz: redirect Abyss gagal dibaca: " + e);
+    }
   }
 
   async resolveStream(stream, pageUrl) {

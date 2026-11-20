@@ -66,7 +66,7 @@
 | **Nonton Anime ID** | `0.1.2` | ✅ Bisa | 🟢 1080p | 12 Nov 2026 |
 | **Anibatch** | `0.1.2` | ⏳ Belum | 🟢 1080p | 12 Nov 2026 |
 | **Kuronime** | `0.1.3` | ✅ Bisa | 🟢 1080p | 12 Nov 2026 |
-| **Oploverz** | `0.2.3` | ⏳ Belum | 🟢 1080p | 20 Nov 2026 |
+| **Oploverz** | `0.2.4` | ⏳ Belum | 🟢 1080p | 20 Nov 2026 |
 | **Anoboy** | `0.1.1` | ⏳ Belum | 🟡 720p | 12 Nov 2026 |
 | **Animangahub** | `0.1.3` | ✅ Bisa | 🟢 1080p | 13 Nov 2026 |
 

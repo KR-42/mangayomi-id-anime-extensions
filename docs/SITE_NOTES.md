@@ -486,6 +486,16 @@ kira-kira di 1 dari 20 episode. Ciphertext kini dibaca tanpa trim. Uji regresiny
 `abyssUntrimmedMedia` di `scripts/test-shared.js`. Pelajaran: **jangan pakai `safeString()` untuk
 data biner**.
 
+**Unduhan 403 (0.2.4):** kartu error di HP (dibaca lewat `adb shell uiautomator dump`) berisi
+`Failed to download file … (status 403)` setelah 3 percobaan. GET ke `/sora/<ukuran>/<token>.mp4`
+dibalas **302** ke edge `*.trycloudflare.com/sora/…mp4`. Edge hanya melayani bila `Referer` =
+halaman player (dengan Referer = URL sora atau tanpa Referer → 403). Player (mpv) mempertahankan
+header saat redirect, tetapi pengunduh app (`rhttp`/reqwest) mengganti `Referer` dengan URL asal
+redirect, sehingga 403. Node/Python tetap 200, jadi masalah ini tidak terlihat dari PC.
+`followAbyssRedirect` membaca `Location` dengan `new Client({ followRedirects: false })` dan
+menyerahkan URL edge. HEAD dibalas 200 tanpa redirect, jadi harus GET (302 tanpa body). Uji live:
+6 video (ep 6 dan 8) dibalas 200 langsung tanpa redirect.
+
 ---
 
 ## 5. Nonton Anime ID — `https://www.nontonanimeid.my.id`

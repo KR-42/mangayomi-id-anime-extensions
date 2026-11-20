@@ -62,7 +62,7 @@
 |:---|:---:|:---:|:---:|:---:|
 | **Otaku Desu** | `0.3.4` | ✅ 720p | 🟡 720p | 19 Nov 2026 |
 | **Samehadaku** | `0.1.7` | ⏳ Belum | 🟢 1080p | 19 Nov 2026 |
-| **AnimeIndo** | `0.1.2` | ✅ Bisa | 🟢 1080p | 14 Nov 2026 |
+| **AnimeIndo** | `0.1.3` | ✅ Bisa | 🟢 1080p | 20 Nov 2026 |
 | **Nonton Anime ID** | `0.1.2` | ✅ Bisa | 🟢 1080p | 12 Nov 2026 |
 | **Anibatch** | `0.1.2` | ⏳ Belum | 🟢 1080p | 12 Nov 2026 |
 | **Kuronime** | `0.1.3` | ✅ Bisa | 🟢 1080p | 12 Nov 2026 |

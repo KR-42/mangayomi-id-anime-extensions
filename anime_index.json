@@ -56,14 +56,14 @@
     "hasCloudflare": true,
     "sourceCodeUrl": "https://raw.githubusercontent.com/KR-42/mangayomi-id-anime-extensions/main/javascript/anime/src/id/animeindo.js",
     "apiUrl": "",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "isManga": false,
     "itemType": 1,
     "isFullData": false,
     "appMinVerReq": "0.5.0",
     "additionalParams": "",
     "sourceCodeLanguage": 1,
-    "notes": "Domain bisa berpindah; atur di Pengaturan sumber. Tab Popular hanya satu halaman, sesuai daftar populer di situs."
+    "notes": "Domain bisa berpindah; atur di Pengaturan sumber. Tab Popular hanya satu halaman, sesuai daftar populer di situs. v0.1.3: memperbaiki aplikasi yang membeku lalu tertutup sendiri (\"tidak merespons\") saat membuka atau mengunduh episode. Penyebabnya server GDRIVE (gdplayer) yang dekripsinya butuh belasan detik di HP; server itu kini hanya dipakai bila server lain (CEPAT) tidak ada. Unduhan episode baru kini memakai CEPAT sesuai Kualitas yang diutamakan."
   },
   {
     "name": "Anoboy",

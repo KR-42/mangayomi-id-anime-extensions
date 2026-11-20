@@ -16,10 +16,10 @@ const mangayomiSources = [{
   "typeSource": "single",
   "itemType": 1,
   "isNsfw": false,
-  "version": "0.1.2",
+  "version": "0.1.3",
   "pkgPath": "anime/src/id/animeindo.js",
   "hasCloudflare": true,
-  "notes": "Domain bisa berpindah; atur di Pengaturan sumber. Tab Popular hanya satu halaman, sesuai daftar populer di situs."
+  "notes": "Domain bisa berpindah; atur di Pengaturan sumber. Tab Popular hanya satu halaman, sesuai daftar populer di situs. v0.1.3: memperbaiki aplikasi yang membeku lalu tertutup sendiri (\"tidak merespons\") saat membuka atau mengunduh episode. Penyebabnya server GDRIVE (gdplayer) yang dekripsinya butuh belasan detik di HP; server itu kini hanya dipakai bila server lain (CEPAT) tidak ada. Unduhan episode baru kini memakai CEPAT sesuai Kualitas yang diutamakan."
 }];
 
 // The shared helpers are inlined here, before the extension class: a class
@@ -2453,6 +2453,9 @@ const INDO_GENRES = [
 
 const INDO_SERVERS = ["CEPAT", "B-TUBE", "MP4", "YUP"];
 
+// Embed hosts whose extraction is CPU-heavy in QuickJS (see getVideoList).
+const INDO_HEAVY_HOST = /gdplayer\.|gdriveplayer\./i;
+
 class DefaultExtension extends IdBaseProvider {
   constructor() {
     super("https://anime-indo.lol");
@@ -2669,9 +2672,21 @@ class DefaultExtension extends IdBaseProvider {
     if (!doc) return [];
 
     const results = [];
-    const embeds = this.embedsOf(doc);
+    // GDRIVE on new episodes is gdplayer.to, whose config is sealed with
+    // PBKDF2-SHA256 x10000 + AES done in plain JS: 17 s inside real QuickJS on
+    // a desktop CPU. The app runs this on its UI thread, so the phone froze and
+    // Android killed it as not responding (six ANRs, main thread in libqjs,
+    // 20 Nov 2026). CEPAT on the same page already carries every resolution,
+    // so gdplayer goes last and only runs when nothing else produced a video.
+    const all = this.embedsOf(doc);
+    const embeds = all.filter(function (e) { return !INDO_HEAVY_HOST.test(e.url); })
+      .concat(all.filter(function (e) { return INDO_HEAVY_HOST.test(e.url); }));
     for (let i = 0; i < embeds.length; i++) {
       const embed = embeds[i];
+      if (INDO_HEAVY_HOST.test(embed.url) && results.length) {
+        console.log("animeindo: lewati server " + embed.server + " (gdplayer berat, server lain sudah ada)");
+        continue;
+      }
       const reason = unsupportedReason(embed.url);
       if (reason) {
         console.log("animeindo: server " + embed.server + " tidak didukung (" + reason + ")");

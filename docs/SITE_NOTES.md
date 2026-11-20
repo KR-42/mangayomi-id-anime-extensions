@@ -581,6 +581,17 @@ Lihat `docs/OPLOVERZ_HANDOFF.md` untuk rincian teknis.
   (`/chii-fuyo-episode-6/` bukan `/anime/chii-fuyo/`). Situs menjawab 503 "Waktu habis" untuk seri
   yang tidak ada, jadi `getDetail` mengikuti tautan "Semua Episode" di halaman episode.
 - Label `GDRIVE` tidak selalu berarti gdplayer: pada sebagian seri lama (Boruto, film) URL-nya xtwap.
+- **gdplayer membekukan app (0.1.3, 20 Nov 2026).** Rekaman HP: app membeku saat membuka atau
+  mengunduh episode, lalu tertutup. `adb` (dropbox `data_app_anr`) menunjukkan 6 ANR "Input
+  dispatching timed out", dengan thread `main` berada di `libqjs.so … JS_ExecutePendingJob`. Jadi app
+  0.9.96 menjalankan JS ekstensi di thread UI. Diukur di QuickJS asli (`quickjs-emscripten`, CPU
+  desktop): `cryptPbkdf2Sha256` ×10000 = 11,8 detik dan `gdUnseal` = 17,4 detik. `getVideoList`
+  dengan balasan gdplayer asli = 17,3 detik, sedangkan tanpa gdplayer = 15 ms. Dari Node, gdplayer
+  membalas 404 di semua episode baru (sensus 20 episode), tetapi ke HP ia membalas halaman asli. Sejak
+  0.1.3, embed `gdplayer.`/`gdriveplayer.` diproses paling akhir dan hanya bila tidak ada server lain
+  yang menghasilkan video. Episode baru selalu punya CEPAT, jadi gdplayer praktis tidak jalan.
+  Akibatnya, unduhan tidak lagi memakai mp4upload 720p dari gdplayer, melainkan HLS CEPAT sesuai
+  preferensi kualitas.
 - `mp4upload` → file dihapus → **mati**
 - `/yup.php?url=` → yourupload embed → `file: 'https://vidcache.net:8161/.../video.mp4'`
   → 302 ke edge MP4 → **bisa ditambah extractor `yourupload`**

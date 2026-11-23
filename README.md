@@ -64,7 +64,7 @@
 
 | 🎬 Sumber | 🏷️ Versi | ⬇️ Download | 📺 Kualitas | 🕒 Terakhir Update |
 |:---|:---:|:---:|:---:|:---:|
-| **Otaku Desu** | `0.3.4` | ✅ 720p | 🟡 720p | 19 Nov 2026 |
+| **Otaku Desu** | `0.3.4` | ✅ Bisa | 🟡 720p | 19 Nov 2026 |
 | **Samehadaku** | `0.1.8` | ✅ Bisa | 🟢 1080p | 23 Nov 2026 |
 | **AnimeIndo** | `0.1.3` | ✅ Bisa | 🟢 1080p | 20 Nov 2026 |
 | **Nonton Anime ID** | `0.1.2` | ✅ Bisa | 🟢 1080p | 12 Nov 2026 |
@@ -135,7 +135,7 @@ Kalau ekstensi tetap rusak setelah situsnya pindah domain, misalnya domain baru 
 |:---|:---|
 | **Otaku Desu** | Episode kadang lama terbuka, jadi tunggu 1–2 menit dulu. Kalau belum jalan, coba ganti server. Kalau semua server masih gagal setelah 2 menit, silakan [lapor bug](#feedback). |
 | **Samehadaku** | Sebagian episode lama tidak bisa diputar, karena videonya hanya tersedia di server yang belum didukung. |
-| **Anibatch** | Saat menggulir Populer/Terbaru ke halaman berikutnya, loading kadang macet di HP. |
+| **Anibatch** | Saat scrolling Populer/Terbaru ke halaman berikutnya, loading kadang macet di HP. |
 | **Oploverz** | Kadang muncul verifikasi Cloudflare: ketuk **WebView** di layar error, lalu buka episodenya lagi. Download 1080p bisa makan 10–20 menit per episode, jadi lebih baik download di **720p ke bawah**. |
 
 </div>

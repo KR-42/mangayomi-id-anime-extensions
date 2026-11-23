@@ -10,3 +10,10 @@ research/
 npm-debug.log*
 .DS_Store
 Thumbs.db
+
+# Development notes: stay local, not published. Only CONTRIBUTING.md is public.
+docs/*
+!docs/CONTRIBUTING.md
+
+# Discussion announcement draft (posted by hand on GitHub)
+.github/ANNOUNCEMENT.md

@@ -12,7 +12,7 @@ hasil build di `javascript/anime/src/id/<nama>.js`.
 2. Buat `src/id/<nama>.js` dengan struktur di bawah.
 3. `npm run build && npm run generate`.
 4. `npm test -- --source=<Nama>` (fixture) lalu `npm run test:live -- --source=<Nama>`.
-5. Perbarui tabel di `README.md` dan `docs/SITE_NOTES.md`.
+5. Perbarui tabel di `README.md`.
 6. Commit: `feat(<nama>): <ringkasan>`.
 
 ## Kerangka file

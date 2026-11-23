@@ -64,9 +64,9 @@
 | **Samehadaku** | `0.1.7` | ⏳ Belum | 🟢 1080p | 19 Nov 2026 |
 | **AnimeIndo** | `0.1.3` | ✅ Bisa | 🟢 1080p | 20 Nov 2026 |
 | **Nonton Anime ID** | `0.1.2` | ✅ Bisa | 🟢 1080p | 12 Nov 2026 |
-| **Anibatch** | `0.1.2` | ⏳ Belum | 🟢 1080p | 12 Nov 2026 |
+| **Anibatch** | `0.1.3` | ✅ Bisa | 🟢 1080p | 23 Nov 2026 |
 | **Kuronime** | `0.1.3` | ✅ Bisa | 🟢 1080p | 12 Nov 2026 |
-| **Oploverz** | `0.2.6` | ✅ Bisa | 🟢 1080p | 23 Nov 2026 |
+| **Oploverz** | `0.2.7` | ✅ Bisa | 🟢 1080p | 23 Nov 2026 |
 | **Anoboy** | `0.1.1` | ⏳ Belum | 🟡 720p | 12 Nov 2026 |
 | **Animangahub** | `0.1.3` | ✅ Bisa | 🟢 1080p | 13 Nov 2026 |
 
@@ -195,6 +195,7 @@ Link di perpustakaan disimpan **relatif**, jadi ganti domain **tidak** menghilan
 
 - **Kualitas mana yang diunduh?** Mangayomi tidak menanyakan kualitas saat mengunduh; ia mengambil video **teratas** di daftar. Urutan itu mengikuti **Pengaturan sumber → Kualitas yang diutamakan** (bawaan: tertinggi dulu). Mau unduhan lebih hemat kuota? Hilangkan centang 1080p/720p sebelum mengunduh.
 - Mangayomi selalu mendahulukan file **.mp4** daripada stream HLS. Di **Otaku Desu** mirror .mp4 umumnya 720p (sebagian episode juga punya 480p), jadi unduhan biasanya **720p** walau kamu memilih 360p.
+- Di **Anibatch** unduhan memakai server **BerkasDrive** (1080p/720p/480p/360p, cepat ±2 MB/s). Sebagian file 1080p berformat MKV; tetap tersimpan dan bisa diputar normal.
 - Ganti pengaturan berlaku untuk **semua** episode dan juga kualitas saat menonton.
 
 ## 💬 Feedback & Lapor Bug

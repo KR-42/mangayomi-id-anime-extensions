@@ -718,6 +718,28 @@ JSON), lalu ekstraktor `berkasdrive` (API player → `data-src`). Belum ada → 
   tanpa penanda Cloudflare) dan `getPopular(2)` memberi 24 item + `hasNextPage: true`. Belum ada
   log dari aplikasi; dugaan (belum terbukti): resolver Cloudflare aplikasi (`hasCloudflare: true`)
   menggantung. Detail, episode, dan pemutar sudah dikonfirmasi berjalan.
+
+**Unduhan (0.1.3, 23 Nov 2026):**
+- Aturan app (`download_provider.dart`): video lolos bila `url` **atau** `originalUrl` lolos
+  `isMediaVideo()` (ekstensi di path) atau berakhiran `.m3u8`. Yang diunduh selalu `url`;
+  `originalUrl` hanya dibaca untuk putar file lokal (`anime_player_view.dart`, `isLocal`).
+- BerkasDrive `/download/<token>` tanpa ekstensi. Semua sufiks (`.mp4`, `/video.mp4`) → **403**
+  (token mengikat path). GET tanpa Range → 200 tanpa header khusus. Content-Disposition berisi
+  nama asli, misalnya `[Nimegami.id]_..._(1080p).mkv`. Sebagian 1080p MKV, app menyimpannya sebagai `.mp4`
+  dan mpv tetap membacanya.
+- Solusi: `url` tetap, `originalUrl = <url>/<slug>-<res>.mp4` (`anibatchDownloadHint`), hanya
+  petunjuk dan tidak pernah di-fetch.
+- Kecepatan satu koneksi 2,3–2,6 MB/s. 1080p 237 MB sekitar 1,7 menit.
+- HiAnime `/media/<key>` sudah berakhiran `.mp4` → lolos sejak awal, subtitle ikut diunduh.
+- Desustream googlevideo `/videoplayback` tidak lolos (dibiarkan). Vidhide `master.m3u8?t=` tidak
+  lolos, tapi MP4 selalu menang, jadi tidak perlu.
+- Harness `scripts/test-harness/run.js` kini meniru filter unduhan app (`downloadPick`) dan
+  mewajibkan lolos untuk sumber di `DOWNLOADABLE` (Anibatch, Oploverz).
+
+**Oploverz 0.2.7 (temuan dari harness):** episode Upbolt (`index-v1-a1.m3u8?t=`) tidak lolos filter
+→ tidak bisa diunduh, padahal ini sebagian besar episode baru. `originalUrl` = URL tanpa query
+(`oploHlsDownloadHint`), `url` tidak diubah. Upbolt tidak bisa diuji dari PC (Cloudflare), jadi
+pendekatan ini sengaja tidak menyentuh URL yang diputar. Perlu konfirmasi di HP.
 ---
 
 ## 8. Anoboy — `https://anoboy.at` (`src/id/anoboy.js` 0.1.1)

@@ -92,6 +92,29 @@ function checkDetail(detail, label) {
   return detail;
 }
 
+// Sources whose fixture episode must stay downloadable in the app.
+const DOWNLOADABLE = new Set(["Anibatch", "Oploverz"]);
+
+/**
+ * The selection rule of Mangayomi's download_provider.dart (0.9.96): a video
+ * counts when `url` or `originalUrl` has a path ending in a video extension
+ * (these win), else when either string ends in .m3u8/.m3u. The first match is
+ * downloaded, and it is always `url` that gets fetched.
+ */
+const VIDEO_EXT = ["3gp", "avi", "mpg", "mpeg", "webm", "ogg", "flv", "m4v", "mvp", "mp4", "wmv", "mkv", "mov"];
+function isMediaVideo(value) {
+  let p = String(value || "");
+  try { p = new URL(p).pathname; } catch (e) { /* keep the raw string */ }
+  p = p.toLowerCase();
+  return VIDEO_EXT.some((ext) => p.endsWith("." + ext));
+}
+function downloadPick(videos) {
+  const media = videos.find((v) => isMediaVideo(v.url) || isMediaVideo(v.originalUrl));
+  if (media) return { kind: "mp4", video: media };
+  const hls = videos.find((v) => [v.url, v.originalUrl].some((u) => /\.m3u8?$/.test(String(u || ""))));
+  return hls ? { kind: "hls", video: hls } : null;
+}
+
 /** Validate the video list. */
 function checkVideos(videos, label) {
   assert(Array.isArray(videos), `${label}: expected an array`);
@@ -214,6 +237,11 @@ async function testSource(source) {
       ),
     );
     log(`videos: ${videos.map((v) => v.quality).join(", ")}`);
+    const pick = downloadPick(videos);
+    log(`download: ${pick ? pick.kind + " " + pick.video.quality : "none"}`);
+    if (DOWNLOADABLE.has(name)) {
+      assert(pick, `${name}: no video passes Mangayomi's download filter`);
+    }
 
     if (!LIVE) {
       const unused = [];

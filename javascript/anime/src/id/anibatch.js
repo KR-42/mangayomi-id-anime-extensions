@@ -18,10 +18,10 @@ const mangayomiSources = [{
   "typeSource": "single",
   "itemType": 1,
   "isNsfw": false,
-  "version": "0.1.2",
+  "version": "0.1.3",
   "pkgPath": "anime/src/id/anibatch.js",
   "hasCloudflare": true,
-  "notes": "Pencarian hanya satu halaman, sesuai situs. Domain bisa berpindah; atur di Pengaturan sumber."
+  "notes": "Pencarian hanya satu halaman, sesuai situs. Domain bisa berpindah; atur di Pengaturan sumber. v0.1.3: episode bisa diunduh (tombol unduh Mangayomi). Server BerkasDrive (1080p/720p/480p/360p, sekitar 2 MB/s) dan HiAnime (file .mp4 dengan subtitle Indonesia) kini bisa diunduh. Unduhan mengikuti Kualitas yang diutamakan."
 }];
 
 // The shared helpers are inlined here, before the extension class: a class
@@ -2743,7 +2743,7 @@ class DefaultExtension extends IdBaseProvider {
         return null;
       }
       const src = decodeEntities(match[1]);
-      return { url: src, originalUrl: embed.url, quality: embed.quality, headers: this.headersFor(this.getBaseUrl() + "/") };
+      return { url: src, originalUrl: anibatchDownloadHint(src, slug, embed.quality), quality: embed.quality, headers: this.headersFor(this.getBaseUrl() + "/") };
     } catch (e) {
       console.log("anibatch: player BerkasDrive gagal: " + e);
       return null;
@@ -2776,6 +2776,22 @@ class DefaultExtension extends IdBaseProvider {
   getSourcePreferences() {
     return this.basePreferences(ANIBATCH_SERVERS);
   }
+}
+
+/**
+ * Mangayomi only downloads a video when `url` or `originalUrl` has a path that
+ * ends in a video extension. It then downloads `url`, and reads `originalUrl`
+ * only for local playback. BerkasDrive's signed `/download/<token>` has no
+ * extension, and any suffix breaks the signature (403; verified 2026-11-23). So
+ * `url` stays untouched, and `originalUrl` gets the same address plus a
+ * `<slug>-<quality>.mp4` name, which is only a download hint and is never
+ * fetched. Some 1080p files are MKV; the app saves every episode as .mp4, and
+ * the player reads the container from the bytes, not the name.
+ */
+function anibatchDownloadHint(src, slug, quality) {
+  const base = safeString(src).replace(/[?#].*$/, "").replace(/\/+$/, "");
+  const name = (safeString(slug) + "-" + (resolutionOf(quality) || "video")).replace(/[^A-Za-z0-9._-]+/g, "-");
+  return base + "/" + name + ".mp4";
 }
 
 /** "/slug/#ep=3", "https://host/slug/" -> "/slug/". */

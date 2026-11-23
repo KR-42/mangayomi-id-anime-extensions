@@ -24,10 +24,10 @@ const mangayomiSources = [{
   "typeSource": "single",
   "itemType": 1,
   "isNsfw": false,
-  "version": "0.2.6",
+  "version": "0.2.7",
   "pkgPath": "anime/src/id/oploverz.js",
   "hasCloudflare": true,
-  "notes": "Data dari API situs. Episode di upbolt dan abyssplayer bisa diputar langsung; bila upbolt menampilkan tantangan Cloudflare, selesaikan lewat tombol WebView atau atur FlareSolverr. Tab Popular berisi seri berlabel hot. v0.2.2: episode bisa diunduh (tombol unduh Mangayomi). Server Abyss memberi file .mp4 per resolusi (1080p/720p/480p), jadi unduhan mengikuti Kualitas yang diutamakan. v0.2.3: memperbaiki error \"tidak ada server yang bisa diputar (player.abyssplayer.com)\" yang muncul di sebagian episode (kira-kira 1 dari 20), karena data terenkripsi Abyss terpotong satu byte. v0.2.4: memperbaiki unduhan yang gagal dengan \"status 403\". Server Abyss mengalihkan video ke server lain yang hanya menerima permintaan dari halaman player, dan pengunduh aplikasi kehilangan informasi itu saat dialihkan. Ekstensi kini langsung memberi alamat tujuan akhirnya. v0.2.5: perbaikan v0.2.4 ternyata tidak berjalan di HP karena klien HTTP bawaan aplikasi selalu mengikuti pengalihan. Kini memakai klien yang bisa berhenti di pengalihan, jadi unduhan tidak lagi gagal 403. v0.2.6 (catatan unduhan): server Abyss membatasi kecepatan per koneksi (sering hanya 0,2–0,5 MB/s) dan aplikasi mengunduh satu episode per sumber dengan satu koneksi, jadi unduhan 1080p (±200–400 MB) bisa makan 10–20 menit per episode. Untuk mengunduh disarankan memilih kualitas 720p ke bawah di Kualitas yang diutamakan (480p biasanya hanya beberapa menit). Streaming tidak terpengaruh."
+  "notes": "Data dari API situs. Episode di upbolt dan abyssplayer bisa diputar langsung; bila upbolt menampilkan tantangan Cloudflare, selesaikan lewat tombol WebView atau atur FlareSolverr. Tab Popular berisi seri berlabel hot. v0.2.2: episode bisa diunduh (tombol unduh Mangayomi). Server Abyss memberi file .mp4 per resolusi (1080p/720p/480p), jadi unduhan mengikuti Kualitas yang diutamakan. v0.2.3: memperbaiki error \"tidak ada server yang bisa diputar (player.abyssplayer.com)\" yang muncul di sebagian episode (kira-kira 1 dari 20), karena data terenkripsi Abyss terpotong satu byte. v0.2.4: memperbaiki unduhan yang gagal dengan \"status 403\". Server Abyss mengalihkan video ke server lain yang hanya menerima permintaan dari halaman player, dan pengunduh aplikasi kehilangan informasi itu saat dialihkan. Ekstensi kini langsung memberi alamat tujuan akhirnya. v0.2.5: perbaikan v0.2.4 ternyata tidak berjalan di HP karena klien HTTP bawaan aplikasi selalu mengikuti pengalihan. Kini memakai klien yang bisa berhenti di pengalihan, jadi unduhan tidak lagi gagal 403. v0.2.6 (catatan unduhan): server Abyss membatasi kecepatan per koneksi (sering hanya 0,2–0,5 MB/s) dan aplikasi mengunduh satu episode per sumber dengan satu koneksi, jadi unduhan 1080p (±200–400 MB) bisa makan 10–20 menit per episode. Untuk mengunduh disarankan memilih kualitas 720p ke bawah di Kualitas yang diutamakan (480p biasanya hanya beberapa menit). Streaming tidak terpengaruh. v0.2.7: episode dari server Upbolt kini juga bisa diunduh (sebelumnya hanya Abyss). Unduhan Upbolt berupa HLS dan mengikuti Kualitas yang diutamakan."
 }];
 
 // The shared helpers are inlined here, before the extension class: a class
@@ -341,7 +341,7 @@ class DefaultExtension extends IdBaseProvider {
     }
     const list = variants.length ? variants : [{ url: masterUrl, quality: "" }];
     return list.map(function (v) {
-      return { url: v.url, originalUrl: embedUrl, quality: v.quality, headers: playHeaders };
+      return { url: v.url, originalUrl: oploHlsDownloadHint(v.url, embedUrl), quality: v.quality, headers: playHeaders };
     });
   }
 
@@ -423,6 +423,22 @@ function oploDownloadableAbyss(url) {
   const m = /^(https?:\/\/[^/?#]+\/sora\/\d+\/[^/?#]+?)((?:[?#].*)?)$/i.exec(value);
   if (!m || /\.mp4$/i.test(m[1])) return value;
   return m[1] + ".mp4" + m[2];
+}
+
+/**
+ * Mangayomi only downloads HLS when `url` or `originalUrl` ends in ".m3u8".
+ * Upbolt's signed playlists end in `.m3u8?t=<token>`, so these episodes were
+ * not downloadable. The app always fetches `url`, and reads `originalUrl` only
+ * for local playback, so `url` stays the signed address. `originalUrl` gets the
+ * same address without its query, which ends in ".m3u8" and is never fetched.
+ * Unlike the `&_=.m3u8` suffix that Otaku Desu uses, this leaves the URL the
+ * player and the downloader see untouched. That matters here: upbolt could not
+ * be reached from the build machine (Cloudflare), so whether its CDN tolerates
+ * an extra parameter is unverified.
+ */
+function oploHlsDownloadHint(url, fallback) {
+  const bare = safeString(url).replace(/[?#].*$/, "");
+  return /\.m3u8?$/i.test(bare) ? bare : fallback;
 }
 
 function oploHasNext(meta) {

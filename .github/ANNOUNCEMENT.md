@@ -8,6 +8,8 @@
     2. Klik "New discussion" → pilih kategori "Announcements".
     3. Judul: "📢 Selamat Datang di ID Anime Extensions!"
     4. Salin SEMUA teks di bawah garis ini ke isi discussion → Post.
+  Sudah pernah diposting? Buka discussion pengumuman yang lama → menu
+  "..." → Edit → ganti isinya dengan teks di bawah → Update discussion.
 ╚══════════════════════════════════════════════════════════════════════╝
 -->
 
@@ -15,7 +17,7 @@
 
 Halo, wibu Indonesia! 👋🇮🇩
 
-Ini adalah kumpulan **ekstensi anime subtitle Indonesia** untuk aplikasi [**Mangayomi**](https://github.com/kodjodevf/mangayomi). Saat ini tersedia **9 sumber**, streaming hingga **1080p**, ringan, dan tanpa iklan.
+Ini adalah kumpulan **ekstensi anime subtitle Indonesia** untuk aplikasi [**Mangayomi**](https://github.com/kodjodevf/mangayomi). Saat ini tersedia **9 sumber**, streaming hingga **1080p**, **bisa download episode**, ringan, dan tanpa iklan.
 
 ---
 
@@ -31,7 +33,7 @@ Atau **pasang manual**: Mangayomi → **Ekstensi → Anime → ➕** → tempel 
 https://raw.githubusercontent.com/KR-42/mangayomi-id-anime-extensions/main/anime_index.json
 ```
 
-Panduan lengkap ada di [**README**](https://github.com/KR-42/mangayomi-id-anime-extensions#-pasang-sekali-ketuk).
+Panduan lengkap ada di [**README**](https://github.com/KR-42/mangayomi-id-anime-extensions#pasang-sekali-ketuk).
 
 ---
 
@@ -39,9 +41,19 @@ Panduan lengkap ada di [**README**](https://github.com/KR-42/mangayomi-id-anime-
 
 Otaku Desu · Samehadaku · AnimeIndo · Nonton Anime ID · Anibatch · Kuronime · Oploverz · Anoboy · Animangahub
 
-Daftar versi, kualitas, dan masalah yang diketahui ada di [tabel README](https://github.com/KR-42/mangayomi-id-anime-extensions#-daftar-sumber).
+Daftar versi, kualitas, dan masalah yang diketahui ada di [tabel README](https://github.com/KR-42/mangayomi-id-anime-extensions#daftar-sumber).
 
-> ⬇️ **Fitur download episode belum tersedia** — semua sumber untuk streaming dulu. Dukungan unduhan akan dikembangkan ke depannya. 🚧
+---
+
+## ⬇️ Baru: Download episode
+
+Semua sumber sekarang **bisa download episode** lewat tombol unduh bawaan Mangayomi di daftar episode. 🎉
+
+- Kualitas yang diunduh mengikuti **Pengaturan sumber → Kualitas yang diutamakan**. Mau hemat kuota? Hilangkan centang 1080p/720p sebelum download.
+- Di **Oploverz**, download 1080p bisa makan 10–20 menit per episode. Lebih baik pilih **720p ke bawah**.
+- Kalau ada episode yang gagal diunduh, laporkan di [Issues](https://github.com/KR-42/mangayomi-id-anime-extensions/issues/new/choose) ya.
+
+Detail server dan kecepatan per sumber ada di [README](https://github.com/KR-42/mangayomi-id-anime-extensions#download).
 
 ---
 

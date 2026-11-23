@@ -4,16 +4,16 @@
 
 <div align="center">
 
-<a href="#-pasang-sekali-ketuk">
+<a href="#pasang-sekali-ketuk">
   <img src="https://capsule-render.vercel.app/api?type=waving&color=0:7F00FF,50:B026FF,100:E100FF&height=210&section=header&text=ID%20Anime%20Extensions&fontSize=48&fontColor=ffffff&fontAlignY=36&desc=Ekstensi%20Anime%20Sub%20Indo%20untuk%20Mangayomi&descAlignY=58&descSize=18" alt="ID Anime Extensions" width="100%"/>
 </a>
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=22&pause=900&color=B026FF&center=true&vCenter=true&width=640&height=46&lines=10+sumber+anime+sub+Indonesia+%F0%9F%87%AE%F0%9F%87%A9;Streaming+hingga+1080p+%E2%9C%A8;Satu+ketuk+pasang+ke+Mangayomi+%F0%9F%93%B2;Tetap+dukung+situs+streaming+aslinya+%E2%9D%A4%EF%B8%8F" alt="typing" />
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=22&pause=900&color=B026FF&center=true&vCenter=true&width=640&height=46&lines=9+sumber+anime+sub+Indonesia+%F0%9F%87%AE%F0%9F%87%A9;Streaming+hingga+1080p+%E2%9C%A8;Satu+ketuk+pasang+ke+Mangayomi+%F0%9F%93%B2;Tetap+dukung+situs+streaming+aslinya+%E2%9D%A4%EF%B8%8F" alt="typing" />
 
 <br/>
 
 ![Mangayomi](https://img.shields.io/badge/Mangayomi-Anime_Extensions-FF2D78?style=for-the-badge&logo=android&logoColor=white)
-![Sumber](https://img.shields.io/badge/Sumber-10-8A2BE2?style=for-the-badge)
+![Sumber](https://img.shields.io/badge/Sumber-9-8A2BE2?style=for-the-badge)
 ![Bahasa](https://img.shields.io/badge/Subtitle-Indonesia-00B4D8?style=for-the-badge)
 ![Kualitas](https://img.shields.io/badge/Kualitas-hingga_1080p-22C55E?style=for-the-badge)
 [![Lisensi](https://img.shields.io/badge/Lisensi-Apache_2.0-FFD93D?style=for-the-badge)](LICENSE)
@@ -29,11 +29,13 @@
 
 ### ✦ Navigasi Cepat ✦
 
-[📲 Pasang Sekali Ketuk](#-pasang-sekali-ketuk) • [🗂️ Daftar Sumber](#-daftar-sumber) • [⚠️ Masalah](#-masalah-yang-diketahui) • [🛠️ Pasang Manual](#-pasang-manual) • [💬 Lapor / Feedback](#-feedback--lapor-bug) • [⚖️ Disclaimer](#-disclaimer)
+[📲 Pasang Sekali Ketuk](#pasang-sekali-ketuk) • [🗂️ Daftar Sumber](#daftar-sumber) • [🛠️ Pasang Manual](#pasang-manual) • [⚠️ Masalah](#masalah) • [⬇️ Download](#download) • [💬 Lapor / Feedback](#feedback) • [⚖️ Disclaimer](#disclaimer)
 
 </div>
 
 ---
+
+<a id="pasang-sekali-ketuk"></a>
 
 ## 📲 Pasang Sekali Ketuk
 
@@ -50,9 +52,11 @@
 
 </div>
 
-> Lebih suka cara manual? Lihat [**Pasang Manual**](#-pasang-manual) — cukup tempel URL index.
+> Lebih suka cara manual? Lihat [**Pasang Manual**](#pasang-manual) — cukup tempel URL index.
 
 ---
+
+<a id="daftar-sumber"></a>
 
 ## 🗂️ Daftar Sumber
 
@@ -72,88 +76,13 @@
 
 <sub>🟢 = tersedia hingga 1080p · 🟡 = maksimal 720p.</sub>
 
-<sub>Belum termasuk <b>1 sumber tambahan</b> yang dikunci di balik peringatan <b>18+</b> di bawah tabel — nama dan domainnya disembunyikan sampai blok itu dibuka.</sub>
-
 </div>
 
-> Setiap domain bawaan **bisa diganti** di _Pengaturan sumber_ tanpa install ulang — berguna saat situs pindah domain. Lihat [Domain berubah?](#-domain-berubah).
-
-<details>
-<summary><b>🔞 PERINGATAN: Konten Dewasa 18+ / NSFW — klik untuk membuka</b></summary>
-
-<br/>
-
-> [!CAUTION]
-> **🔞 NSFW — DEWASA, 18 TAHUN KE ATAS.**
-> Blok ini berisi sumber konten **seksual eksplisit (hentai/porno)**. Jangan buka kalau kamu
-> **belum 18 tahun**.
-> Buka **atas kesadaran dan tanggung jawab sendiri**. Kamu bisa menutupnya lagi kapan saja
-> dengan mengklik judul di atas.
-
-<br/>
-
-**Sumber:**
-
-| 🎬 Sumber | 🏷️ Versi | ⬇️ Download | 📺 Kualitas | 🕒 Terakhir Update |
-|:---|:---:|:---:|:---:|:---:|
-| **Nekopoi** 🔞 | `0.2.9` | ⚠️ Belum teruji | 🟡 720p | 23 Nov 2026 |
-
-- **Domain:** `https://nekopoi.care` — bisa diganti di _Pengaturan sumber_ kalau situsnya pindah.
-- **Butuh VPN atau DNS lain.** Situsnya diblokir provider Indonesia. Di **Telkomsel** (diuji
-  23 Nov 2026) blokirnya hanya lewat DNS: dengan DNS biasa `nekopoi.care` diarahkan ke halaman
-  blokir, sedangkan dengan alamat yang benar situsnya langsung terbuka. Jadi cukup set
-  **DNS Pribadi Android** ke `dns.adguard-dns.com` (disarankan, karena sekaligus memblokir iklan
-  popunder DoodStream) atau `one.one.one.one`. Provider lain mungkin memblokir dengan cara berbeda;
-  kalau DNS tidak menolong, pakai **VPN**.
-- **Server 3 (streampoi) sudah mati di sisi situs.** Sejak sekitar 22 Nov 2026 situs mengarahkan
-  Server 3 ke domain `stmpoi.com` yang **tidak terdaftar sama sekali**, dan video-videonya tidak ada
-  lagi di jaringan StreamRuby. Ini tidak bisa diperbaiki dari ekstensi.
-- **Server 1 dan 2** (playmogo, DoodStream) kini satu-satunya jalur. Keduanya selalu dijaga
-  tantangan Cloudflare yang diselesaikan lewat WebView, jadi episode **lambat dibuka** dan bisa
-  gagal. Mulai **`0.2.5`** ekstensi mengetes dulu host mirror-nya dengan satu permintaan `HEAD`,
-  jadi server yang sudah mati dilewati seketika.
-- Kalau semua server gagal, aplikasi sekarang **menyebutkan server mana yang gagal beserta
-  alasannya**, bukan sekadar "Daftar video kosong". Buka episode itu sekali di **Tampilan Web**
-  supaya tantangan Cloudflare lewat, lalu putar ulang — ekstensi akan mencoba mengambil video
-  lewat sesi WebView yang sudah punya cookie tantangan itu.
-- **Mirror unduhan** di halaman episode (Mp4Upload, Pixeldrain, KrakenFiles lewat ouo.io) adalah
-  tautan **unduh**, bukan stream, jadi tidak ditampilkan sebagai video.
-- Di Mangayomi, sumber ini otomatis ditandai **`NSFW`** dan baru muncul setelah mode NSFW
-  diaktifkan di pengaturan aplikasi.
-- **⏳ Video/episode di Nekopoi memang sangat lambat dibuka — ini normal, bukan error.**
-  Tekan putar, lalu **diamkan dan tunggu sekitar 1–2 menit**. Layar yang terlihat "menggantung"
-  di menit pertama biasanya masih bekerja di belakang: halaman embed-nya harus lewat tantangan
-  Cloudflare dulu sebelum URL video keluar. Selama belum lewat **2 menit**, jangan tutup episode
-  dan jangan ganti server. Kalau **sudah lebih dari 2 menit** videonya tetap tidak bisa diputar
-  (baru di menit itu boleh dianggap gagal), silakan [laporkan bug](#-feedback--lapor-bug) —
-  sertakan judul, nomor episode, dan server yang dipakai. Di **`0.2.5`** jatah tunggu jalur
-  cadangan dipotong jadi **20 detik** dan berhenti begitu satu stream ketemu, jadi kalau server
-  itu memang tidak bisa dipakai pesan gagalnya muncul cepat, bukan menggantung.
-
-</details>
+> Setiap domain bawaan **bisa diganti** di _Pengaturan sumber_ tanpa install ulang — berguna saat situs pindah domain. Lihat [Domain berubah?](#domain-berubah).
 
 ---
 
-## ⚠️ Masalah yang Diketahui
-
-> Hanya sumber yang punya catatan yang ditulis. Sumber yang tidak tercantum = **belum ada masalah yang diketahui** (AnimeIndo, Kuronime, Anoboy).
-
-<div align="center">
-
-| 🎬 Sumber | 🐛 Catatan / Masalah |
-|:---|:---|
-| **Otaku Desu** | Episode kadang lambat dibuka — **tunggu 1–2 menit** dulu. Kalau belum jalan, **ganti server stream**. Kalau semua server tetap gagal **setelah lebih dari 2 menit**, silakan [laporkan bug](#-feedback--lapor-bug). |
-| **Samehadaku** | Sebagian episode **lama** hanya punya server `gdriveplayer`/Mega yang tidak didukung → episode itu tanpa video. |
-| **Nonton Anime ID** | ±9 episode paling awal hanya ada di Dailymotion terlindungi → tanpa video. |
-| **Anibatch** | Saat scroll **Populer/Terbaru** ke halaman berikutnya, kadang **macet di loading** di HP. |
-| **Oploverz** | Server **upbolt** kadang minta verifikasi Cloudflare — tekan **WebView** di layar error sekali, lalu buka episode lagi. **Unduhan 1080p sangat lama** (±10–20 menit per episode): server Abyss membatasi kecepatan per koneksi dan app mengunduh satu episode per sumber dengan satu koneksi — ini tidak bisa diatasi dari ekstensi. **Disarankan unduh di 720p ke bawah**: atur **Kualitas yang diutamakan** di pengaturan Oploverz sebelum mengunduh (480p biasanya cuma beberapa menit). Streaming tidak terpengaruh. |
-| **Nekopoi** | **Server 3 sudah mati di sisi situs** (domain `stmpoi.com` tidak terdaftar), jadi hanya Server 1/2 (playmogo) yang tersisa. Keduanya selalu lewat tantangan Cloudflare di WebView, jadi episode **lambat dibuka (1–2 menit)** dan bisa gagal. Situs diblokir provider: set **DNS Pribadi → `dns.adguard-dns.com`** (atau `one.one.one.one`), atau pakai VPN. Kalau tetap gagal: isi **FlareSolverr/Byparr** di Pengaturan → Umum. Unduhan belum teruji di HP. Lihat blok 18+ di atas untuk rinciannya. |
-
-</div>
-
-Menemukan masalah lain? → [**Lapor di sini**](#-feedback--lapor-bug) 🙏
-
----
+<a id="pasang-manual"></a>
 
 ## 🛠️ Pasang Manual
 
@@ -176,7 +105,7 @@ Menemukan masalah lain? → [**Lapor di sini**](#-feedback--lapor-bug) 🙏
 </details>
 
 <details>
-<summary><b id="-domain-berubah">🌐 Domain situs berubah? (ketuk)</b></summary>
+<summary><b id="domain-berubah">🌐 Domain situs berubah? (ketuk)</b></summary>
 
 <br/>
 
@@ -188,14 +117,39 @@ Situs anime Indonesia sering pindah domain. Kamu **tidak perlu** install ulang:
 
 Link di perpustakaan disimpan **relatif**, jadi ganti domain **tidak** menghilangkan daftar anime yang kamu ikuti. Khusus **Anoboy** & **Animangahub** ada pula dropdown domain siap-pilih.
 
+Kalau ekstensi tetap rusak setelah situsnya pindah domain, misalnya domain baru punya tampilan yang berbeda, [**lapor bug**](https://github.com/KR-42/mangayomi-id-anime-extensions/issues/new) atau minta di [**Discussions**](https://github.com/KR-42/mangayomi-id-anime-extensions/discussions) supaya ekstensinya diperbarui ke domain baru.
+
 </details>
 
 ---
 
+<a id="masalah"></a>
+
+## ⚠️ Masalah yang Diketahui
+
+> Sumber yang tidak ada di tabel ini belum punya masalah yang diketahui.
+
+<div align="center">
+
+| 🎬 Sumber | 🐛 Masalah |
+|:---|:---|
+| **Otaku Desu** | Episode kadang lama terbuka, jadi tunggu 1–2 menit dulu. Kalau belum jalan, coba ganti server. Kalau semua server masih gagal setelah 2 menit, silakan [lapor bug](#feedback). |
+| **Samehadaku** | Sebagian episode lama tidak bisa diputar, karena videonya hanya tersedia di server yang belum didukung. |
+| **Anibatch** | Saat menggulir Populer/Terbaru ke halaman berikutnya, loading kadang macet di HP. |
+| **Oploverz** | Kadang muncul verifikasi Cloudflare: ketuk **WebView** di layar error, lalu buka episodenya lagi. Download 1080p bisa makan 10–20 menit per episode, jadi lebih baik download di **720p ke bawah**. |
+
+</div>
+
+Menemukan masalah lain? → [**Lapor di sini**](#feedback) 🙏
+
+---
+
+<a id="download"></a>
+
 ## ⬇️ Fitur Download
 
 > [!NOTE]
-> Unduhan memakai **tombol unduh bawaan Mangayomi** di daftar episode. **Semua sumber sudah bisa mengunduh** (diuji di HP pada 23 Nov 2026), kecuali Nekopoi 🔞 yang belum teruji. ✅
+> Unduhan memakai **tombol unduh bawaan Mangayomi** di daftar episode. **Semua sumber sudah bisa mengunduh** (diuji di HP pada 23 Nov 2026) ✅
 
 - **Kualitas mana yang diunduh?** Mangayomi tidak menanyakan kualitas saat mengunduh; ia mengambil video **teratas** di daftar. Urutan itu mengikuti **Pengaturan sumber → Kualitas yang diutamakan** (bawaan: tertinggi dulu). Mau unduhan lebih hemat kuota? Hilangkan centang 1080p/720p sebelum mengunduh.
 - Mangayomi selalu mendahulukan file **.mp4** daripada stream HLS. Di **Otaku Desu** mirror .mp4 umumnya 720p (sebagian episode juga punya 480p), jadi unduhan biasanya **720p** walau kamu memilih 360p.
@@ -213,13 +167,16 @@ Link di perpustakaan disimpan **relatif**, jadi ganti domain **tidak** menghilan
 | **Oploverz** | Abyss (.mp4), Upbolt (HLS) | 🐢 1080p lambat | Abyss 1080p bisa ±10–20 menit per episode. **Disarankan 720p ke bawah.** |
 | **Anoboy** | YourUpload | 🟢 ±3 MB/s | Episode yang hanya punya Blogger: 🐢 ±12 menit. |
 | **Animangahub** | Filedon dll. | — | |
-| **Nekopoi** 🔞 | DoodStream (.mp4) | ⚠️ | Belum teruji. Butuh DNS/VPN yang sama seperti saat menonton. |
 
 **Kenapa ada yang lambat?** Mangayomi mengunduh satu episode per sumber dengan satu koneksi.
 Server Abyss (Oploverz) dan Blogger (Google) membatasi kecepatan per koneksi, jadi ini tidak bisa
 dipercepat dari ekstensi. Streaming tidak terpengaruh.
 
 - Ganti pengaturan berlaku untuk **semua** episode dan juga kualitas saat menonton.
+
+---
+
+<a id="feedback"></a>
 
 ## 💬 Feedback & Lapor Bug
 
@@ -240,6 +197,8 @@ dipercepat dari ekstensi. Streaming tidak terpengaruh.
 > **Agar bug cepat diperbaiki**, sertakan: **nama sumber + versi**, **judul & nomor episode**, **server yang dipilih**, dan **screenshot/rekaman** pesan error-nya. Makin lengkap, makin cepat beres. 🙌
 
 ---
+
+<a id="disclaimer"></a>
 
 ## ⚖️ Disclaimer
 
@@ -263,7 +222,6 @@ Ekstensi **tidak** memuat iklan dan **tidak** membobol proteksi situs sendiri:
 - URL stream diambil dari balik halaman embed, jadi player beriklan tidak dirender.
 - Tantangan Cloudflare diselesaikan oleh **aplikasi Mangayomi** (WebView bawaan / FlareSolverr / Byparr), bukan oleh ekstensi.
 - Player ter-obfuscate dibuka memakai **ekstraktor native** aplikasi, bukan kode ekstraksi yang disalin ke repo ini.
-
 
 </details>
 

@@ -23,10 +23,10 @@ const mangayomiSources = [{
   "typeSource": "single",
   "itemType": 1,
   "isNsfw": false,
-  "version": "0.1.7",
+  "version": "0.1.8",
   "pkgPath": "anime/src/id/samehadaku.js",
   "hasCloudflare": true,
-  "notes": "Domain bisa berpindah; atur di Pengaturan sumber. Bila muncul error Cloudflare, buka WebView dari layar error lalu coba lagi. v0.1.7: jauh lebih cepat saat Cloudflare sedang menantang. Begitu permintaan biasa ditolak sekali, selama 1 jam berikutnya halaman langsung dibuka lewat WebView, tanpa menunggu resolver Cloudflare aplikasi yang lama dan sering gagal. Pembukaan pertama tetap bisa lambat; berikutnya cepat."
+  "notes": "Domain bisa berpindah; atur di Pengaturan sumber. Bila muncul error Cloudflare, buka WebView dari layar error lalu coba lagi. v0.1.7: jauh lebih cepat saat Cloudflare sedang menantang. Begitu permintaan biasa ditolak sekali, selama 1 jam berikutnya halaman langsung dibuka lewat WebView, tanpa menunggu resolver Cloudflare aplikasi yang lama dan sering gagal. Pembukaan pertama tetap bisa lambat; berikutnya cepat. v0.1.8: episode bisa diunduh (tombol unduh Mangayomi). VIP STREAMING (Filedon) dan Wibufile didahulukan. Episode yang hanya punya Blogger tetap bisa diunduh tetapi lambat (sekitar 12 menit) karena Google membatasi kecepatannya."
 }];
 
 // The shared helpers are inlined here, before the extension class: a class
@@ -2875,6 +2875,18 @@ class DefaultExtension extends IdBaseProvider {
         console.log("samehadaku: " + embed.server + " tidak menghasilkan stream");
       }
     }
+    // Blogger only becomes downloadable when nothing else is: Google throttles a
+    // plain GET to about playback speed (~12 min per episode, measured on
+    // Anoboy 23 Nov 2026), and the app downloads the first downloadable entry,
+    // so Filedon (.mkv) and Wibufile (.mp4) must keep winning when present.
+    if (!results.some(sameDownloadable)) {
+      results.forEach(function (video) {
+        if (/googlevideo\.com\/videoplayback/i.test(safeString(video.url))) {
+          video.originalUrl = safeString(video.url).replace(/[?#].*$/, "") + "/samehadaku-" +
+            (resolutionOf(video.quality) || "video") + ".mp4";
+        }
+      });
+    }
     return sortVideos(results, this.preferredQualities(), this.preferredServers());
   }
 
@@ -2958,5 +2970,19 @@ function sameStatus(value) {
 function sameDate(value) {
   return safeString(value).replace(/[A-Za-z]+/g, function (word) {
     return SAME_MONTHS[word.toLowerCase()] || word;
+  });
+}
+
+/**
+ * Mangayomi downloads the first video whose `url` or `originalUrl` path ends
+ * in a video extension, or whose string ends in .m3u8 (download_provider.dart,
+ * 0.9.96). It always fetches `url`, and reads `originalUrl` only for local
+ * playback, so the `.../videoplayback/samehadaku-<res>.mp4` that getVideoList
+ * gives a Blogger stream is only a hint and is never fetched.
+ */
+function sameDownloadable(video) {
+  return [video && video.url, video && video.originalUrl].some(function (value) {
+    const p = safeString(value).replace(/[?#].*$/, "").toLowerCase();
+    return /\.(mp4|mkv|webm|m4v|mov)$/.test(p) || /\.m3u8?$/.test(safeString(value));
   });
 }

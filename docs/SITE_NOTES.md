@@ -309,6 +309,15 @@ memakai filter `title` di `/daftar-anime-2/` yang hanya mengembalikan anime.
   yang diuji (413–804), jadi episode semacam itu tidak punya video.
 - Mega → **tidak didukung**.
 
+**Unduhan (0.1.8, 23 Nov 2026):** belum bisa diuji live dari PC (Cloudflare 403, tidak dibobol).
+- Filedon (`VIP STREAMING`) memberi URL R2 bertanda tangan `.../direct/<nama>.mkv?...`; path-nya `.mkv`,
+  jadi lolos filter app.
+- Wibufile memberi file `.mp4` langsung (setup JW).
+- Blogger diberi `originalUrl` `.../videoplayback/samehadaku-<res>.mp4` **hanya bila tidak ada
+  video lain yang lolos** (`sameDownloadable`), dengan pola yang sama seperti Anoboy 0.1.2. Alasannya,
+  Google men-throttle GET penuh ke ±laju putar.
+- Samehadaku masuk `DOWNLOADABLE` harness (fixture: Filedon .mkv).
+
 ---
 
 ## 3. Kuronime — `https://kuronime.sbs/`

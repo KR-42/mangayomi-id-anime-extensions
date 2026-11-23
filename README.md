@@ -61,7 +61,7 @@
 | 🎬 Sumber | 🏷️ Versi | ⬇️ Download | 📺 Kualitas | 🕒 Terakhir Update |
 |:---|:---:|:---:|:---:|:---:|
 | **Otaku Desu** | `0.3.4` | ✅ 720p | 🟡 720p | 19 Nov 2026 |
-| **Samehadaku** | `0.1.7` | ⏳ Belum | 🟢 1080p | 19 Nov 2026 |
+| **Samehadaku** | `0.1.8` | ✅ Bisa | 🟢 1080p | 23 Nov 2026 |
 | **AnimeIndo** | `0.1.3` | ✅ Bisa | 🟢 1080p | 20 Nov 2026 |
 | **Nonton Anime ID** | `0.1.2` | ✅ Bisa | 🟢 1080p | 12 Nov 2026 |
 | **Anibatch** | `0.1.3` | ✅ Bisa | 🟢 1080p | 23 Nov 2026 |
@@ -196,6 +196,7 @@ Link di perpustakaan disimpan **relatif**, jadi ganti domain **tidak** menghilan
 - **Kualitas mana yang diunduh?** Mangayomi tidak menanyakan kualitas saat mengunduh; ia mengambil video **teratas** di daftar. Urutan itu mengikuti **Pengaturan sumber → Kualitas yang diutamakan** (bawaan: tertinggi dulu). Mau unduhan lebih hemat kuota? Hilangkan centang 1080p/720p sebelum mengunduh.
 - Mangayomi selalu mendahulukan file **.mp4** daripada stream HLS. Di **Otaku Desu** mirror .mp4 umumnya 720p (sebagian episode juga punya 480p), jadi unduhan biasanya **720p** walau kamu memilih 360p.
 - Di **Nekopoi** 🔞 unduhan butuh jaringan yang sama seperti saat menonton (VPN / DNS AdGuard). Server 1/2 (DoodStream, .mp4) didahulukan; bila hanya Server 3 (Streampoi) yang jalan, unduhan berupa HLS sesuai Kualitas yang diutamakan.
+- Di **Samehadaku** unduhan memakai **VIP STREAMING** (Filedon, sampai 1080p) atau **Wibufile**. Episode yang hanya punya Blogger tetap bisa diunduh tetapi lambat (±12 menit). Episode lama yang hanya punya gdriveplayer/Mega tidak bisa diputar maupun diunduh.
 - Di **Anoboy** unduhan memakai server **YourUpload** (cepat, ±3 MB/s). Episode yang hanya punya **Blogger** tetap bisa diunduh, tetapi **lambat (±12 menit per episode)** karena Google membatasi kecepatannya.
 - Di **Anibatch** unduhan memakai server **BerkasDrive** (1080p/720p/480p/360p, cepat ±2 MB/s). Sebagian file 1080p berformat MKV; tetap tersimpan dan bisa diputar normal.
 - Ganti pengaturan berlaku untuk **semua** episode dan juga kualitas saat menonton.

@@ -210,13 +210,13 @@
     "hasCloudflare": true,
     "sourceCodeUrl": "https://raw.githubusercontent.com/KR-42/mangayomi-id-anime-extensions/main/javascript/anime/src/id/samehadaku.js",
     "apiUrl": "",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "isManga": false,
     "itemType": 1,
     "isFullData": false,
     "appMinVerReq": "0.5.0",
     "additionalParams": "",
     "sourceCodeLanguage": 1,
-    "notes": "Domain bisa berpindah; atur di Pengaturan sumber. Bila muncul error Cloudflare, buka WebView dari layar error lalu coba lagi. v0.1.7: jauh lebih cepat saat Cloudflare sedang menantang. Begitu permintaan biasa ditolak sekali, selama 1 jam berikutnya halaman langsung dibuka lewat WebView, tanpa menunggu resolver Cloudflare aplikasi yang lama dan sering gagal. Pembukaan pertama tetap bisa lambat; berikutnya cepat."
+    "notes": "Domain bisa berpindah; atur di Pengaturan sumber. Bila muncul error Cloudflare, buka WebView dari layar error lalu coba lagi. v0.1.7: jauh lebih cepat saat Cloudflare sedang menantang. Begitu permintaan biasa ditolak sekali, selama 1 jam berikutnya halaman langsung dibuka lewat WebView, tanpa menunggu resolver Cloudflare aplikasi yang lama dan sering gagal. Pembukaan pertama tetap bisa lambat; berikutnya cepat. v0.1.8: episode bisa diunduh (tombol unduh Mangayomi). VIP STREAMING (Filedon) dan Wibufile didahulukan. Episode yang hanya punya Blogger tetap bisa diunduh tetapi lambat (sekitar 12 menit) karena Google membatasi kecepatannya."
   }
 ]

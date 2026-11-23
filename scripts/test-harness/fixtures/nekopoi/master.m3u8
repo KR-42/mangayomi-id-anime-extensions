@@ -1,7 +1,7 @@
 #EXTM3U
 #EXT-X-STREAM-INF:BANDWIDTH=337000,RESOLUTION=640x360
-hls2/01/00116/8f7cp7q4qk8k_,l,n,h,.urlset/360p/index.m3u8
+https://rap7c5roebejl0.streamruby.net/hls2/01/00116/8f7cp7q4qk8k_,l,n,h,.urlset/index-f1-v1-a1.m3u8?t=fixture&s=1794549790&e=32400&v=1964774440&i=0.3&sp=0
 #EXT-X-STREAM-INF:BANDWIDTH=528000,RESOLUTION=854x480
-hls2/01/00116/8f7cp7q4qk8k_,l,n,h,.urlset/480p/index.m3u8
+https://rap7c5roebejl0.streamruby.net/hls2/01/00116/8f7cp7q4qk8k_,l,n,h,.urlset/index-f2-v1-a1.m3u8?t=fixture&s=1794549790&e=32400&v=1964774440&i=0.3&sp=0
 #EXT-X-STREAM-INF:BANDWIDTH=548000,RESOLUTION=1280x720
-hls2/01/00116/8f7cp7q4qk8k_,l,n,h,.urlset/720p/index.m3u8
+https://rap7c5roebejl0.streamruby.net/hls2/01/00116/8f7cp7q4qk8k_,l,n,h,.urlset/index-f3-v1-a1.m3u8?t=fixture&s=1794549790&e=32400&v=1964774440&i=0.3&sp=0

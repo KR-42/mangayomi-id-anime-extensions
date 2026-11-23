@@ -870,6 +870,17 @@ genre, kategori, `/genre-list/`, `/hentai-list/`, dan dua halaman embed player).
   `ouo.io` dan hanya file 360p/480p/720p/1080p untuk diunduh. Sengaja **tidak** ditawarkan
   sebagai stream.
 
+**Unduhan (0.2.9, 23 Nov 2026):**
+- Laptop build tidak bisa membuka nekopoi.care / streamruby (blokir SNI ISP), jadi semua analisis
+  dilakukan dari kode dan fixture.
+- DoodStream (playmogo, lewat `extractDoodJs` maupun `doodViaWebview`) sudah membentuk
+  `<base><rnd>.mp4?token=…`, sehingga path berakhiran `.mp4` dan lolos filter app sejak awal.
+- Streampoi: master asli `…/master.m3u8?t=…&s=…`, dan varian XFileSharing juga `index-fN-v1-a1.m3u8?t=…`.
+  Ini tidak lolos filter HLS app (string harus berakhiran `.m3u8`). Fixture lama menulis varian tanpa
+  query, jadi masalah ini tersembunyi. Fixture `master.m3u8` kini memakai bentuk asli.
+- Solusi: `nekopoiHlsDownloadHint`, dengan pola yang sama seperti Oploverz 0.2.7. `originalUrl` = URL varian tanpa
+  query, dan `url` tidak diubah. Nekopoi masuk `DOWNLOADABLE` di harness.
+
 ---
 
 ## Matriks dukungan ekstraktor

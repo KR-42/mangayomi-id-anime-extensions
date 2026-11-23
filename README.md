@@ -94,9 +94,9 @@
 
 **Sumber:**
 
-| 🎬 Sumber | 🏷️ Versi | 📺 Kualitas | 🕒 Terakhir Update |
-|:---|:---:|:---:|:---:|
-| **Nekopoi** 🔞 | `0.2.8` | 🟡 720p | 15 Nov 2026 |
+| 🎬 Sumber | 🏷️ Versi | ⬇️ Download | 📺 Kualitas | 🕒 Terakhir Update |
+|:---|:---:|:---:|:---:|:---:|
+| **Nekopoi** 🔞 | `0.2.9` | ✅ Bisa | 🟡 720p | 23 Nov 2026 |
 
 - **Domain:** `https://nekopoi.care` — bisa diganti di _Pengaturan sumber_ kalau situsnya pindah.
 - **Wajib VPN.** Situsnya memblokir IP Indonesia. Mengganti DNS ke Cloudflare **tidak menolong**:
@@ -195,6 +195,7 @@ Link di perpustakaan disimpan **relatif**, jadi ganti domain **tidak** menghilan
 
 - **Kualitas mana yang diunduh?** Mangayomi tidak menanyakan kualitas saat mengunduh; ia mengambil video **teratas** di daftar. Urutan itu mengikuti **Pengaturan sumber → Kualitas yang diutamakan** (bawaan: tertinggi dulu). Mau unduhan lebih hemat kuota? Hilangkan centang 1080p/720p sebelum mengunduh.
 - Mangayomi selalu mendahulukan file **.mp4** daripada stream HLS. Di **Otaku Desu** mirror .mp4 umumnya 720p (sebagian episode juga punya 480p), jadi unduhan biasanya **720p** walau kamu memilih 360p.
+- Di **Nekopoi** 🔞 unduhan butuh jaringan yang sama seperti saat menonton (VPN / DNS AdGuard). Server 1/2 (DoodStream, .mp4) didahulukan; bila hanya Server 3 (Streampoi) yang jalan, unduhan berupa HLS sesuai Kualitas yang diutamakan.
 - Di **Anibatch** unduhan memakai server **BerkasDrive** (1080p/720p/480p/360p, cepat ±2 MB/s). Sebagian file 1080p berformat MKV; tetap tersimpan dan bisa diputar normal.
 - Ganti pengaturan berlaku untuk **semua** episode dan juga kualitas saat menonton.
 

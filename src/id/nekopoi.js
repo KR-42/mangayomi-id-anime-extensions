@@ -24,10 +24,10 @@ const mangayomiSources = [{
   "typeSource": "single",
   "itemType": 1,
   "isNsfw": true,
-  "version": "0.2.8",
+  "version": "0.2.9",
   "pkgPath": "anime/src/id/nekopoi.js",
   "hasCloudflare": true,
-  "notes": "Konten 18+. Situs memblokir IP Indonesia di level TLS, jadi sumber ini hanya jalan lewat VPN — mengganti DNS ke Cloudflare tidak menolong. Domain bisa berpindah; atur di Pengaturan sumber. Video/episode memang lambat dibuka: tunggu 1-2 menit dulu sebelum menganggapnya gagal. v0.2.5: pemutar tidak lagi menggantung lama — host mirror yang sudah mati dilewati dalam sekejap (tes HEAD dulu), jatah coba di WebView dipotong jadi 20 detik dan berhenti di stream pertama, stream DoodStream dibekali User-Agent + Referer aslinya supaya CDN mengirim video (bukan pengalihan kosong), dan posting [NEW Release] sekarang bisa dibuka kembali ke folder serinya. Server 1/2 (playmogo/plamogo) sering mati di sisi situs — pakai Server 3 (streampoi) bila ada. v0.2.6: iframe yang masih menunjuk domain mirror mati plamogo.com kini otomatis dialihkan ke playmogo.com yang hidup (id embed-nya sama), jadi Server 1/2 kembali bisa diputar tanpa menunggu Server 3. v0.2.7: jalur WebView dikebalkan terhadap iklan popunder DoodStream (intent://rm358.com) yang tadinya membajak handshake, dan pesan error mengarahkan ke solusi nyata. CATATAN PENTING: kalau player tetap gagal, penyebabnya Cloudflare menantang playmogo.com dari IP Indonesia (403 cf-mitigated) — ini TIDAK bisa ditembus kode ekstensi; aktifkan VPN atau isi FlareSolverr/Byparr di Pengaturan > Umum. v0.2.8: jalur WebView kini membiarkan Managed Challenge Cloudflare terpecah sendiri lalu membaca handshake langsung dari DOM (tahan terhadap reload pasca-challenge), dan diberi waktu lebih (35 detik). Pakai DNS AdGuard (dns.adguard-dns.com) untuk memblokir iklan popunder rm358.com sekaligus membuka blokir situs — ini membuat challenge auto-solve tanpa VPN."
+  "notes": "Konten 18+. Situs memblokir IP Indonesia di level TLS, jadi sumber ini hanya jalan lewat VPN — mengganti DNS ke Cloudflare tidak menolong. Domain bisa berpindah; atur di Pengaturan sumber. Video/episode memang lambat dibuka: tunggu 1-2 menit dulu sebelum menganggapnya gagal. v0.2.5: pemutar tidak lagi menggantung lama — host mirror yang sudah mati dilewati dalam sekejap (tes HEAD dulu), jatah coba di WebView dipotong jadi 20 detik dan berhenti di stream pertama, stream DoodStream dibekali User-Agent + Referer aslinya supaya CDN mengirim video (bukan pengalihan kosong), dan posting [NEW Release] sekarang bisa dibuka kembali ke folder serinya. Server 1/2 (playmogo/plamogo) sering mati di sisi situs — pakai Server 3 (streampoi) bila ada. v0.2.6: iframe yang masih menunjuk domain mirror mati plamogo.com kini otomatis dialihkan ke playmogo.com yang hidup (id embed-nya sama), jadi Server 1/2 kembali bisa diputar tanpa menunggu Server 3. v0.2.7: jalur WebView dikebalkan terhadap iklan popunder DoodStream (intent://rm358.com) yang tadinya membajak handshake, dan pesan error mengarahkan ke solusi nyata. CATATAN PENTING: kalau player tetap gagal, penyebabnya Cloudflare menantang playmogo.com dari IP Indonesia (403 cf-mitigated) — ini TIDAK bisa ditembus kode ekstensi; aktifkan VPN atau isi FlareSolverr/Byparr di Pengaturan > Umum. v0.2.8: jalur WebView kini membiarkan Managed Challenge Cloudflare terpecah sendiri lalu membaca handshake langsung dari DOM (tahan terhadap reload pasca-challenge), dan diberi waktu lebih (35 detik). Pakai DNS AdGuard (dns.adguard-dns.com) untuk memblokir iklan popunder rm358.com sekaligus membuka blokir situs — ini membuat challenge auto-solve tanpa VPN. v0.2.9: episode bisa diunduh (tombol unduh Mangayomi). Server 3 (Streampoi) kini lolos syarat unduhan aplikasi dan mengikuti Kualitas yang diutamakan. Server 1/2 (DoodStream) memberi file .mp4 dan didahulukan aplikasi bila tersedia."
 }];
 
 // The shared helpers are inlined here, before the extension class: a class
@@ -633,6 +633,9 @@ class DefaultExtension extends IdBaseProvider {
         "Pengaturan > Umum, atau buka episode ini sekali di Tampilan Web agar " +
         "tantangan Cloudflare-nya lewat lalu putar ulang.");
     }
+    results.forEach(function (video) {
+      video.originalUrl = nekopoiHlsDownloadHint(video.url, video.originalUrl);
+    });
     return sortVideos(results, this.preferredQualities(), this.preferredServers());
   }
 
@@ -847,4 +850,21 @@ function nekopoiHasNext(doc) {
     "a.next.page-numbers",
     "#nav-below a.next",
   ]);
+}
+
+/**
+ * Mangayomi only downloads HLS when `url` or `originalUrl` ends in ".m3u8".
+ * Streampoi's (streamruby) signed playlists end in `.m3u8?t=<token>&...`, so
+ * Server 3 episodes, which often are the only server that plays from Indonesia,
+ * could not be downloaded. The app always fetches `url`, and reads
+ * `originalUrl` only for local playback, so `url` stays the signed address and
+ * `originalUrl` gets the same address without its query. That address is never
+ * fetched. DoodStream URLs already end in `.mp4` before their query and are
+ * left alone.
+ */
+function nekopoiHlsDownloadHint(url, fallback) {
+  const value = safeString(url);
+  if (/\.m3u8?$/i.test(value)) return fallback;
+  const bare = value.replace(/[?#].*$/, "");
+  return /\.m3u8?$/i.test(bare) ? bare : fallback;
 }

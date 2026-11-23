@@ -66,7 +66,7 @@
 | **Nonton Anime ID** | `0.1.2` | ✅ Bisa | 🟢 1080p | 12 Nov 2026 |
 | **Anibatch** | `0.1.2` | ⏳ Belum | 🟢 1080p | 12 Nov 2026 |
 | **Kuronime** | `0.1.3` | ✅ Bisa | 🟢 1080p | 12 Nov 2026 |
-| **Oploverz** | `0.2.5` | ✅ Bisa | 🟢 1080p | 20 Nov 2026 |
+| **Oploverz** | `0.2.6` | ✅ Bisa | 🟢 1080p | 23 Nov 2026 |
 | **Anoboy** | `0.1.1` | ⏳ Belum | 🟡 720p | 12 Nov 2026 |
 | **Animangahub** | `0.1.3` | ✅ Bisa | 🟢 1080p | 13 Nov 2026 |
 
@@ -142,7 +142,7 @@
 | **Samehadaku** | Sebagian episode **lama** hanya punya server `gdriveplayer`/Mega yang tidak didukung → episode itu tanpa video. |
 | **Nonton Anime ID** | ±9 episode paling awal hanya ada di Dailymotion terlindungi → tanpa video. |
 | **Anibatch** | Saat scroll **Populer/Terbaru** ke halaman berikutnya, kadang **macet di loading** di HP. |
-| **Oploverz** | Server **upbolt** kadang minta verifikasi Cloudflare — tekan **WebView** di layar error sekali, lalu buka episode lagi. |
+| **Oploverz** | Server **upbolt** kadang minta verifikasi Cloudflare — tekan **WebView** di layar error sekali, lalu buka episode lagi. **Unduhan 1080p sangat lama** (±10–20 menit per episode): server Abyss membatasi kecepatan per koneksi dan app mengunduh satu episode per sumber dengan satu koneksi — ini tidak bisa diatasi dari ekstensi. **Disarankan unduh di 720p ke bawah**: atur **Kualitas yang diutamakan** di pengaturan Oploverz sebelum mengunduh (480p biasanya cuma beberapa menit). Streaming tidak terpengaruh. |
 | **Nekopoi** | Video/episode **memang sangat lambat** dibuka — tunggu **1–2 menit** dulu, jangan tutup dan jangan ganti server. Kalau lewat **2 menit** masih tidak bisa, baru laporkan bug. Sejak **`0.2.5`** server mirror yang sudah mati dilewati seketika (tes `HEAD`) dan jalur cadangan WebView dibatasi **20 detik** yang berhenti di stream pertama, jadi gagalnya cepat kelihatan. Sejak **`0.2.6`** iframe yang masih menunjuk domain mati **plamogo.com** otomatis dialihkan ke **playmogo.com** yang hidup (id embed sama). Sejak **`0.2.7`** jalur WebView dikebalkan terhadap iklan popunder DoodStream (`intent://rm358.com`). Sejak **`0.2.8`** jalur WebView membiarkan **tantangan Cloudflare auto-solve** (ini *Managed Challenge* non-interaktif, bukan Turnstile) lalu membaca handshake langsung dari DOM, dengan waktu 35 detik. **Resep tanpa VPN:** set **DNS Pribadi Android → `dns.adguard-dns.com`** — sekali jalan ia (a) membuka blokir `nekopoi.care` dan (b) **memblokir domain iklan `rm358.com`** (terverifikasi disinkhole), sehingga challenge bisa diselesaikan resolver WebView bawaan app tanpa VPN. Kalau masih kurang andal: isi **FlareSolverr/Byparr** di Pengaturan → Umum (tetap tanpa VPN). Catatan: memalsukan `cf_clearance` dari kode ekstensi **tidak mungkin** (QuickJS tak punya mesin browser) — yang dilakukan hanya membiarkan WebView asli menyelesaikannya. |
 
 </div>

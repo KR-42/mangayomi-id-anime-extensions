@@ -507,6 +507,19 @@ dan tiga URL edge dibalas 200 langsung.
 **Catatan untuk sumber lain:** `animangahub.js` (`desustreamHttp`) juga memakai
 `followRedirects: false` tanpa `useDartHttpClient`, jadi di HP opsi itu kemungkinan diabaikan juga.
 
+**Kecepatan unduhan (0.2.6, hanya catatan):** pengguna melaporkan 1080p sangat lama, sedangkan 720p
+ke bawah wajar. Pengukuran pada 23 Nov 2026 (Hyouken S2 ep 7, PC, satu koneksi):
+- Run pertama: 1080p 0,46 MB/s, 720p 0,19 MB/s, 480p 2,57 MB/s.
+- Empat edge 1080p berbeda pada run berikutnya: 1,1–2,8 MB/s.
+- Setiap 302 `/sora/` memilih edge `*.trycloudflare.com` acak (5 redirect menghasilkan 2–4 host berbeda).
+- Kecepatan **berubah menurut waktu, bukan menurut edge**. Probe 512 KB tidak memprediksi laju 8 detik
+  berikutnya, jadi "pilih edge tercepat" di ekstensi tidak andal, dan membebani thread UI JS.
+- File 1080p lebih besar (200–410 MB), jadi saat edge lambat ia yang paling terasa.
+
+App mengunduh mp4 dengan satu koneksi, satu episode per sumber; ekstensi tidak bisa mengubah itu.
+Keputusan: hanya beri catatan di README dan `notes` agar pengguna mengunduh 720p ke bawah.
+Perbaikan nyata (unduhan multi-koneksi/Range) harus dilakukan di app.
+
 ---
 
 ## 5. Nonton Anime ID — `https://www.nontonanimeid.my.id`

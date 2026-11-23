@@ -25,6 +25,11 @@
 > [**Mangayomi**](https://github.com/kodjodevf/mangayomi). Ditulis dalam JavaScript
 > sesuai format ekstensi resmi Mangayomi — ringan, tanpa iklan, dan menghormati situs sumbernya.
 
+> [!TIP]
+> **Pakai AnymeX?** Ekstensi ini juga bisa dipakai di [**AnymeX**](https://github.com/RyanYuuki/AnymeX)
+> dan berjalan normal seperti di Mangayomi. Cukup tambahkan URL index yang sama
+> (lihat [Pasang Manual](#pasang-manual)) di pengaturan repo ekstensi AnymeX.
+
 <div align="center">
 
 ### ✦ Navigasi Cepat ✦

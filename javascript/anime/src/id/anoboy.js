@@ -22,10 +22,10 @@ const mangayomiSources = [{
   "typeSource": "single",
   "itemType": 1,
   "isNsfw": false,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "pkgPath": "anime/src/id/anoboy.js",
   "hasCloudflare": true,
-  "notes": "Domain Anoboy sering berpindah: pilih di 'Domain cepat' atau isi 'Domain manual' di Pengaturan. Hanya domain build yang sama (mis. anoboy.at) yang didukung; .by/.ws beda struktur. Streaming maksimal 720p."
+  "notes": "Domain Anoboy sering berpindah: pilih di 'Domain cepat' atau isi 'Domain manual' di Pengaturan. Hanya domain build yang sama (mis. anoboy.at) yang didukung; .by/.ws beda struktur. Streaming maksimal 720p. v0.1.2: episode bisa diunduh (tombol unduh Mangayomi). Server YourUpload (cepat, sekitar 3 MB/s) didahulukan. Bila episode hanya punya Blogger, unduhan tetap bisa tetapi lambat (sekitar 12 menit per episode) karena Google membatasi kecepatannya."
 }];
 
 // The shared helpers are inlined here, before the extension class: a class
@@ -2681,6 +2681,18 @@ class DefaultExtension extends IdBaseProvider {
     found.forEach(function (videos) {
       (videos || []).forEach(function (video) { results.push(video); });
     });
+    // Blogger only becomes downloadable when nothing else is: Google throttles a
+    // plain GET to about playback speed (~12 min per episode, 23 Nov 2026),
+    // while YourUpload's .mp4 comes in at ~3.5 MB/s and the app downloads the
+    // first downloadable entry in list order.
+    if (!results.some(anoboyDownloadable)) {
+      results.forEach(function (video) {
+        if (/googlevideo\.com\/videoplayback/i.test(safeString(video.url))) {
+          video.originalUrl = safeString(video.url).replace(/[?#].*$/, "") + "/anoboy-" +
+            (resolutionOf(video.quality) || "video") + ".mp4";
+        }
+      });
+    }
     return sortVideos(results, this.preferredQualities(), this.preferredServers());
   }
 
@@ -2847,4 +2859,19 @@ function anoboyServer(url) {
   if (/yourupload|vidcache/i.test(host)) return "YourUpload";
   if (/mp4upload/i.test(host)) return "Mp4Upload";
   return host || "Server";
+}
+
+/**
+ * Mangayomi downloads the first video whose `url` or `originalUrl` path ends
+ * in a video extension (download_provider.dart, 0.9.96). It always fetches
+ * `url`, and reads `originalUrl` only for local playback. A Blogger stream is a
+ * `googlevideo.com/videoplayback?...` mp4 with no extension, so getVideoList
+ * hands it a `.../videoplayback/anoboy-<res>.mp4` originalUrl. That address is
+ * only a hint and is never fetched.
+ */
+function anoboyDownloadable(video) {
+  return [video && video.url, video && video.originalUrl].some(function (value) {
+    const p = safeString(value).replace(/[?#].*$/, "").toLowerCase();
+    return /\.(mp4|mkv|webm|m4v|mov)$/.test(p) || /\.m3u8?$/.test(safeString(value));
+  });
 }

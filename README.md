@@ -67,7 +67,7 @@
 | **Anibatch** | `0.1.3` | ✅ Bisa | 🟢 1080p | 23 Nov 2026 |
 | **Kuronime** | `0.1.3` | ✅ Bisa | 🟢 1080p | 12 Nov 2026 |
 | **Oploverz** | `0.2.7` | ✅ Bisa | 🟢 1080p | 23 Nov 2026 |
-| **Anoboy** | `0.1.1` | ⏳ Belum | 🟡 720p | 12 Nov 2026 |
+| **Anoboy** | `0.1.2` | ✅ Bisa | 🟡 720p | 23 Nov 2026 |
 | **Animangahub** | `0.1.3` | ✅ Bisa | 🟢 1080p | 13 Nov 2026 |
 
 <sub>🟢 = tersedia hingga 1080p · 🟡 = maksimal 720p.</sub>
@@ -196,6 +196,7 @@ Link di perpustakaan disimpan **relatif**, jadi ganti domain **tidak** menghilan
 - **Kualitas mana yang diunduh?** Mangayomi tidak menanyakan kualitas saat mengunduh; ia mengambil video **teratas** di daftar. Urutan itu mengikuti **Pengaturan sumber → Kualitas yang diutamakan** (bawaan: tertinggi dulu). Mau unduhan lebih hemat kuota? Hilangkan centang 1080p/720p sebelum mengunduh.
 - Mangayomi selalu mendahulukan file **.mp4** daripada stream HLS. Di **Otaku Desu** mirror .mp4 umumnya 720p (sebagian episode juga punya 480p), jadi unduhan biasanya **720p** walau kamu memilih 360p.
 - Di **Nekopoi** 🔞 unduhan butuh jaringan yang sama seperti saat menonton (VPN / DNS AdGuard). Server 1/2 (DoodStream, .mp4) didahulukan; bila hanya Server 3 (Streampoi) yang jalan, unduhan berupa HLS sesuai Kualitas yang diutamakan.
+- Di **Anoboy** unduhan memakai server **YourUpload** (cepat, ±3 MB/s). Episode yang hanya punya **Blogger** tetap bisa diunduh, tetapi **lambat (±12 menit per episode)** karena Google membatasi kecepatannya.
 - Di **Anibatch** unduhan memakai server **BerkasDrive** (1080p/720p/480p/360p, cepat ±2 MB/s). Sebagian file 1080p berformat MKV; tetap tersimpan dan bisa diputar normal.
 - Ganti pengaturan berlaku untuk **semua** episode dan juga kualitas saat menonton.
 

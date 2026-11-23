@@ -778,6 +778,19 @@ untuk domain `.at`-family baru. `getBaseUrl` override: manual > dropdown > defau
 - Fixture: YourUpload native → di-stub harness, jadi hanya Blogger yang menghasilkan video saat
   `npm run test`; live-nya kedua server jalan.
 
+**Unduhan (0.1.2, 23 Nov 2026):**
+- YourUpload (native app) → `vidcache.net:8161/<id>/video.mp4` dengan path `.mp4`, jadi lolos filter sejak awal.
+  Hop pertama butuh Referer `yourupload.com` (tanpa itu 500). 302 ke `sNNN.vidcache.net:8166/play/...`.
+  Edge menerima Referer hasil tulis ulang reqwest (URL hop pertama), jadi 206, berbeda dengan Abyss.
+  Satu koneksi ±3,5 MB/s. 8/8 episode terbaru punya `yup/data.php`.
+- Blogger `googlevideo.com/videoplayback?...` (itag 22/18): GET tanpa Range → 200 `video/mp4`, tapi
+  Google men-throttle ke ±laju putar. 720p 235 MB pada 0,32 MB/s dan 360p 79 MB pada 0,11 MB/s,
+  keduanya ±12 menit.
+- Karena app mengunduh entri pertama yang lolos, Blogger diberi `originalUrl`
+  `.../videoplayback/anoboy-<res>.mp4` **hanya bila tidak ada video lain yang lolos**
+  (`anoboyDownloadable`). Dengan begitu YourUpload yang cepat tetap terpilih. Diverifikasi dengan stub
+  `yourUploadExtractor` (YourUpload 720p terpilih).
+
 ---
 
 ## 9. Animangahub — `https://animeindo.cloud` (`src/id/animangahub.js` 0.1.2)

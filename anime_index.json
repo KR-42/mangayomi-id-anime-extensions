@@ -78,14 +78,14 @@
     "hasCloudflare": true,
     "sourceCodeUrl": "https://raw.githubusercontent.com/KR-42/mangayomi-id-anime-extensions/main/javascript/anime/src/id/anoboy.js",
     "apiUrl": "",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "isManga": false,
     "itemType": 1,
     "isFullData": false,
     "appMinVerReq": "0.5.0",
     "additionalParams": "",
     "sourceCodeLanguage": 1,
-    "notes": "Domain Anoboy sering berpindah: pilih di 'Domain cepat' atau isi 'Domain manual' di Pengaturan. Hanya domain build yang sama (mis. anoboy.at) yang didukung; .by/.ws beda struktur. Streaming maksimal 720p."
+    "notes": "Domain Anoboy sering berpindah: pilih di 'Domain cepat' atau isi 'Domain manual' di Pengaturan. Hanya domain build yang sama (mis. anoboy.at) yang didukung; .by/.ws beda struktur. Streaming maksimal 720p. v0.1.2: episode bisa diunduh (tombol unduh Mangayomi). Server YourUpload (cepat, sekitar 3 MB/s) didahulukan. Bila episode hanya punya Blogger, unduhan tetap bisa tetapi lambat (sekitar 12 menit per episode) karena Google membatasi kecepatannya."
   },
   {
     "name": "Kuronime",

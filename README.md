@@ -96,18 +96,22 @@
 
 | 🎬 Sumber | 🏷️ Versi | ⬇️ Download | 📺 Kualitas | 🕒 Terakhir Update |
 |:---|:---:|:---:|:---:|:---:|
-| **Nekopoi** 🔞 | `0.2.9` | ✅ Bisa | 🟡 720p | 23 Nov 2026 |
+| **Nekopoi** 🔞 | `0.2.9` | ⚠️ Belum teruji | 🟡 720p | 23 Nov 2026 |
 
 - **Domain:** `https://nekopoi.care` — bisa diganti di _Pengaturan sumber_ kalau situsnya pindah.
-- **Wajib VPN.** Situsnya memblokir IP Indonesia. Mengganti DNS ke Cloudflare **tidak menolong**:
-  yang diblokir adalah nama domainnya di level HTTPS (TLS/SNI), bukan alamat IP-nya. Resolver
-  mana pun (termasuk DoH Cloudflare) tetap menghasilkan IP Cloudflare yang sama, dan handshake-nya
-  tetap diputus di tengah jalan.
-- **Server 1 dan 2** (playmogo/plamogo) dikelola pihak situs dan sering mati di sana (playmogo
-  membalas **503**, plamogo sudah tidak punya DNS). Kalau kosong, pilih **Server 3** (streampoi) —
-  server inilah yang paling sering berhasil. Mulai **`0.2.5`** ekstensi mengetes dulu host
-  mirror-nya dengan satu permintaan `HEAD`: server yang sudah mati dilewati seketika, jadi layar
-  tidak lagi menggantung lama pada server yang tidak mungkin menjawab.
+- **Butuh VPN atau DNS lain.** Situsnya diblokir provider Indonesia. Di **Telkomsel** (diuji
+  23 Nov 2026) blokirnya hanya lewat DNS: dengan DNS biasa `nekopoi.care` diarahkan ke halaman
+  blokir, sedangkan dengan alamat yang benar situsnya langsung terbuka. Jadi cukup set
+  **DNS Pribadi Android** ke `dns.adguard-dns.com` (disarankan, karena sekaligus memblokir iklan
+  popunder DoodStream) atau `one.one.one.one`. Provider lain mungkin memblokir dengan cara berbeda;
+  kalau DNS tidak menolong, pakai **VPN**.
+- **Server 3 (streampoi) sudah mati di sisi situs.** Sejak sekitar 22 Nov 2026 situs mengarahkan
+  Server 3 ke domain `stmpoi.com` yang **tidak terdaftar sama sekali**, dan video-videonya tidak ada
+  lagi di jaringan StreamRuby. Ini tidak bisa diperbaiki dari ekstensi.
+- **Server 1 dan 2** (playmogo, DoodStream) kini satu-satunya jalur. Keduanya selalu dijaga
+  tantangan Cloudflare yang diselesaikan lewat WebView, jadi episode **lambat dibuka** dan bisa
+  gagal. Mulai **`0.2.5`** ekstensi mengetes dulu host mirror-nya dengan satu permintaan `HEAD`,
+  jadi server yang sudah mati dilewati seketika.
 - Kalau semua server gagal, aplikasi sekarang **menyebutkan server mana yang gagal beserta
   alasannya**, bukan sekadar "Daftar video kosong". Buka episode itu sekali di **Tampilan Web**
   supaya tantangan Cloudflare lewat, lalu putar ulang — ekstensi akan mencoba mengambil video
@@ -143,7 +147,7 @@
 | **Nonton Anime ID** | ±9 episode paling awal hanya ada di Dailymotion terlindungi → tanpa video. |
 | **Anibatch** | Saat scroll **Populer/Terbaru** ke halaman berikutnya, kadang **macet di loading** di HP. |
 | **Oploverz** | Server **upbolt** kadang minta verifikasi Cloudflare — tekan **WebView** di layar error sekali, lalu buka episode lagi. **Unduhan 1080p sangat lama** (±10–20 menit per episode): server Abyss membatasi kecepatan per koneksi dan app mengunduh satu episode per sumber dengan satu koneksi — ini tidak bisa diatasi dari ekstensi. **Disarankan unduh di 720p ke bawah**: atur **Kualitas yang diutamakan** di pengaturan Oploverz sebelum mengunduh (480p biasanya cuma beberapa menit). Streaming tidak terpengaruh. |
-| **Nekopoi** | Video/episode **memang sangat lambat** dibuka — tunggu **1–2 menit** dulu, jangan tutup dan jangan ganti server. Kalau lewat **2 menit** masih tidak bisa, baru laporkan bug. Sejak **`0.2.5`** server mirror yang sudah mati dilewati seketika (tes `HEAD`) dan jalur cadangan WebView dibatasi **20 detik** yang berhenti di stream pertama, jadi gagalnya cepat kelihatan. Sejak **`0.2.6`** iframe yang masih menunjuk domain mati **plamogo.com** otomatis dialihkan ke **playmogo.com** yang hidup (id embed sama). Sejak **`0.2.7`** jalur WebView dikebalkan terhadap iklan popunder DoodStream (`intent://rm358.com`). Sejak **`0.2.8`** jalur WebView membiarkan **tantangan Cloudflare auto-solve** (ini *Managed Challenge* non-interaktif, bukan Turnstile) lalu membaca handshake langsung dari DOM, dengan waktu 35 detik. **Resep tanpa VPN:** set **DNS Pribadi Android → `dns.adguard-dns.com`** — sekali jalan ia (a) membuka blokir `nekopoi.care` dan (b) **memblokir domain iklan `rm358.com`** (terverifikasi disinkhole), sehingga challenge bisa diselesaikan resolver WebView bawaan app tanpa VPN. Kalau masih kurang andal: isi **FlareSolverr/Byparr** di Pengaturan → Umum (tetap tanpa VPN). Catatan: memalsukan `cf_clearance` dari kode ekstensi **tidak mungkin** (QuickJS tak punya mesin browser) — yang dilakukan hanya membiarkan WebView asli menyelesaikannya. |
+| **Nekopoi** | **Server 3 sudah mati di sisi situs** (domain `stmpoi.com` tidak terdaftar), jadi hanya Server 1/2 (playmogo) yang tersisa. Keduanya selalu lewat tantangan Cloudflare di WebView, jadi episode **lambat dibuka (1–2 menit)** dan bisa gagal. Situs diblokir provider: set **DNS Pribadi → `dns.adguard-dns.com`** (atau `one.one.one.one`), atau pakai VPN. Kalau tetap gagal: isi **FlareSolverr/Byparr** di Pengaturan → Umum. Unduhan belum teruji di HP. Lihat blok 18+ di atas untuk rinciannya. |
 
 </div>
 
@@ -188,17 +192,33 @@ Link di perpustakaan disimpan **relatif**, jadi ganti domain **tidak** menghilan
 
 ---
 
-## ⬇️ Fitur Download — Bertahap
+## ⬇️ Fitur Download
 
 > [!NOTE]
-> Unduhan memakai **tombol unduh bawaan Mangayomi** di daftar episode. Sumber dengan ✅ di kolom _Download_ sudah bisa diunduh; yang ⏳ masih streaming saja dan menyusul satu per satu. 🚧
+> Unduhan memakai **tombol unduh bawaan Mangayomi** di daftar episode. **Semua sumber sudah bisa mengunduh** (diuji di HP pada 23 Nov 2026), kecuali Nekopoi 🔞 yang belum teruji. ✅
 
 - **Kualitas mana yang diunduh?** Mangayomi tidak menanyakan kualitas saat mengunduh; ia mengambil video **teratas** di daftar. Urutan itu mengikuti **Pengaturan sumber → Kualitas yang diutamakan** (bawaan: tertinggi dulu). Mau unduhan lebih hemat kuota? Hilangkan centang 1080p/720p sebelum mengunduh.
 - Mangayomi selalu mendahulukan file **.mp4** daripada stream HLS. Di **Otaku Desu** mirror .mp4 umumnya 720p (sebagian episode juga punya 480p), jadi unduhan biasanya **720p** walau kamu memilih 360p.
-- Di **Nekopoi** 🔞 unduhan butuh jaringan yang sama seperti saat menonton (VPN / DNS AdGuard). Server 1/2 (DoodStream, .mp4) didahulukan; bila hanya Server 3 (Streampoi) yang jalan, unduhan berupa HLS sesuai Kualitas yang diutamakan.
-- Di **Samehadaku** unduhan memakai **VIP STREAMING** (Filedon, sampai 1080p) atau **Wibufile**. Episode yang hanya punya Blogger tetap bisa diunduh tetapi lambat (±12 menit). Episode lama yang hanya punya gdriveplayer/Mega tidak bisa diputar maupun diunduh.
-- Di **Anoboy** unduhan memakai server **YourUpload** (cepat, ±3 MB/s). Episode yang hanya punya **Blogger** tetap bisa diunduh, tetapi **lambat (±12 menit per episode)** karena Google membatasi kecepatannya.
-- Di **Anibatch** unduhan memakai server **BerkasDrive** (1080p/720p/480p/360p, cepat ±2 MB/s). Sebagian file 1080p berformat MKV; tetap tersimpan dan bisa diputar normal.
+
+**Server yang dipakai saat mengunduh:**
+
+| 🎬 Sumber | ⬇️ Server unduhan | ⚡ Kecepatan (terukur) | 📝 Catatan |
+|:---|:---|:---:|:---|
+| **Otaku Desu** | Mirror .mp4 (archive.org dll.) | — | Umumnya 720p. |
+| **Samehadaku** | VIP STREAMING (Filedon), Wibufile | — | Sampai 1080p. Episode yang hanya punya Blogger: 🐢 ±12 menit. Episode lama yang hanya gdriveplayer/Mega: tidak bisa. |
+| **AnimeIndo** | CEPAT (HLS) | 🟢 ±10 MB/s | Mengikuti Kualitas yang diutamakan. |
+| **Nonton Anime ID** | File .mp4 situs | — | |
+| **Anibatch** | BerkasDrive, HiAnime | 🟢 ±2 MB/s | Sampai 1080p. Sebagian 1080p berformat MKV, tetap bisa diputar. HiAnime ikut mengunduh subtitle Indonesia. |
+| **Kuronime** | Mp4Upload dll. | — | |
+| **Oploverz** | Abyss (.mp4), Upbolt (HLS) | 🐢 1080p lambat | Abyss 1080p bisa ±10–20 menit per episode. **Disarankan 720p ke bawah.** |
+| **Anoboy** | YourUpload | 🟢 ±3 MB/s | Episode yang hanya punya Blogger: 🐢 ±12 menit. |
+| **Animangahub** | Filedon dll. | — | |
+| **Nekopoi** 🔞 | DoodStream (.mp4) | ⚠️ | Belum teruji. Butuh DNS/VPN yang sama seperti saat menonton. |
+
+**Kenapa ada yang lambat?** Mangayomi mengunduh satu episode per sumber dengan satu koneksi.
+Server Abyss (Oploverz) dan Blogger (Google) membatasi kecepatan per koneksi, jadi ini tidak bisa
+dipercepat dari ekstensi. Streaming tidak terpengaruh.
+
 - Ganti pengaturan berlaku untuk **semua** episode dan juga kualitas saat menonton.
 
 ## 💬 Feedback & Lapor Bug

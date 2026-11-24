@@ -9,7 +9,7 @@
     "generate": "node scripts/generate-index.js",
     "validate": "node scripts/validate.js",
     "lint": "node scripts/lint.js",
-    "test": "node scripts/test-shared.js && node scripts/test-harness/run.js",
+    "test": "node scripts/test-shared.js && node scripts/test-harness/run.js && node scripts/test-harness/nekopoi-scenarios.js",
     "test:shared": "node scripts/test-shared.js",
     "test:live": "node scripts/test-harness/run.js --live",
     "check": "npm run lint && npm run validate && npm run test"

@@ -1,17 +1,20 @@
 // Nekopoi (https://nekopoi.care) — sumber 18+ (NSFW).
 //
-// Situs ini memblokir alamat IP Indonesia di level TLS (SNI), jadi dari
-// jaringan lokal halaman hanya bisa dibuka lewat VPN. Ekstensi ini hanya
-// membaca halaman publik: daftar, detail seri, halaman episode, dan halaman
-// embed player. Tidak ada halaman login, akun, atau pembayaran yang disentuh.
+// nekopoi.care diblokir lewat DNS operator Indonesia (NXDOMAIN). Diuji 24 Nov
+// 2026: begitu nama domainnya di-resolve lewat DoH, koneksi TLS biasa dari IP
+// Indonesia diterima — jadi DNS Pribadi (dns.adguard-dns.com) cukup, VPN tidak
+// wajib. Ekstensi ini hanya membaca halaman publik: daftar, detail seri,
+// halaman episode, dan halaman embed player. Tidak ada halaman login, akun,
+// atau pembayaran yang disentuh.
 //
 // Alur penontonan:
 //   beranda -> kartu episode/posting -> halaman episode
-//   halaman episode -> #nk-stream-N iframe -> playmogo/plamogo (DoodStream)
-//                                          -> streampoi (JW Player, m3u8)
+//   halaman episode -> #nk-stream-N iframe -> playmogo (DoodStream)
+//                                          -> streampoi (JW Player, m3u8; lama)
 //
-// Catatan halaman: server 1 = 360p/480p, server 2 = 720p, server 3 = alternatif
-// (biasanya streampoi). Mirror unduhan di halaman episode semuanya lewat
+// Catatan halaman: server 1 = 360p/480p, server 2 = 720p. Sejak Nov 2026 semua
+// episode yang dicek hanya punya dua server itu (keduanya playmogo); server 3
+// streampoi tinggal di posting lama. Mirror unduhan di halaman episode semuanya lewat
 // ouo.io menuju Mp4Upload/Pixeldrain/KrakenFiles — itu tautan unduh, bukan
 // stream, jadi sengaja tidak ditawarkan sebagai video.
 
@@ -24,10 +27,10 @@ const mangayomiSources = [{
   "typeSource": "single",
   "itemType": 1,
   "isNsfw": true,
-  "version": "0.2.9",
+  "version": "0.2.10",
   "pkgPath": "anime/src/id/nekopoi.js",
   "hasCloudflare": true,
-  "notes": "Konten 18+. Situs memblokir IP Indonesia di level TLS, jadi sumber ini hanya jalan lewat VPN — mengganti DNS ke Cloudflare tidak menolong. Domain bisa berpindah; atur di Pengaturan sumber. Video/episode memang lambat dibuka: tunggu 1-2 menit dulu sebelum menganggapnya gagal. v0.2.5: pemutar tidak lagi menggantung lama — host mirror yang sudah mati dilewati dalam sekejap (tes HEAD dulu), jatah coba di WebView dipotong jadi 20 detik dan berhenti di stream pertama, stream DoodStream dibekali User-Agent + Referer aslinya supaya CDN mengirim video (bukan pengalihan kosong), dan posting [NEW Release] sekarang bisa dibuka kembali ke folder serinya. Server 1/2 (playmogo/plamogo) sering mati di sisi situs — pakai Server 3 (streampoi) bila ada. v0.2.6: iframe yang masih menunjuk domain mirror mati plamogo.com kini otomatis dialihkan ke playmogo.com yang hidup (id embed-nya sama), jadi Server 1/2 kembali bisa diputar tanpa menunggu Server 3. v0.2.7: jalur WebView dikebalkan terhadap iklan popunder DoodStream (intent://rm358.com) yang tadinya membajak handshake, dan pesan error mengarahkan ke solusi nyata. CATATAN PENTING: kalau player tetap gagal, penyebabnya Cloudflare menantang playmogo.com dari IP Indonesia (403 cf-mitigated) — ini TIDAK bisa ditembus kode ekstensi; aktifkan VPN atau isi FlareSolverr/Byparr di Pengaturan > Umum. v0.2.8: jalur WebView kini membiarkan Managed Challenge Cloudflare terpecah sendiri lalu membaca handshake langsung dari DOM (tahan terhadap reload pasca-challenge), dan diberi waktu lebih (35 detik). Pakai DNS AdGuard (dns.adguard-dns.com) untuk memblokir iklan popunder rm358.com sekaligus membuka blokir situs — ini membuat challenge auto-solve tanpa VPN. v0.2.9: episode bisa diunduh (tombol unduh Mangayomi). Server 3 (Streampoi) kini lolos syarat unduhan aplikasi dan mengikuti Kualitas yang diutamakan. Server 1/2 (DoodStream) memberi file .mp4 dan didahulukan aplikasi bila tersedia."
+  "notes": "Konten 18+. Situs diblokir lewat DNS operator. Cara tanpa VPN: Pengaturan Android > DNS Pribadi > dns.adguard-dns.com (membuka situs sekaligus memblokir iklan popunder). Domain bisa berpindah; atur di Pengaturan sumber. v0.2.10: tantangan Cloudflare di playmogo ternyata dipicu bentuk permintaan (klien HTTP + User-Agent yang diaku), bukan IP Indonesia — dari IP yang sama, permintaan yang mengaku Chrome desktop dari klien non-browser ditantang, sementara bentuk lain lolos. Permintaan ke playmogo kini memakai User-Agent aplikasi (cocok dengan cookie Cloudflare hasil WebView); bila tetap ditantang, diulang lewat klien HTTP kedua aplikasi lalu dengan User-Agent Android WebView, baru jatuh ke WebView; video cukup membawa Referer; WebView memblokir semua tautan intent:/market: dan iklan toko, serta mengunci halaman begitu player terdeteksi. Riwayat: Video/episode memang lambat dibuka: tunggu 1-2 menit dulu sebelum menganggapnya gagal. v0.2.5: pemutar tidak lagi menggantung lama — host mirror yang sudah mati dilewati dalam sekejap (tes HEAD dulu), jatah coba di WebView dipotong jadi 20 detik dan berhenti di stream pertama, stream DoodStream dibekali User-Agent + Referer aslinya supaya CDN mengirim video (bukan pengalihan kosong), dan posting [NEW Release] sekarang bisa dibuka kembali ke folder serinya. Server 1/2 (playmogo/plamogo) sering mati di sisi situs — pakai Server 3 (streampoi) bila ada. v0.2.6: iframe yang masih menunjuk domain mirror mati plamogo.com kini otomatis dialihkan ke playmogo.com yang hidup (id embed-nya sama), jadi Server 1/2 kembali bisa diputar tanpa menunggu Server 3. v0.2.7: jalur WebView dikebalkan terhadap iklan popunder DoodStream (intent://rm358.com) yang tadinya membajak handshake, dan pesan error mengarahkan ke solusi nyata. CATATAN PENTING: kalau player tetap gagal, penyebabnya Cloudflare menantang playmogo.com dari IP Indonesia (403 cf-mitigated) — ini TIDAK bisa ditembus kode ekstensi; aktifkan VPN atau isi FlareSolverr/Byparr di Pengaturan > Umum. v0.2.8: jalur WebView kini membiarkan Managed Challenge Cloudflare terpecah sendiri lalu membaca handshake langsung dari DOM (tahan terhadap reload pasca-challenge), dan diberi waktu lebih (35 detik). Pakai DNS AdGuard (dns.adguard-dns.com) untuk memblokir iklan popunder rm358.com sekaligus membuka blokir situs — ini membuat challenge auto-solve tanpa VPN. v0.2.9: episode bisa diunduh (tombol unduh Mangayomi). Server 3 (Streampoi) kini lolos syarat unduhan aplikasi dan mengikuti Kualitas yang diutamakan. Server 1/2 (DoodStream) memberi file .mp4 dan didahulukan aplikasi bila tersedia."
 }];
 
 // The shared helpers are inlined here, before the extension class: a class
@@ -79,6 +82,85 @@ const NEKOPOI_WEBVIEW_SECONDS = 35;
 /** Attempts (and their spacing, ms) inside that budget. */
 const NEKOPOI_WEBVIEW_TRIES = 16;
 const NEKOPOI_WEBVIEW_GAP_MS = 1500;
+
+/**
+ * Whether a response is Cloudflare refusing the request instead of the page.
+ * Header names reach the extension as the server spelled them, so the
+ * lookup ignores case.
+ */
+function nekopoiChallenged(res) {
+  if (!res) return false;
+  if (res.statusCode === 403) return true;
+  const headers = res.headers || {};
+  for (const key in headers) {
+    if (key.toLowerCase() === "cf-mitigated" && /challenge/i.test(safeString(headers[key]))) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Headers for playmogo (the embed, its /pass_md5 handshake, and the HEAD
+ * probe). No User-Agent on purpose: when the app has cleared a Cloudflare
+ * challenge (resolver WebView or FlareSolverr) it stores `cf_clearance`
+ * together with the browser's User-Agent and only adds that UA to requests
+ * that do not carry their own. Cloudflare binds the clearance to that UA, so
+ * overriding it with our desktop string threw the solved challenge away.
+ */
+function nekopoiDoodHeaders(referer) {
+  return {
+    Accept: DEFAULT_HEADERS.Accept,
+    "Accept-Language": DEFAULT_HEADERS["Accept-Language"],
+    Referer: referer,
+  };
+}
+
+/**
+ * User-Agent of an Android WebView, for playmogo only and only after the
+ * app's own UA was refused.
+ *
+ * Verified 24 Nov 2026 (Node's stock HTTP client, i.e. a client that does not
+ * look like a browser on the wire): playmogo's Cloudflare challenged it 4/4
+ * times when it claimed to be desktop Chrome — the UA this repo sends by
+ * default — and also with a bare "Mozilla/5.0", but let it through 4/4 times
+ * with this WebView UA, with "Dart/3.5 (dart:io)" and with "okhttp/4.12.0".
+ * Those runs sent only an Accept header; with this file's fuller header set
+ * (Accept-Language, Referer) the desktop-Chrome request often passed too, so
+ * Cloudflare scores the request as a whole — a UA claiming a browser the
+ * connection does not resemble weighs against it. That is why this is one
+ * more attempt rather than the default. Mangayomi on Android is an app with a
+ * WebView, so this string is the
+ * closer description of the client, not a disguise as a desktop browser.
+ */
+const NEKOPOI_ANDROID_UA =
+  "Mozilla/5.0 (Linux; Android 14; K; wv) AppleWebKit/537.36 " +
+  "(KHTML, like Gecko) Version/4.0 Chrome/131.0.0.0 Mobile Safari/537.36";
+
+/**
+ * MVideo for a DoodStream CDN URL. Verified 24 Nov 2026 on cloudatacdn.com:
+ * with the embed's origin as Referer the CDN answers 206 video/mp4 whatever
+ * the User-Agent (desktop, WebView "; wv", or none); without it, a 302 away
+ * from the file. So the Referer is the one header that has to travel, and the
+ * player keeps its own User-Agent.
+ */
+function nekopoiDoodVideo(streamUrl, embedUrl) {
+  const origin = /^(https?:\/\/[^/]+)/i.exec(embedUrl);
+  return {
+    url: streamUrl,
+    originalUrl: embedUrl,
+    quality: "",
+    headers: { Referer: (origin ? origin[1] : "https://" + hostOf(embedUrl)) + "/" },
+  };
+}
+
+/** DoodStream names the file with ten random characters before the token. */
+function nekopoiRandomName() {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let out = "";
+  for (let i = 0; i < 10; i++) out += chars.charAt(Math.floor(Math.random() * chars.length));
+  return out;
+}
 
 /**
  * Month names the site writes in Indonesian, for `parseDates`.
@@ -187,17 +269,89 @@ class DefaultExtension extends IdBaseProvider {
 
   /** A refusal throws, so it reaches the app's error card instead of a blank. */
   async pageDoc(url) {
-    const res = await this.client.get(url, this.getHeaders(url));
-    const challenged = res && res.headers && res.headers["cf-mitigated"];
-    if (res && (res.statusCode === 403 || challenged)) {
+    const res = await this.getPassingCloudflare(url, this.getHeaders(url));
+    if (nekopoiChallenged(res)) {
       throw new Error("Situs menolak permintaan (HTTP " + res.statusCode +
-        "). Sumber ini butuh VPN; buka WebView lalu coba lagi.");
+        ", tantangan Cloudflare). Buka sumber ini sekali lewat tombol Tampilan Web " +
+        "sampai halamannya tampil, lalu coba lagi. Pastikan DNS Pribadi " +
+        "dns.adguard-dns.com aktif; VPN adalah cadangan terakhir.");
     }
     if (!res || !res.body || res.statusCode >= 400) {
       console.log("nekopoi: gagal memuat " + url);
       return null;
     }
     return new Document(res.body);
+  }
+
+  /**
+   * The app's two HTTP stacks: its default client, then the Dart one.
+   *
+   * Verified 24 Nov 2026 from an Indonesian connection: Cloudflare in front of
+   * playmogo.com answered the same URL from the same IP either 200 or 403
+   * "cf-mitigated: challenge" depending on the HTTP client — how its request
+   * looks on the wire — combined with the User-Agent it claims (see
+   * NEKOPOI_ANDROID_UA). The "intermittent" challenge seen in 0.2.5-0.2.8 fits
+   * that: it follows the client, not the network. `useDartHttpClient` is the
+   * one documented switch an extension has to send the same request through a
+   * differently shaped client, so a challenged request also tries that one.
+   */
+  httpClients() {
+    if (!this._clients) {
+      this._clients = [this.client];
+      try {
+        this._clients.push(new Client({ useDartHttpClient: true }));
+      } catch (e) {
+        console.log("nekopoi: klien Dart tidak tersedia: " + e);
+      }
+      this._clientForHost = {};
+    }
+    return this._clients;
+  }
+
+  /**
+   * GET through the first (client, User-Agent) pair Cloudflare lets through.
+   *
+   * `headers` go out as given on the first round. With `androidUa`, a second
+   * round adds NEKOPOI_ANDROID_UA: verified 24 Nov 2026, a non-browser client
+   * claiming to be desktop Chrome was challenged 4/4 times while the same
+   * client with an Android WebView UA passed 4/4 (see NEKOPOI_ANDROID_UA).
+   *
+   * The pair that passed for a host is tried first next time, so an episode
+   * with two playmogo servers pays for refused attempts once, not per request.
+   * Returns the last response (possibly the challenge) when none passes.
+   */
+  async getPassingCloudflare(url, headers, androidUa) {
+    const clients = this.httpClients();
+    const attempts = [];
+    const rounds = androidUa ? [null, NEKOPOI_ANDROID_UA] : [null];
+    for (let r = 0; r < rounds.length; r++) {
+      for (let c = 0; c < clients.length; c++) attempts.push({ client: c, ua: rounds[r] });
+    }
+    const host = hostOf(url);
+    const first = this._clientForHost[host] || 0;
+    let last = null;
+    for (let n = 0; n < attempts.length; n++) {
+      const index = (first + n) % attempts.length;
+      const attempt = attempts[index];
+      const sent = Object.assign({}, headers);
+      if (attempt.ua) sent["User-Agent"] = attempt.ua;
+      let res = null;
+      try {
+        res = await clients[attempt.client].get(url, sent);
+      } catch (e) {
+        console.log("nekopoi: GET " + host + " (percobaan " + index + ") gagal: " + e);
+        continue;
+      }
+      last = res;
+      if (!nekopoiChallenged(res)) {
+        this._clientForHost[host] = index;
+        return res;
+      }
+      console.log("nekopoi: " + host + " menantang percobaan " + index +
+        " (klien " + attempt.client + (attempt.ua ? ", UA Android" : "") +
+        ", HTTP " + res.statusCode + ")");
+    }
+    return last;
   }
 
   pagedPath(base, page) {
@@ -571,13 +725,16 @@ class DefaultExtension extends IdBaseProvider {
       // A mirror that cannot answer is skipped before its GET is attempted:
       // an unreachable host holds the socket open until the client gives up,
       // which is the "keeps loading" the player shows.
-      if (NEKOPOI_DOOD_HOST.test(embed.url) && !(await this.embedReachable(embed.url))) {
+      const isDood = NEKOPOI_DOOD_HOST.test(embed.url);
+      if (isDood && !(await this.embedReachable(embed.url))) {
         console.log("nekopoi: " + label + " tidak menjawab, dilewati");
         failed.push(label + ": host tidak menjawab");
         dead.push(embed.url);
         continue;
       }
-      const found = await extractByHost(this, embed.url, pageUrl, "", "Sub Indo");
+      const found = isDood
+        ? { videos: await this.doodStreams(embed.url) }
+        : await extractByHost(this, embed.url, pageUrl, "", "Sub Indo");
       for (let v = 0; v < found.videos.length; v++) {
         const video = found.videos[v];
         video.server = embed.server;
@@ -627,11 +784,11 @@ class DefaultExtension extends IdBaseProvider {
       // An empty list renders as "Daftar video kosong", which hides the reason.
       throw new Error("Nekopoi: tidak ada server yang bisa diputar. " +
         failed.join("; ") +
-        ". Server 1/2 (DoodStream/playmogo) menantang Cloudflare dari IP Indonesia " +
-        "(403 cf-mitigated), dan itu tidak bisa ditembus dari dalam ekstensi. " +
-        "Solusi: aktifkan VPN (paling ampuh), atau isi URL FlareSolverr/Byparr di " +
-        "Pengaturan > Umum, atau buka episode ini sekali di Tampilan Web agar " +
-        "tantangan Cloudflare-nya lewat lalu putar ulang.");
+        ". Server playmogo (DoodStream) sedang meminta verifikasi Cloudflare. " +
+        "Coba berurutan: (1) pastikan DNS Pribadi dns.adguard-dns.com aktif, lalu " +
+        "putar ulang; (2) buka episode ini sekali lewat Tampilan Web, tunggu " +
+        "player tampil, kembali, lalu putar ulang; (3) isi URL FlareSolverr/Byparr " +
+        "di Pengaturan > Umum; (4) VPN sebagai cadangan terakhir.");
     }
     results.forEach(function (video) {
       video.originalUrl = nekopoiHlsDownloadHint(video.url, video.originalUrl);
@@ -649,7 +806,7 @@ class DefaultExtension extends IdBaseProvider {
   async embedReachable(embedUrl) {
     let res = null;
     try {
-      res = await this.client.head(embedUrl, this.headersFor(embedUrl));
+      res = await this.client.head(embedUrl, nekopoiDoodHeaders(this.getBaseUrl() + "/"));
     } catch (e) {
       console.log("nekopoi: HEAD " + hostOf(embedUrl) + " gagal: " + e);
       return false;
@@ -659,6 +816,59 @@ class DefaultExtension extends IdBaseProvider {
     // WebView may still get past. Only a dead host (5xx/404) is dropped here.
     if (res.statusCode === 404 || res.statusCode >= 500) return false;
     return true;
+  }
+
+  /**
+   * Streams of one playmogo embed over plain HTTP.
+   *
+   * Our own handshake goes first because it is the one that can switch HTTP
+   * client when Cloudflare refuses (see getPassingCloudflare) and that sends
+   * no User-Agent of its own. The app's native Dood extractor is a second,
+   * independent attempt for a page shape the handshake does not expect.
+   */
+  async doodStreams(embedUrl) {
+    let videos = [];
+    try {
+      videos = await this.doodHandshake(embedUrl);
+    } catch (e) {
+      console.log("nekopoi: handshake " + hostOf(embedUrl) + " gagal: " + e);
+    }
+    if (videos.length) return videos;
+    try {
+      const native = (await doodExtractor(embedUrl, "")) || [];
+      for (let i = 0; i < native.length; i++) {
+        const url = safeString(native[i] && native[i].url);
+        if (/^https?:\/\//i.test(url)) videos.push(nekopoiDoodVideo(url, embedUrl));
+      }
+    } catch (e) {
+      console.log("nekopoi: doodExtractor " + hostOf(embedUrl) + " gagal: " + e);
+    }
+    return videos;
+  }
+
+  /**
+   * `/e/<id>` names a `/pass_md5/<path>` whose body is the CDN prefix; the
+   * file is that prefix, ten random characters, and the page's `token`.
+   */
+  async doodHandshake(embedUrl) {
+    const origin = /^(https?:\/\/[^/]+)/i.exec(embedUrl);
+    if (!origin) return [];
+    const page = await this.getPassingCloudflare(
+      embedUrl, nekopoiDoodHeaders(this.getBaseUrl() + "/"), true);
+    if (!page || nekopoiChallenged(page) || page.statusCode >= 400) return [];
+    const html = safeString(page.body);
+    const pass = /(\/pass_md5\/[^'"\s]+)/i.exec(html);
+    const token = /[?&]token=([A-Za-z0-9]+)/i.exec(html) || /token=([A-Za-z0-9]+)/i.exec(html);
+    if (!pass || !token) return [];
+    const res = await this.getPassingCloudflare(
+      origin[1] + pass[1], nekopoiDoodHeaders(embedUrl), true);
+    if (!res || nekopoiChallenged(res) || res.statusCode >= 400) return [];
+    const prefix = safeString(res.body).replace(/\s+/g, "");
+    if (prefix.indexOf("http") !== 0) return [];
+    return [nekopoiDoodVideo(
+      prefix + nekopoiRandomName() + ".mp4?token=" + token[1] + "&expiry=" + Date.now(),
+      embedUrl,
+    )];
   }
 
   /**
@@ -675,12 +885,25 @@ class DefaultExtension extends IdBaseProvider {
     const budget = budgetSeconds || NEKOPOI_WEBVIEW_SECONDS;
     const script =
       "(function(){" +
-      // DoodStream's embed page fires a popunder ad on load (e.g. a window.open
-      // to intent://rm358.com/afu.php, which the WebView cannot resolve and which
-      // otherwise hijacks the frame before the handshake finishes). Neutralise the
-      // common vectors first: window.open, and location.assign/replace to the ad.
+      // DoodStream's embed page fires popunder ads (e.g. window.open to
+      // intent://rm358.com/afu.php, which the WebView cannot resolve and which
+      // otherwise hijacks the frame before the handshake finishes). The rules
+      // follow what the official Nekopoi app's WebViewClient enforces: never
+      // leave for an app scheme (intent:, market:) or a shop, and once the
+      // player is on screen, never leave its origin at all. JS cannot see every
+      // navigation (a plain `location.href = …` is not interceptable), so the
+      // AdGuard DNS recipe still does the host-level blocking.
+      "var AD=/^(intent|market|android-app):|shopee|lazada|tokopedia|rm358|afu\\.php/i;" +
+      "var locked=false;" +
+      "function blocked(u){u=String(u||'');if(AD.test(u))return true;if(!locked)return false;" +
+      "try{var a=document.createElement('a');a.href=u;return !!a.host&&a.host!==location.host}catch(e){return true}}" +
       "try{window.open=function(){return null};}catch(e){}" +
-      "try{['assign','replace'].forEach(function(m){var o=window.location[m]&&window.location[m].bind(window.location);if(o)window.location[m]=function(u){if(/^intent:|rm358|afu\\.php/i.test(String(u)))return;return o(u)};});}catch(e){}" +
+      "try{['assign','replace'].forEach(function(m){var o=window.location[m]&&window.location[m].bind(window.location);if(o)window.location[m]=function(u){if(blocked(u))return;return o(u)};});}catch(e){}" +
+      // Ad scripts open their target by creating an <a target=_blank> and
+      // calling .click() on it, or by catching the first tap on the page.
+      "try{var ac=HTMLAnchorElement.prototype.click;HTMLAnchorElement.prototype.click=function(){if(this.target==='_blank'||blocked(this.href))return;return ac.apply(this,arguments)};}catch(e){}" +
+      "try{document.addEventListener('click',function(e){var n=e.target;while(n&&n.tagName!=='A')n=n.parentNode;" +
+      "if(n&&n.href&&(n.target==='_blank'||blocked(n.href))){e.preventDefault();e.stopImmediatePropagation()}},true);}catch(e){}" +
       "var chars=\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\";" +
       "function done(v){try{window.flutter_inappwebview.callHandler(\"setResponse\",v)}catch(e){}}" +
       "function rnd(n){var s=\"\";for(var i=0;i<n;i++){s+=chars.charAt(Math.floor(Math.random()*chars.length))}return s}" +
@@ -691,7 +914,8 @@ class DefaultExtension extends IdBaseProvider {
       // "Just a moment" page). This way a solve+reload does not lose the handshake.
       "function pageHtml(){" +
       "var h='';try{h=document.documentElement?document.documentElement.innerHTML:'';}catch(e){h='';}" +
-      "if(/\\/pass_md5\\//.test(h)&&/token=[A-Za-z0-9]+/.test(h))return Promise.resolve(h);" +
+      // The markers mean the real player page is loaded: lock navigation to it.
+      "if(/\\/pass_md5\\//.test(h)&&/token=[A-Za-z0-9]+/.test(h)){locked=true;return Promise.resolve(h);}" +
       "return fetch(location.href,{credentials:\"include\"}).then(function(r){return r.text()}).catch(function(){return h});" +
       "}" +
       "var n=0;" +
@@ -717,19 +941,7 @@ class DefaultExtension extends IdBaseProvider {
       return [];
     }
     if (!/^https?:\/\/\S+$/i.test(stream)) return [];
-    const origin = /^(https?:\/\/[^/]+)/i.exec(embedUrl);
-    return [{
-      url: stream,
-      originalUrl: embedUrl,
-      quality: "",
-      // The CDN answers 302 (not the video) when the request carries no
-      // Referer, so both headers ride along to the player explicitly instead
-      // of relying on whichever referer the episode page happened to be.
-      headers: {
-        "User-Agent": this.userAgent(),
-        Referer: (origin ? origin[1] : this.getBaseUrl()) + "/",
-      },
-    }];
+    return [nekopoiDoodVideo(stream, embedUrl)];
   }
 
   /**

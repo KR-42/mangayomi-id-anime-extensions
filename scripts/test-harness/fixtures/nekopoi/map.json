@@ -1,7 +1,7 @@
 {
   "source": "Nekopoi",
-  "captured": "2026-11-13",
-  "note": "Halaman diambil dari situs aslinya (beranda, satu seri, satu episode, hasil pencarian). streampoi_embed.html juga asli. master.m3u8 ditulis tangan sebagai pengganti playlist CDN (sejak 23 Nov 2026 varian memakai index-fN-v1-a1.m3u8?t=..., bentuk asli XFileSharing, supaya cek filter unduhan app ikut teruji), dan streampoi.com memakai match supaya id embed yang berganti tidak memutus fixture. playmogo/plamogo sengaja tidak dipetakan: host itu menjawab tantangan Cloudflare dari jaringan ini, dan di perangkat keras ekstraktor Dart-nya yang menangani, jadi jalur streampoi inilah yang harus terbukti jalan di JS murni.",
+  "captured": "2026-11-24",
+  "note": "Halaman diambil dari situs aslinya (beranda, satu seri, satu episode, hasil pencarian). streampoi_embed.html juga asli. master.m3u8 ditulis tangan sebagai pengganti playlist CDN (sejak 23 Nov 2026 varian memakai index-fN-v1-a1.m3u8?t=..., bentuk asli XFileSharing, supaya cek filter unduhan app ikut teruji), dan streampoi.com memakai match supaya id embed yang berganti tidak memutus fixture. Sejak 0.2.10 playmogo ikut dipetakan: playmogo_embed.html adalah embed asli (24 Nov 2026), playmogo_pass_md5.txt ditulis tangan (awalan CDN palsu). Iframe plamogo.com di episode.html dialihkan reviveMirror ke playmogo.com, jadi jalur handshake JS ikut teruji. episode_playmogo.html (halaman episode asli 24 Nov 2026, hanya dua server playmogo) dipakai scripts/test-harness/nekopoi-scenarios.js untuk skenario tantangan Cloudflare.",
   "responses": [
     {
       "url": "https://nekopoi.care/",
@@ -26,6 +26,19 @@
     {
       "match": "streamruby\\.net/hls2/.*master\\.m3u8",
       "file": "master.m3u8"
+    },
+    {
+      "method": "HEAD",
+      "match": "^https://playmogo\\.com/e/[a-z0-9]+$",
+      "file": "playmogo_embed.html"
+    },
+    {
+      "match": "^https://playmogo\\.com/e/[a-z0-9]+$",
+      "file": "playmogo_embed.html"
+    },
+    {
+      "match": "^https://playmogo\\.com/pass_md5/",
+      "file": "playmogo_pass_md5.txt"
     }
   ]
 }

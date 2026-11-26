@@ -100,14 +100,14 @@
     "hasCloudflare": true,
     "sourceCodeUrl": "https://raw.githubusercontent.com/KR-42/mangayomi-id-anime-extensions/main/javascript/anime/src/id/astronime.js",
     "apiUrl": "",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "isManga": false,
     "itemType": 1,
     "isFullData": false,
     "appMinVerReq": "0.5.0",
     "additionalParams": "",
     "sourceCodeLanguage": 1,
-    "notes": "Domain bisa berpindah; atur di Pengaturan sumber. Video dari server Hydrax (sampai 1080p) dan bisa diunduh lewat tombol unduh Mangayomi. Unduhan 1080p bisa lambat (sekitar 10-20 menit per episode) karena server membatasi kecepatan; disarankan pilih 720p ke bawah di Kualitas yang diutamakan. Server Apollo belum didukung."
+    "notes": "Domain bisa berpindah; atur di Pengaturan sumber. Video dari server Hydrax (sampai 1080p) dan bisa diunduh lewat tombol unduh Mangayomi; kualitas unduhan mengikuti Kualitas yang diutamakan. Server Apollo belum didukung. v0.1.1: peringatan unduhan 1080p lambat dihapus, karena di HP unduhannya ternyata cepat."
   },
   {
     "name": "Kuronime",

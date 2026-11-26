@@ -78,7 +78,7 @@
 | **Oploverz** | `0.2.7` | ✅ Bisa | 🟢 1080p | 23 Nov 2026 |
 | **Anoboy** | `0.1.2` | ✅ Bisa | 🟡 720p | 23 Nov 2026 |
 | **Animangahub** | `0.1.3` | ✅ Bisa | 🟢 1080p | 13 Nov 2026 |
-| **Astronime** | `0.1.0` | ✅ Bisa | 🟢 1080p | 26 Nov 2026 |
+| **Astronime** | `0.1.1` | ✅ Bisa | 🟢 1080p | 26 Nov 2026 |
 
 <sub>🟢 = tersedia hingga 1080p · 🟡 = maksimal 720p.</sub>
 
@@ -143,7 +143,7 @@ Kalau ekstensi tetap rusak setelah situsnya pindah domain, misalnya domain baru 
 | **Samehadaku** | Sebagian episode lama tidak bisa diputar, karena videonya hanya tersedia di server yang belum didukung. |
 | **Anibatch** | Saat scrolling Populer/Terbaru ke halaman berikutnya, loading kadang macet di HP. |
 | **Oploverz** | Kadang muncul verifikasi Cloudflare: ketuk **WebView** di layar error, lalu buka episodenya lagi. Download 1080p bisa makan 10–20 menit per episode, jadi lebih baik download di **720p ke bawah**. |
-| **Astronime** | Download 1080p bisa lama (10–20 menit per episode), jadi lebih baik download di **720p ke bawah**. Server Apollo belum bisa dipakai, jadi video hanya dari Hydrax. |
+| **Astronime** | Server Apollo belum bisa dipakai, jadi video hanya dari Hydrax. Sebagian episode lama hanya tersedia sampai 720p. |
 
 </div>
 
@@ -174,7 +174,7 @@ Menemukan masalah lain? → [**Lapor di sini**](#feedback) 🙏
 | **Oploverz** | Abyss (.mp4), Upbolt (HLS) | 🐢 1080p lambat | Abyss 1080p bisa ±10–20 menit per episode. **Disarankan 720p ke bawah.** |
 | **Anoboy** | YourUpload | 🟢 ±3 MB/s | Episode yang hanya punya Blogger: 🐢 ±12 menit. |
 | **Animangahub** | Filedon dll. | — | |
-| **Astronime** | Hydrax (.mp4) | 🐢 1080p lambat | Server yang sama dengan Oploverz. **Disarankan 720p ke bawah.** |
+| **Astronime** | Hydrax (.mp4) | 🟢 Cepat | Diuji di HP: download 1080p lebih cepat dari Oploverz. |
 
 **Kenapa ada yang lambat?** Mangayomi mengunduh satu episode per sumber dengan satu koneksi.
 Server Abyss (Oploverz) dan Blogger (Google) membatasi kecepatan per koneksi, jadi ini tidak bisa

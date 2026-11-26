@@ -25,10 +25,10 @@ const mangayomiSources = [{
   "typeSource": "single",
   "itemType": 1,
   "isNsfw": false,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "pkgPath": "anime/src/id/astronime.js",
   "hasCloudflare": true,
-  "notes": "Domain bisa berpindah; atur di Pengaturan sumber. Video dari server Hydrax (sampai 1080p) dan bisa diunduh lewat tombol unduh Mangayomi. Unduhan 1080p bisa lambat (sekitar 10-20 menit per episode) karena server membatasi kecepatan; disarankan pilih 720p ke bawah di Kualitas yang diutamakan. Server Apollo belum didukung."
+  "notes": "Domain bisa berpindah; atur di Pengaturan sumber. Video dari server Hydrax (sampai 1080p) dan bisa diunduh lewat tombol unduh Mangayomi; kualitas unduhan mengikuti Kualitas yang diutamakan. Server Apollo belum didukung. v0.1.1: peringatan unduhan 1080p lambat dihapus, karena di HP unduhannya ternyata cepat."
 }];
 
 // The shared helpers are inlined here, before the extension class: a class

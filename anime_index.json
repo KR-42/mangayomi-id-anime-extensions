@@ -88,6 +88,28 @@
     "notes": "Domain Anoboy sering berpindah: pilih di 'Domain cepat' atau isi 'Domain manual' di Pengaturan. Hanya domain build yang sama (mis. anoboy.at) yang didukung; .by/.ws beda struktur. Streaming maksimal 720p. v0.1.2: episode bisa diunduh (tombol unduh Mangayomi). Server YourUpload (cepat, sekitar 3 MB/s) didahulukan. Bila episode hanya punya Blogger, unduhan tetap bisa tetapi lambat (sekitar 12 menit per episode) karena Google membatasi kecepatannya."
   },
   {
+    "name": "Astronime",
+    "id": 147591289,
+    "baseUrl": "https://astronime.id",
+    "lang": "id",
+    "typeSource": "single",
+    "iconUrl": "https://raw.githubusercontent.com/KR-42/mangayomi-id-anime-extensions/main/icons/astronime.png",
+    "dateFormat": "",
+    "dateFormatLocale": "",
+    "isNsfw": false,
+    "hasCloudflare": true,
+    "sourceCodeUrl": "https://raw.githubusercontent.com/KR-42/mangayomi-id-anime-extensions/main/javascript/anime/src/id/astronime.js",
+    "apiUrl": "",
+    "version": "0.1.0",
+    "isManga": false,
+    "itemType": 1,
+    "isFullData": false,
+    "appMinVerReq": "0.5.0",
+    "additionalParams": "",
+    "sourceCodeLanguage": 1,
+    "notes": "Domain bisa berpindah; atur di Pengaturan sumber. Video dari server Hydrax (sampai 1080p) dan bisa diunduh lewat tombol unduh Mangayomi. Unduhan 1080p bisa lambat (sekitar 10-20 menit per episode) karena server membatasi kecepatan; disarankan pilih 720p ke bawah di Kualitas yang diutamakan. Server Apollo belum didukung."
+  },
+  {
     "name": "Kuronime",
     "id": 76699436,
     "baseUrl": "https://kuronime.sbs",

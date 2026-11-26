@@ -1,0 +1,43 @@
+{
+  "source": "Astronime",
+  "captured": "2026-11-26",
+  "note": "Halaman asli dari astronime.id. Semua URL /anime/<slug>/ dilayani detail.html (seri teratas di Populer), dan semua halaman episode dilayani episode.html (episode tertuanya). ajax_N.html adalah jawaban admin-ajax untuk tombol server ke-N. abyss.html adalah halaman player Hydrax (play./player.abyssplayer.com). Redirect /sora/ Abyss sengaja tidak direkam: followAbyssRedirect menangkap kegagalannya dan memakai URL aslinya.",
+  "responses": [
+    {
+      "url": "https://astronime.id/gomunime/?order=popular",
+      "file": "popular.html"
+    },
+    {
+      "url": "https://astronime.id/gomunime/?order=update",
+      "file": "latest.html"
+    },
+    {
+      "url": "https://astronime.id/?s=naruto",
+      "file": "search.html"
+    },
+    {
+      "match": "astronime.id/anime/[^/]+/$",
+      "file": "detail.html"
+    },
+    {
+      "match": "astronime.id/[a-z0-9-]+-episode-[^/]+/$",
+      "file": "episode.html"
+    },
+    {
+      "method": "POST",
+      "url": "https://astronime.id/wp-admin/admin-ajax.php",
+      "body": "nume=1(&|$)",
+      "file": "ajax_1.html"
+    },
+    {
+      "method": "POST",
+      "url": "https://astronime.id/wp-admin/admin-ajax.php",
+      "body": "nume=2(&|$)",
+      "file": "ajax_2.html"
+    },
+    {
+      "match": "abyssplayer\\.com/",
+      "file": "abyss.html"
+    }
+  ]
+}

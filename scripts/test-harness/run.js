@@ -93,7 +93,7 @@ function checkDetail(detail, label) {
 }
 
 // Sources whose fixture episode must stay downloadable in the app.
-const DOWNLOADABLE = new Set(["Anibatch", "Oploverz", "Nekopoi", "Anoboy", "Samehadaku", "Astronime"]);
+const DOWNLOADABLE = new Set(["Anibatch", "Oploverz", "Nekopoi", "Anoboy", "Samehadaku", "Astronime", "Anichin (Donghua)"]);
 
 /**
  * The selection rule of Mangayomi's download_provider.dart (0.9.96): a video

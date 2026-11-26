@@ -1,0 +1,39 @@
+{
+  "source": "Anichin (Donghua)",
+  "captured": "2026-11-26",
+  "note": "Halaman asli dari anichin.moe. Semua halaman seri dilayani detail.html dan semua halaman episode dilayani episode.html. Keduanya dari Spirit Realm Walker (bukan seri teratas di Populer), karena video OK.ru episode pertama seri lama sering sudah diblokir OK.ru atas klaim hak cipta. okru.html adalah halaman embed OK.ru episode itu (data-options berisi daftar MP4 per kualitas), dan abyss.html adalah player Abyss-nya. search-empty.html adalah hasil kosong untuk 'naruto' (situs khusus donghua), sehingga harness beralih ke 'one'. Redirect /sora/ Abyss tidak direkam: followAbyssRedirect menangkap kegagalannya.",
+  "responses": [
+    {
+      "url": "https://anichin.moe/anime/?order=popular",
+      "file": "popular.html"
+    },
+    {
+      "url": "https://anichin.moe/anime/?order=update",
+      "file": "latest.html"
+    },
+    {
+      "url": "https://anichin.moe/?s=naruto",
+      "file": "search-empty.html"
+    },
+    {
+      "url": "https://anichin.moe/?s=one",
+      "file": "search.html"
+    },
+    {
+      "match": "anichin.moe/[a-z0-9-]+-episode-[^/]+/$",
+      "file": "episode.html"
+    },
+    {
+      "match": "anichin.moe/[a-z0-9-]+/$",
+      "file": "detail.html"
+    },
+    {
+      "match": "ok.ru/videoembed/",
+      "file": "okru.html"
+    },
+    {
+      "match": "abyssplayer\\.com/",
+      "file": "abyss.html"
+    }
+  ]
+}

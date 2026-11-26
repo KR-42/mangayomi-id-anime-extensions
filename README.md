@@ -8,12 +8,12 @@
   <img src="https://capsule-render.vercel.app/api?type=waving&color=0:7F00FF,50:B026FF,100:E100FF&height=210&section=header&text=ID%20Anime%20Extensions&fontSize=48&fontColor=ffffff&fontAlignY=36&desc=Ekstensi%20Anime%20Sub%20Indo%20untuk%20Mangayomi&descAlignY=58&descSize=18" alt="ID Anime Extensions" width="100%"/>
 </a>
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=22&pause=900&color=B026FF&center=true&vCenter=true&width=640&height=46&lines=10+sumber+anime+sub+Indonesia+%F0%9F%87%AE%F0%9F%87%A9;Streaming+hingga+1080p+%E2%9C%A8;Satu+ketuk+pasang+ke+Mangayomi+%F0%9F%93%B2;Tetap+dukung+situs+streaming+aslinya+%E2%9D%A4%EF%B8%8F" alt="typing" />
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=22&pause=900&color=B026FF&center=true&vCenter=true&width=640&height=46&lines=11+sumber+anime+%26+donghua+sub+Indonesia+%F0%9F%87%AE%F0%9F%87%A9;Streaming+hingga+1080p+%E2%9C%A8;Satu+ketuk+pasang+ke+Mangayomi+%F0%9F%93%B2;Tetap+dukung+situs+streaming+aslinya+%E2%9D%A4%EF%B8%8F" alt="typing" />
 
 <br/>
 
 ![Mangayomi](https://img.shields.io/badge/Mangayomi-Anime_Extensions-FF2D78?style=for-the-badge&logo=android&logoColor=white)
-![Sumber](https://img.shields.io/badge/Sumber-10-8A2BE2?style=for-the-badge)
+![Sumber](https://img.shields.io/badge/Sumber-11-8A2BE2?style=for-the-badge)
 ![Bahasa](https://img.shields.io/badge/Subtitle-Indonesia-00B4D8?style=for-the-badge)
 ![Kualitas](https://img.shields.io/badge/Kualitas-hingga_1080p-22C55E?style=for-the-badge)
 [![Lisensi](https://img.shields.io/badge/Lisensi-Apache_2.0-FFD93D?style=for-the-badge)](LICENSE)
@@ -79,8 +79,9 @@
 | **Anoboy** | `0.1.2` | ✅ Bisa | 🟡 720p | 23 Nov 2026 |
 | **Animangahub** | `0.1.3` | ✅ Bisa | 🟢 1080p | 13 Nov 2026 |
 | **Astronime** | `0.1.1` | ✅ Bisa | 🟢 1080p | 26 Nov 2026 |
+| **Anichin (Donghua)** 🐉 | `0.1.0` | ✅ Bisa | 🟢 1080p | 26 Nov 2026 |
 
-<sub>🟢 = tersedia hingga 1080p · 🟡 = maksimal 720p.</sub>
+<sub>🟢 = tersedia hingga 1080p · 🟡 = maksimal 720p · 🐉 = khusus donghua (animasi China).</sub>
 
 </div>
 
@@ -144,6 +145,7 @@ Kalau ekstensi tetap rusak setelah situsnya pindah domain, misalnya domain baru 
 | **Anibatch** | Saat scrolling Populer/Terbaru ke halaman berikutnya, loading kadang macet di HP. |
 | **Oploverz** | Kadang muncul verifikasi Cloudflare: ketuk **WebView** di layar error, lalu buka episodenya lagi. Download 1080p bisa makan 10–20 menit per episode, jadi lebih baik download di **720p ke bawah**. |
 | **Astronime** | Server Apollo belum bisa dipakai, jadi video hanya dari Hydrax. Sebagian episode lama hanya tersedia sampai 720p. |
+| **Anichin (Donghua)** | Sebagian episode lama tidak punya video OK.ru lagi karena sudah dihapus dari OK.ru. Kalau ada server lain (Abyss), video tetap bisa diputar dari sana. |
 
 </div>
 
@@ -175,6 +177,7 @@ Menemukan masalah lain? → [**Lapor di sini**](#feedback) 🙏
 | **Anoboy** | YourUpload | 🟢 ±3 MB/s | Episode yang hanya punya Blogger: 🐢 ±12 menit. |
 | **Animangahub** | Filedon dll. | — | |
 | **Astronime** | Hydrax (.mp4) | 🟢 Cepat | Diuji di HP: download 1080p lebih cepat dari Oploverz. |
+| **Anichin (Donghua)** | OK.ru (.mp4), Abyss | ±0,8 MB/s | Sampai 1080p (±10 menit per episode). Sub Indonesia. |
 
 **Kenapa ada yang lambat?** Mangayomi mengunduh satu episode per sumber dengan satu koneksi.
 Server Abyss (Oploverz) dan Blogger (Google) membatasi kecepatan per koneksi, jadi ini tidak bisa

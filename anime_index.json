@@ -22,6 +22,28 @@
     "notes": "Pencarian hanya satu halaman, sesuai situs. Domain bisa berpindah; atur di Pengaturan sumber. v0.1.3: episode bisa diunduh (tombol unduh Mangayomi). Server BerkasDrive (1080p/720p/480p/360p, sekitar 2 MB/s) dan HiAnime (file .mp4 dengan subtitle Indonesia) kini bisa diunduh. Unduhan mengikuti Kualitas yang diutamakan."
   },
   {
+    "name": "Anichin (Donghua)",
+    "id": 255377580,
+    "baseUrl": "https://anichin.moe",
+    "lang": "id",
+    "typeSource": "single",
+    "iconUrl": "https://raw.githubusercontent.com/KR-42/mangayomi-id-anime-extensions/main/icons/anichin.png",
+    "dateFormat": "",
+    "dateFormatLocale": "",
+    "isNsfw": false,
+    "hasCloudflare": true,
+    "sourceCodeUrl": "https://raw.githubusercontent.com/KR-42/mangayomi-id-anime-extensions/main/javascript/anime/src/id/anichin.js",
+    "apiUrl": "",
+    "version": "0.1.0",
+    "isManga": false,
+    "itemType": 1,
+    "isFullData": false,
+    "appMinVerReq": "0.5.0",
+    "additionalParams": "",
+    "sourceCodeLanguage": 1,
+    "notes": "Khusus donghua (animasi China) subtitle Indonesia. Video dari OK.ru (sampai 1080p) dan server cadangan (Abyss, VidHide, DoodStream); bisa diunduh lewat tombol unduh Mangayomi. Domain bisa berpindah: alamat terbaru diumumkan di anichin.care, lalu atur di Pengaturan sumber."
+  },
+  {
     "name": "Animangahub",
     "id": 25253580,
     "baseUrl": "https://animeindo.cloud",

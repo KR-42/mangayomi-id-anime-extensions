@@ -1,0 +1,35 @@
+{
+  "source": "AnimeXin (Donghua)",
+  "captured": "2026-11-26",
+  "note": "Halaman asli dari animexin.dev. Semua halaman seri dilayani detail.html dan semua halaman episode dilayani episode.html, keduanya dari /spiritual-realm-walker/ (bukan seri teratas di Populer), karena video OK.ru episode pertama seri lama sering sudah diblokir OK.ru. okru.html adalah embed OK.ru sub Indonesia episode itu, dipakai untuk semua embed OK.ru (Indo dan English). search-empty.html adalah hasil kosong untuk 'naruto' (situs khusus donghua), sehingga harness beralih ke 'one'.",
+  "responses": [
+    {
+      "url": "https://animexin.dev/anime/?order=popular",
+      "file": "popular.html"
+    },
+    {
+      "url": "https://animexin.dev/anime/?order=update",
+      "file": "latest.html"
+    },
+    {
+      "url": "https://animexin.dev/?s=naruto",
+      "file": "search-empty.html"
+    },
+    {
+      "url": "https://animexin.dev/?s=one",
+      "file": "search.html"
+    },
+    {
+      "match": "animexin.dev/[a-z0-9-]+-episode-[^/]+/$",
+      "file": "episode.html"
+    },
+    {
+      "match": "animexin.dev/[a-z0-9-]+/$",
+      "file": "detail.html"
+    },
+    {
+      "match": "ok.ru/videoembed/",
+      "file": "okru.html"
+    }
+  ]
+}

@@ -29,10 +29,10 @@ const mangayomiSources = [{
   "typeSource": "single",
   "itemType": 1,
   "isNsfw": false,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "pkgPath": "anime/src/id/anichin.js",
   "hasCloudflare": true,
-  "notes": "Khusus donghua (animasi China) subtitle Indonesia. Video dari OK.ru (sampai 1080p) dan server cadangan (Abyss, VidHide, DoodStream); bisa diunduh lewat tombol unduh Mangayomi. Domain bisa berpindah: alamat terbaru diumumkan di anichin.care, lalu atur di Pengaturan sumber."
+  "notes": "Khusus donghua (animasi China) subtitle Indonesia. Video dari OK.ru (sampai 1080p) dan server cadangan (Abyss, VidHide, DoodStream); bisa diunduh lewat tombol unduh Mangayomi. Domain bisa berpindah: alamat terbaru diumumkan di anichin.care, lalu atur di Pengaturan sumber. v0.1.1: server OK.ru lebih andal; bila OK.ru sesekali menjawab kosong, ekstensi mencoba sekali lagi."
 }];
 
 // The shared helpers are inlined here, before the extension class: a class
@@ -2674,12 +2674,18 @@ class DefaultExtension extends IdBaseProvider {
    */
   async okru(embedUrl) {
     const url = /^\/\//.test(embedUrl) ? "https:" + embedUrl : embedUrl;
+    // OK.ru now and then answers an embed with an empty page (seen on the
+    // second of two back-to-back embeds, 26 Nov 2026); one retry recovers it.
+    // A real removal carries a notice ("заблокировано"), which is not retried.
     let html = "";
-    try {
-      html = await this.fetch(url, this.headersFor(this.getBaseUrl() + "/"));
-    } catch (e) {
-      console.log("anichin: OK.ru gagal dimuat: " + e);
-      return [];
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        html = await this.fetch(url, this.headersFor(this.getBaseUrl() + "/"));
+      } catch (e) {
+        console.log("anichin: OK.ru gagal dimuat: " + e);
+        html = "";
+      }
+      if (/data-options=/.test(html) || /заблокирован|удален|blocked|removed/i.test(html)) break;
     }
     const videos = okruVideos(html);
     const headers = this.headersFor("https://ok.ru/");

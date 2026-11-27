@@ -17,3 +17,6 @@ docs/*
 
 # Discussion announcement draft (posted by hand on GitHub)
 .github/ANNOUNCEMENT.md
+
+# CI workflow: kept locally, not published (checks run locally with npm run check)
+.github/workflows/
